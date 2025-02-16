@@ -1,3 +1,5 @@
+'use client';
+
 import logo from '@/assets/images/logo.png';
 import Image from 'next/image';
 
@@ -12,7 +14,6 @@ function LoginPage() {
             <input type="email" id="email" />
             <label>비밀번호</label>
             <input type="password" id="password" />
-            <button>로그인</button>
           </div>
         </form>
       </div>
