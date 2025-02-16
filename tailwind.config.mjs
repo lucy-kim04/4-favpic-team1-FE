@@ -1,13 +1,23 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+
+    // Or if using `src` directory:
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      sm: { min: '375px', max: '743px' },
+      md: { min: '743px', max: '1199px' },
+      lg: { min: '1200px' },
+    },
     extend: {
-      colors: {},
+      fontFamily: {
+        baskin: ['var(--font-baskin)'],
+        baskinB: ['var(--font-baskinB)'],
+      },
     },
   },
   plugins: [],
