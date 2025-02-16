@@ -1,5 +1,6 @@
 import { useForm, FormProvider } from "react-hook-form";
 import InputEmail from "@/components/molecules/InputEmail";
+import InputPassword from "../molecules/InputPassword";
 
 function SignUpForm() {
   const methods = useForm();
@@ -11,6 +12,7 @@ function SignUpForm() {
     <FormProvider {...methods}>
       <form noValidate onSubmit={methods.handleSubmit(onSubmit)}>
         <InputEmail />
+        <InputPassword />
         <button className="text-white" type="submit">
           제출
         </button>
