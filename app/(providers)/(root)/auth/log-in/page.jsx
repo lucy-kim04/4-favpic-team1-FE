@@ -1,14 +1,18 @@
 'use client';
 
-import logo from '@/assets/images/logo.png';
 import Button from '@/components/atoms/Button';
-import Image from 'next/image';
+import Logo from '@/components/atoms/Logo';
+import { useAuth } from '@/contexts/AuthContext';
 
 function LoginPage() {
+  const { login } = useAuth();
+  const handleClickLogin = () => {
+    login();
+  };
   return (
     <div className="h-[100vh] flex justify-center items-center bg-[#0f0f0f]">
       <div className="w-[520px]">
-        <Image src={logo} alt="로고" className="w-[330px]" />
+        <Logo intent="auth" />
         <form className="w-full">
           <div className="inline-flex flex-col w-full">
             <label>이메일</label>
@@ -17,7 +21,9 @@ function LoginPage() {
             <input type="password" id="password" />
           </div>
           <div>
-            <Button intent="primary">로그인</Button>
+            <Button type="button" intent="primary" onClick={handleClickLogin}>
+              로그인
+            </Button>
           </div>
         </form>
       </div>
