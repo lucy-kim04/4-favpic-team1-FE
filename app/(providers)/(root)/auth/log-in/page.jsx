@@ -10,7 +10,7 @@ function LoginPage() {
         <Image src={logo} alt="로고" className="w-[330px]" />
         <form className="w-full">
           <div className="inline-flex flex-col w-full">
-            <label>이메일</label>
+            <label className="font-notoSansKR">천부의</label>
             <input type="email" id="email" />
             <label>비밀번호</label>
             <input type="password" id="password" />

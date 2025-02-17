@@ -47,7 +47,7 @@ const refreshToken = async (prevRefreshToken) => {
 };
 
 // 닉네임 중복 체크
-const isAvailableNickname = async (nickname) => {
+const checkIsAvailableNickname = async (nickname) => {
   try {
     const url = '/users/check-nickname';
     const response = await client.post(url, nickname);
@@ -70,6 +70,12 @@ const getMe = async () => {
   }
 };
 
-const usersApi = { singUp, logIn, refreshToken, isAvailableNickname, getMe };
+const usersApi = {
+  singUp,
+  logIn,
+  refreshToken,
+  checkIsAvailableNickname,
+  getMe,
+};
 
 export default usersApi;

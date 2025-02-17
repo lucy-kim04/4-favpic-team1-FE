@@ -17,6 +17,7 @@ module.exports = {
       fontFamily: {
         baskin: ['var(--font-baskin)'],
         baskinB: ['var(--font-baskinB)'],
+        // notoSansKR: ['var(--font-notoSansKR'],
       },
     },
   },
