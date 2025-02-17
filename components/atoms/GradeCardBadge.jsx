@@ -7,25 +7,23 @@ function GradeCardBadge({
   className,
   ...props
 }) {
-  const gradeClassName = clsx(
-    {
-      // 카드에서 사용되는용
-      'text-xs lg:text-base font-light': variant === 'default',
+  const variantClassName = clsx({
+    'text-[10px] md:text-base lg:text-base font-light': variant === 'default',
+    'text-lg lg:text-2xl font-bold': variant === 'detail',
+  });
 
-      // 디테일에서 사용되는용
-      'text-lg lg:text-2xl font-bold': variant === 'detail',
-
-      // 등급별 색상
-      'text-[#EFFF04]': children === 'COMMON',
-      'text-[#29C9F9]': children === 'RARE',
-      'text-[#A77EFF]': children === 'SUPER RARE',
-      'text-[#FF2A6A]': children === 'LEGENDARY',
-    },
-    className
-  );
+  const gradeClassName = clsx({
+    'text-[#EFFF04]': children === 'COMMON',
+    'text-[#29C9F9]': children === 'RARE',
+    'text-[#A77EFF]': children === 'SUPER RARE',
+    'text-[#FF2A6A]': children === 'LEGENDARY',
+  });
 
   return (
-    <span className={gradeClassName} {...props}>
+    <span
+      className={clsx(variantClassName, gradeClassName, className)}
+      {...props}
+    >
       {children}
     </span>
   );
