@@ -17,7 +17,9 @@ module.exports = {
       fontFamily: {
         baskin: ['var(--font-baskin)'],
         baskinB: ['var(--font-baskinB)'],
-        // notoSansKR: ['var(--font-notoSansKR'],
+      },
+      colors: {
+        'card-border': '#2d2d2d',
       },
     },
   },
