@@ -1,10 +1,8 @@
 import clsx from "clsx";
 
-// boxSize => sm: 345x55 / md: 440x55 / lg:520x60
-// only search size => s-sm: 200x45 / s-md: 280x24 /
-// type => text, email, password, search, textbox, upload, dropdown?
+// boxSize => sm: 345x140 / md: 440x140 / lg:520x180
 
-function Input({
+function TextArea({
   id,
   placeholder,
   type,
@@ -13,9 +11,9 @@ function Input({
   ...props
 }) {
   const sizeClassNames = clsx({
-    "w-[345px] h-[55px]": size === "sm",
-    "w-[440px] h-[55px]": size === "md",
-    "w-[520px] h-[60px]": size === "lg",
+    "w-[345px] h-[140px]": size === "sm",
+    "w-[440px] h-[140px]": size === "md",
+    "w-[520px] h-[180px]": size === "lg",
   });
 
   const errorBorderClassNames = clsx({
@@ -24,19 +22,18 @@ function Input({
   });
 
   return (
-    <input
+    <textarea
       className={clsx(
         sizeClassNames,
         errorBorderClassNames,
         "border rounded-sm bg-black placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
       )}
       id={id}
-      type={type}
       placeholder={placeholder}
       aria-invalid={error}
       {...props}
-    />
+    ></textarea>
   );
 }
 
-export default Input;
+export default TextArea;

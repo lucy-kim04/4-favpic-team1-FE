@@ -7,12 +7,20 @@ import Input from "../atoms/Input";
 import imgOpendEye from "../../assets/images/eye-opened-icon.png";
 import imgClosedEye from "../../assets/images/eye-closed-icon.png";
 import Image from "next/image";
+import clsx from "clsx";
 
-function InputPassword() {
+function InputPassword({ size = "lg" }) {
   const [showPassword, setShowPassword] = useState(false);
+
+  const sizeClassNames = clsx({
+    "max-w-[520px]": size === "lg",
+    "max-w-[440px]": size === "md",
+    "max-w-[345px]": size === "sm",
+  });
+
   const {
     register,
-    formState: { errors, isSubmitted },
+    formState: { errors },
   } = useFormContext();
   const inputId = useId();
 
@@ -23,7 +31,9 @@ function InputPassword() {
   return (
     <div className="flex flex-col gap-[10px]">
       <Label htmlFor={inputId}>비밀번호</Label>
-      <div className="relative flex items-center w-full">
+      <div
+        className={clsx(sizeClassNames, "relative flex items-center w-full")}
+      >
         <Input
           id={inputId}
           type={showPassword ? "text" : "password"}
@@ -34,14 +44,15 @@ function InputPassword() {
             required: "비밀번호는 필수 입력입니다.",
           })}
         />
-        <Image
-          className="absolute left-[480px]"
-          src={showPassword ? imgOpendEye : imgClosedEye}
-          height={24}
-          width={24}
-          alt={"show password Icon"}
-          onClick={handleTogglePassword}
-        />
+        <div className="absolute right-3">
+          <Image
+            src={showPassword ? imgOpendEye : imgClosedEye}
+            height={24}
+            width={24}
+            alt={"show password Icon"}
+            onClick={handleTogglePassword}
+          />
+        </div>
       </div>
       {<small className="text-[#ff483d]">{errors.password?.message}</small>}
     </div>
