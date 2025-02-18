@@ -6,7 +6,7 @@ const card = {
   name: '우리집 앞마당 우리집 앞마당 우리집 앞마당',
   price: 4,
   exchangePrice: 3,
-  salesEditionCount: 0,
+  salesEditionCount: 2,
   totalEditionCount: 5,
   grade: 'COMMON',
   genre: '풍경',
@@ -20,7 +20,7 @@ const card = {
 function MyCardsGalleryPage() {
   return (
     <div>
-      <Card card={card} intent="exchange" />
+      <Card card={card} intent="sales" />
     </div>
   );
 }
