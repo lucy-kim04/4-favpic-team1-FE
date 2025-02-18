@@ -1,13 +1,16 @@
-import Title from '@/components/molecules/Title';
+import cardsApi from '@/api/cards/cards.api';
+import PageContainer from '@/components/atoms/PageContainer';
+import CardList from '@/components/organisms/CardList';
+import MarketPlaceHeader from '@/components/organisms/MarketPlaceHeader';
 
-const { default: PageContainer } = require('@/components/atoms/PageContainer');
+async function HomePage() {
+  const cards = await cardsApi.getMyCardsOfGallery();
 
-function HomePage() {
   return (
     <PageContainer>
-      <Title intent="xl" onClick={() => {}} className="sm:hidden">
-        마켓플레이스
-      </Title>
+      {/* client 컴포넌트 */}
+      <MarketPlaceHeader />
+      <CardList cards={cards} />
     </PageContainer>
   );
 }

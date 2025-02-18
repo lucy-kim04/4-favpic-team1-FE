@@ -12,11 +12,9 @@ import CardTop from '../molecules/CardTop';
  */
 function Card({ card, intent = 'shop' }) {
   return (
-    <div className="h-[100vh] flex justify-center items-center bg-[#0f0f0f]">
-      <div className="w-[440px] md:w-[342px] sm:w-[170px] border border-card-border p-10 md:p-5 sm:p-[10px]">
-        <CardTop card={card} intent={intent} />
-        <CardBottom card={card} intent={intent} />
-      </div>
+    <div className="w-full max-w-[440px] md:max-w-[342px] sm:max-w-[170px] border border-card-border p-10 md:p-5 sm:p-[10px]">
+      <CardTop card={card} intent={intent} />
+      <CardBottom card={card} intent={intent} />
     </div>
   );
 }

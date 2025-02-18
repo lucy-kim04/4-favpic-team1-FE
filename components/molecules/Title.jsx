@@ -1,3 +1,5 @@
+'use client';
+
 import Button from '../atoms/Button';
 import TitleText from '../atoms/TitleText';
 
@@ -11,7 +13,11 @@ import TitleText from '../atoms/TitleText';
  */
 function Title({ children, intent = 'xl', onClick, className }) {
   const buttonName =
-    children === '마켓플레이스' ? '내 포토카드 판매하기' : '포토카드 교환하기';
+    children === '마켓플레이스'
+      ? '내 포토카드 판매하기'
+      : children === '마이갤러리'
+      ? '포토카드 생성하기'
+      : '포토카드 교환하기';
   return (
     <div className={className}>
       <div className="border-b-2 border-[#eeeeee]] pb-4">
@@ -19,7 +25,7 @@ function Title({ children, intent = 'xl', onClick, className }) {
           <TitleText intent={intent}>{children}</TitleText>
           {onClick && (
             <div className="w-[440px] md:w-[342px]">
-              <Button>{buttonName}</Button>
+              <Button onClick={onClick}>{buttonName}</Button>
             </div>
           )}
         </div>

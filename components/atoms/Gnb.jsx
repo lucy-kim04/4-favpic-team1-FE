@@ -18,8 +18,8 @@ function Gnb() {
     logout();
   };
   return (
-    <header className="sticky z-10 top-0 flex justify-center">
-      <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-10 sm:mx-5">
+    <header className="bg-[#0f0f0f] sticky z-10 top-0 flex justify-center">
+      <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4">
         <Image
           src={icMenu}
           alt="메뉴"
@@ -47,10 +47,15 @@ function Gnb() {
           </div>
         ) : (
           <div className="flex items-center sm:w-[22px]">
-            <p className="text-sm mr-6 sm:hidden" onClick={handleClickLogin}>
+            <p
+              className="text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
+              onClick={handleClickLogin}
+            >
               로그인
             </p>
-            <p className="text-sm sm:hidden">회원가입</p>
+            <p className="text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50">
+              회원가입
+            </p>
           </div>
         )}
       </div>
