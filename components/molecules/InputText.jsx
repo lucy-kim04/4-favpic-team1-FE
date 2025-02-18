@@ -6,13 +6,13 @@ import Label from "../atoms/Label";
 import Input from "../atoms/Input";
 
 /**
- * control : useFrom에서 꺼낸 컨트롤러
- * type : input의 type, 기본값 "text"
- * name : useForm에 등록할 name, 예) "rank"
- * rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
- * size : "sm", "md", "lg(기본값)" 택1
- * placeholder
- * label
+ * - control : useFrom에서 꺼낸 컨트롤러
+ * - type : input의 type, 기본값 "text"
+ * - name : useForm에 등록할 name, 예) "rank"
+ * - rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
+ * - size : "sm", "md", "lg(기본값)" 택1
+ * - placeholder
+ * - label
  */
 
 function InputText({

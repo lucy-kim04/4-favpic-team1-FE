@@ -1,3 +1,5 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import InputPassword from "../molecules/InputPassword";
 import InputText from "../molecules/InputText";
