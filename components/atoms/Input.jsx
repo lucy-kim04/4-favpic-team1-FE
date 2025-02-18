@@ -9,7 +9,7 @@ function Input({
   placeholder,
   type,
   size = "lg",
-  error = "false",
+  error = false,
   ...props
 }) {
   const sizeClassNames = clsx({
@@ -19,8 +19,8 @@ function Input({
   });
 
   const errorBorderClassNames = clsx({
-    "border-[#ff483d]": error === "true",
-    "border-gray-200": error === "false",
+    "border-[#ff483d]": error === true,
+    "border-gray-200": error === false,
   });
 
   return (

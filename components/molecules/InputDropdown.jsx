@@ -1,40 +1,31 @@
 "use client";
 
 import React, { useId } from "react";
-import { useController } from "react-hook-form";
 import Label from "../atoms/Label";
-import Input from "../atoms/Input";
+import SelectForm from "../atoms/SelectForm";
+import { useController } from "react-hook-form";
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
- * type : input의 type, 기본값 "text"
  * name : useForm에 등록할 name, 예) "rank"
- * rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
  * size : "sm", "md", "lg(기본값)" 택1
+ * options : [{ value: "COMMON", label: "COMMON" }, { value: "RARE", label: "RARE" }]
  * placeholder
  * label
  */
 
-function InputText({
-  control,
-  type = "text",
-  name,
-  rules = {},
-  size = "lg",
-  label,
-  placeholder,
-}) {
-  const { field, fieldState } = useController({ name, control, rules });
+function InputDropdown({ control, name, size, options, label, placeholder }) {
   const inputId = useId();
+  const { field, fieldState } = useController({ name, control });
 
   return (
     <div className="flex flex-col gap-[10px]">
       <Label htmlFor={inputId}>{label}</Label>
-      <Input
+      <SelectForm
         id={inputId}
-        type={type}
-        size={size}
         placeholder={placeholder}
+        size={size}
+        options={options}
         error={!!fieldState.error}
         {...field}
       />
@@ -43,4 +34,4 @@ function InputText({
   );
 }
 
-export default InputText;
+export default InputDropdown;

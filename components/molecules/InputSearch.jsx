@@ -1,19 +1,29 @@
 "use client";
 
 import React, { useId } from "react";
-import { useFormContext } from "react-hook-form";
+import { useController } from "react-hook-form";
 import Input from "../atoms/Input";
 import Image from "next/image";
-import ImgSearch from "@/assets/images/search-icon.png";
+import icSearch from "@/assets/images/ic-search.png";
 import clsx from "clsx";
 
 /**
- * options
- * 1. size = lg, md, sm
+ * control : useFrom에서 꺼낸 컨트롤러
+ * name : useForm에 등록할 name, 예) "rank"
+ * size : "sm", "md", "lg(기본값)" 택1
+ * placeholder : 기본값 "검색"
+ * rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
  */
-function InputSearch({ size = "lg" }) {
-  const { register } = useFormContext();
+
+function InputSearch({
+  control,
+  name,
+  size = "lg",
+  placeholder = "검색",
+  rules = {},
+}) {
   const inputId = useId();
+  const { field, fieldState } = useController({ name, control, rules });
 
   const sizeClassNames = clsx({
     "max-w-[345px] h-[45px] mb-1": size === "lg",
@@ -38,14 +48,14 @@ function InputSearch({ size = "lg" }) {
       <Input
         id={inputId}
         type={"text"}
-        placeholder={"검색"}
+        placeholder={placeholder}
         size={size}
-        {...register("search")}
+        {...field}
       />
       <div
         className={clsx(iconPositionClassNames, "absolute pointer-events-none")}
       >
-        <Image src={ImgSearch} height={24} width={24} alt="search Icon" />
+        <Image src={icSearch} height={24} width={24} alt="search Icon" />
       </div>
     </div>
   );

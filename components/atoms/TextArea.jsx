@@ -2,14 +2,7 @@ import clsx from "clsx";
 
 // boxSize => sm: 345x140 / md: 440x140 / lg:520x180
 
-function TextArea({
-  id,
-  placeholder,
-  type,
-  size = "lg",
-  error = "false",
-  ...props
-}) {
+function TextArea({ id, placeholder, size = "lg", error = false, ...props }) {
   const sizeClassNames = clsx({
     "w-[345px] h-[140px]": size === "sm",
     "w-[440px] h-[140px]": size === "md",
@@ -17,8 +10,8 @@ function TextArea({
   });
 
   const errorBorderClassNames = clsx({
-    "border-[#ff483d]": error === "true",
-    "border-gray-200": error === "false",
+    "border-[#ff483d]": error === true,
+    "border-gray-200": error === false,
   });
 
   return (
@@ -32,7 +25,7 @@ function TextArea({
       placeholder={placeholder}
       aria-invalid={error}
       {...props}
-    ></textarea>
+    />
   );
 }
 

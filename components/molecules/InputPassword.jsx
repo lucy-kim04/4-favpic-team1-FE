@@ -1,16 +1,34 @@
 "use client";
 
 import React, { useId, useState } from "react";
-import { useFormContext } from "react-hook-form";
+import { useController } from "react-hook-form";
 import Label from "../atoms/Label";
 import Input from "../atoms/Input";
-import imgOpendEye from "../../assets/images/eye-opened-icon.png";
-import imgClosedEye from "../../assets/images/eye-closed-icon.png";
+import icEye from "../../assets/images/ic-eye.png";
+import icEyeOff from "../../assets/images/ic-eye-off.png";
 import Image from "next/image";
 import clsx from "clsx";
 
-function InputPassword({ size = "lg" }) {
+/**
+ * control : useFrom에서 꺼낸 컨트롤러
+ * name: useForm에 등록할 name, 예) "rank"
+ * rules: useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
+ * size: "sm", "md", "lg(기본값)" 택1
+ * label
+ * placeholder
+ */
+
+function InputPassword({
+  control,
+  name,
+  rules = {},
+  size = "lg",
+  label,
+  placeholder,
+}) {
   const [showPassword, setShowPassword] = useState(false);
+  const { field, fieldState } = useController({ name, control, rules });
+  const inputId = useId();
 
   const sizeClassNames = clsx({
     "max-w-[520px]": size === "lg",
@@ -18,35 +36,26 @@ function InputPassword({ size = "lg" }) {
     "max-w-[345px]": size === "sm",
   });
 
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
-  const inputId = useId();
-
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <Label htmlFor={inputId}>비밀번호</Label>
+      <Label htmlFor={inputId}>{label}</Label>
       <div
         className={clsx(sizeClassNames, "relative flex items-center w-full")}
       >
         <Input
           id={inputId}
           type={showPassword ? "text" : "password"}
-          placeholder={"비밀번호를 입력해 주세요."}
-          error={errors.password ? "true" : "false"}
-          // todo,구현 => 비밀번호가 일치하지 않습니다
-          {...register("password", {
-            required: "비밀번호는 필수 입력입니다.",
-          })}
+          placeholder={placeholder}
+          error={!!fieldState.error}
+          {...field}
         />
         <div className="absolute right-3">
           <Image
-            src={showPassword ? imgOpendEye : imgClosedEye}
+            src={showPassword ? icEye : icEyeOff}
             height={24}
             width={24}
             alt={"show password Icon"}
@@ -54,7 +63,7 @@ function InputPassword({ size = "lg" }) {
           />
         </div>
       </div>
-      {<small className="text-[#ff483d]">{errors.password?.message}</small>}
+      {<small className="text-[#ff483d]">{fieldState.error?.message}</small>}
     </div>
   );
 }
