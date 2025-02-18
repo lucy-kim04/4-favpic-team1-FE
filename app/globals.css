@@ -11,7 +11,7 @@ body {
 
 /* search input에서 값 입력시 나오는 x 아이콘 삭제 */
 @layer base {
-  input[type='search']::-webkit-search-cancel-button {
+  input[type="search"]::-webkit-search-cancel-button {
     display: none;
   }
 }
