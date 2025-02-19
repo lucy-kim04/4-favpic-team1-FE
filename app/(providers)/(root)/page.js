@@ -1,16 +1,14 @@
-import cardsApi from '@/api/cards/cards.api';
+import shopsApi from '@/api/shops/shops.api';
 import PageContainer from '@/components/atoms/PageContainer';
-import CardList from '@/components/organisms/CardList';
-import MarketPlaceHeader from '@/components/organisms/MarketPlaceHeader';
+import MarketPlace from '@/components/templates/MarketPlace';
 
 async function HomePage() {
-  const cards = await cardsApi.getMyCardsOfGallery();
+  const shops = await shopsApi.getShops();
 
   return (
     <PageContainer>
       {/* client 컴포넌트 */}
-      <MarketPlaceHeader />
-      <CardList cards={cards} />
+      <MarketPlace initialData={shops} />
     </PageContainer>
   );
 }

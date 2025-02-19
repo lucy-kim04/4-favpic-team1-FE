@@ -15,35 +15,36 @@ function CardTop({ card, intent }) {
   } = card;
   const isGallery = intent === 'gallery';
   const isExchange = intent === 'exchange';
+  const isShop = intent === 'shop';
   const isOnSale = salesEditionCount !== 0;
 
   return (
     <div>
-      <div className="relative">
-        {intent === 'sales' && isOnSale && (
-          <div className="absolute top-[10px]  sm:top-[5px] left-[10px] sm:left-[5px]">
-            <SaleStatusChip isSale={false} />
-          </div>
-        )}
-        {!isOnSale && !isGallery && (
-          <Image
-            src={soldOut}
-            alt="매진"
-            className="z-10 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
-          />
-        )}
+      {intent === 'sales' && isOnSale && (
+        <div className="absolute top-[10px]  sm:top-[5px] left-[10px] sm:left-[5px]">
+          <SaleStatusChip isSale={false} />
+        </div>
+      )}
+      {!isOnSale && !isGallery && (
         <Image
-          src={imgUrl}
-          alt={card}
-          width={360}
-          height={270}
-          className={`mb-6 sm:mb-[10px] ${
+          src={soldOut}
+          alt="매진"
+          className="z-10 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
+        />
+      )}
+      <div className="aspect-[360/270] relative mb-6 sm:mb-[10px]">
+        <Image
+          src={isShop ? card.card.imgUrl : imgUrl}
+          alt={isShop ? card.card.name : card.name}
+          fill
+          priority
+          className={`mb-6 sm:mb-[10px] object-cover ${
             !isOnSale && !isGallery ? ' opacity-30' : ''
           }`}
         />
       </div>
       <p className="text-[22px] sm:text-sm font-bold truncate mb-[10px]">
-        {name}
+        {isShop ? card.card.name : name}
       </p>
 
       {isExchange ? (
@@ -69,9 +70,11 @@ function CardTop({ card, intent }) {
       ) : (
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <GradeCardBadge>{grade}</GradeCardBadge>
+            <GradeCardBadge>{isShop ? card.card.grade : grade}</GradeCardBadge>
             <div className="w-[1px] h-5 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
-            <p className="text-[#a4a4a4] sm:text-[10px] font-normal">{genre}</p>
+            <p className="text-[#a4a4a4] sm:text-[10px] font-normal">
+              {isShop ? card.card.genre : genre}
+            </p>
           </div>
           <p className="underline font-normal sm:text-[10px]">{seller}</p>
         </div>

@@ -8,6 +8,7 @@ function CardBottom({ card, intent }) {
   const isShop = intent === 'shop';
   const isGallery = intent === 'gallery';
   const quantityLabel = isShop ? '잔여' : '수량';
+  console.log(isShop, card._count.cardEditions);
 
   // 교환이 아닐 경우(shop, gallery, sales)
   if (!isExchange)
@@ -23,9 +24,9 @@ function CardBottom({ card, intent }) {
           </p>
           {isShop ? (
             <div className="flex">
-              <p className="font-normal text-lg sm:text-[10px]">{`${salesEditionCount}`}</p>
+              <p className="font-normal text-lg sm:text-[10px]">{`${card._count.cardEditions}`}</p>
               <p className="font-light text-[#a4a4a4] text-lg sm:text-[10px]">
-                &nbsp;{`/ ${totalEditionCount}`}
+                &nbsp;{`/ ${card.salesCount}`}
               </p>
             </div>
           ) : (
