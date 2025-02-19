@@ -2,13 +2,11 @@ import Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
 
 function CardBottom({ card, intent }) {
-  console.log(card);
   const { price, salesEditionCount, totalEditionCount, proposalContent } = card;
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
   const isGallery = intent === 'gallery';
   const quantityLabel = isShop ? '잔여' : '수량';
-  console.log(isShop, card._count.cardEditions);
 
   // 교환이 아닐 경우(shop, gallery, sales)
   if (!isExchange)

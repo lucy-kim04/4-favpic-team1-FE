@@ -3,7 +3,7 @@ import PageContainer from '@/components/atoms/PageContainer';
 import MarketPlace from '@/components/templates/MarketPlace';
 
 async function HomePage() {
-  const shops = await shopsApi.getShops();
+  const shops = await shopsApi.getShops({ orderBy: '최신 순' });
 
   return (
     <PageContainer>
