@@ -34,8 +34,10 @@ function CardTop({ card, intent }) {
         )}
         <Image
           src={imgUrl}
-          alt="우리집 앞마당"
-          className={`w-[360px] mb-6 sm:mb-[10px] ${
+          alt={card}
+          width={360}
+          height={270}
+          className={`mb-6 sm:mb-[10px] ${
             !isOnSale && !isGallery ? ' opacity-30' : ''
           }`}
         />

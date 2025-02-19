@@ -2,6 +2,7 @@ import Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
 
 function CardBottom({ card, intent }) {
+  console.log(card);
   const { price, salesEditionCount, totalEditionCount, proposalContent } = card;
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
@@ -29,9 +30,7 @@ function CardBottom({ card, intent }) {
             </div>
           ) : (
             <p className="font-normal text-lg sm:text-[10px]">
-              {isGallery
-                ? totalEditionCount - salesEditionCount
-                : salesEditionCount}
+              {isGallery ? card._count.cardEditions : salesEditionCount}
             </p>
           )}
         </div>
