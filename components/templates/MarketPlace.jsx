@@ -33,6 +33,8 @@ function MarketPlace({ initialData }) {
     setKeyword(dto.search);
   };
 
+  console.log(shops);
+
   if (isPending) return null;
 
   return (
