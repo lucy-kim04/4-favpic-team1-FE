@@ -17,6 +17,7 @@ function CardTop({ card, intent }) {
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
   const isOnSale = salesEditionCount !== 0;
+  const cardImgUrl = isShop ? card.card.imgUrl : imgUrl;
 
   return (
     <div>
@@ -32,17 +33,21 @@ function CardTop({ card, intent }) {
           className="z-10 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
         />
       )}
-      <div className="aspect-[360/270] relative mb-6 sm:mb-[10px]">
-        <Image
-          src={isShop ? card.card.imgUrl : imgUrl}
-          alt={isShop ? card.card.name : card.name}
-          fill
-          priority
-          className={`mb-6 sm:mb-[10px] object-cover ${
-            !isOnSale && !isGallery ? ' opacity-30' : ''
-          }`}
-        />
-      </div>
+      {cardImgUrl ? (
+        <div className="aspect-[360/270] relative mb-6 sm:mb-[10px]">
+          <Image
+            src={cardImgUrl}
+            alt="카드 이미지"
+            fill
+            priority
+            className={`mb-6 sm:mb-[10px] object-cover ${
+              !isOnSale && !isGallery ? ' opacity-30' : ''
+            }`}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
       <p className="text-[22px] sm:text-sm font-bold truncate mb-[10px]">
         {isShop ? card.card.name : name}
       </p>
