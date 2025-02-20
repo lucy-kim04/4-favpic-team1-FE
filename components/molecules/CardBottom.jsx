@@ -30,7 +30,8 @@ function CardBottom({ card, intent }) {
             </div>
           ) : (
             <p className="font-normal text-lg sm:text-[10px]">
-              {isGallery ? reserveCount : salesCount}
+              {/* {isGallery ? reserveCount : salesCount} */}
+              {reserveCount}
             </p>
           )}
         </div>
