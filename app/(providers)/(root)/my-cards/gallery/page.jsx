@@ -9,7 +9,7 @@ async function MyCardsGalleryPage() {
     <PageContainer>
       {/* client 컴포넌트 */}
       <MyGalleryHeader />
-      <CardList cards={cards} />
+      <CardList cards={cards} intent="gallery" />
     </PageContainer>
   );
 }

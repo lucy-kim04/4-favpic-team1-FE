@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
-import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 
@@ -33,6 +32,8 @@ function MarketPlace({ initialData }) {
     setKeyword(dto.search);
   };
 
+  console.log(shops);
+
   if (isPending) return null;
 
   return (
@@ -49,14 +50,14 @@ function MarketPlace({ initialData }) {
           마켓플레이스
         </Title>
         <div className="flex justify-between items-center mt-5">
-          <form onSubmit={handleSubmit(handleSubmitSearch)}>
+          {/* <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
               name={'search'}
               placeholder={'검색'}
               size="md"
             />
-          </form>
+          </form> */}
           <div className="flex gap-11 shrink-0 ml-[60px]">
             <Dropdown
               label={grade}
@@ -85,7 +86,7 @@ function MarketPlace({ initialData }) {
           </div>
         </div>
       </div>
-      <CardList cards={shops} />
+      <CardList cards={shops} intent="shop" />
     </div>
   );
 }
