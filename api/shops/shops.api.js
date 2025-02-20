@@ -20,8 +20,21 @@ const getShops = async ({
   }
 };
 
+// 상점 상세 조회
+const getShop = async (shopId) => {
+  try {
+    const url = `/shops/${shopId}`;
+    const response = await client.get(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const shopsApi = {
   getShops,
+  getShop,
 };
 
 export default shopsApi;

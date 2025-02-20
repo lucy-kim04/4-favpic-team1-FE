@@ -15,7 +15,7 @@ function TitleText({ children, intent }) {
   const intentClassName = clsx({
     'text-[62px] md:text-[48px] font-baskin': intent === 'xl',
     'text-[46px] md:text-[40px] font-baskin': intent === 'lg',
-    'text-[40px] md:text-[32px] sm:text-[24px]': intent === 'md',
+    'text-[40px] font-bold md:text-[32px] sm:text-[24px]': intent === 'md',
     'text-[28px] md:text-[22px]': intent === 'sm',
   });
   return <p className={clsx(intentClassName)}>{children}</p>;
