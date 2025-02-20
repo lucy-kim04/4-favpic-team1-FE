@@ -13,9 +13,18 @@ export default function Dropdown({
   isBox = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(label);
+  const [selectedOption, setSelectedOption] = useState(null);
   const dropdownRef = useRef(null);
 
+  const handleClick = (option) => {
+    if (selectedOption === option) {
+      setSelectedOption(null);
+    } else {
+      setSelectedOption(option);
+    }
+    setIsOpen(false);
+    onSelect();
+  };
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -44,7 +53,7 @@ export default function Dropdown({
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {selectedOption}{" "}
+        {selectedOption ? selectedOption : label}
         <span className="text-[8.4px]">{isOpen ? "▲" : "▼"}</span>
       </button>
       {isOpen && (
@@ -62,12 +71,7 @@ export default function Dropdown({
                 "cursor-pointer text-base hover:bg-gray-400 w-full",
                 selectedOption === option && "bg-gray-600 w-full"
               )}
-              onClick={() => {
-                setSelectedOption((prev) => {
-                  setSelectedOption(prev === option ? label : option);
-                  setIsOpen(false);
-                });
-              }}
+              onClick={() => handleClick(option)}
             >
               {option}
             </li>
@@ -77,6 +81,24 @@ export default function Dropdown({
     </div>
   );
 }
+
+{
+  /*
+  onClick={() => {
+    const newSelection = selectedOption === option ? label : option;
+    setSelectedOption(newSelection);
+    onSelect(newSelection);
+    setIsOpen(false);
+    }}
+}
+
+onClick={() => {
+                setSelectedOption((prev) => {
+                  setSelectedOption(prev === option ? label : option);
+                  setIsOpen(false);
+                });
+              }}
+
 
 {
   /*
