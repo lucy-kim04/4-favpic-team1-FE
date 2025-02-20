@@ -26,6 +26,7 @@ function MyGallery({ initialData }) {
 
   const cards = data || [];
 
+  console.log(cards);
   if (isPending) return null;
 
   return (
