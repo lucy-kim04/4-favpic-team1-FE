@@ -8,6 +8,7 @@ function Input({
   id,
   placeholder,
   type,
+  value,
   size = "lg",
   error = false,
   ...props
@@ -32,6 +33,7 @@ function Input({
       )}
       id={id}
       type={type}
+      value={value}
       placeholder={placeholder}
       aria-invalid={error}
       {...props}

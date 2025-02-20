@@ -36,6 +36,7 @@ function InputText({
         size={size}
         placeholder={placeholder}
         error={!!fieldState.error}
+        value={field.value}
         {...field}
       />
       {<small className="text-[#ff483d]">{fieldState.error?.message}</small>}
