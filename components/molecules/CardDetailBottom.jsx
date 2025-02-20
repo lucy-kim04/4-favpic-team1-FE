@@ -31,9 +31,9 @@ function CardDetailBottom({
   const {
     genreExchangeCard,
     gradeExchangeCard,
-    salesEditionCount,
-    exchangePrice,
-    description,
+    remainingCount,
+    purchacedPrice,
+    proposalContent,
   } = cardDetail;
 
   // 경우 수는 buyer, seller, exchange, myCardSale
@@ -48,13 +48,13 @@ function CardDetailBottom({
               <NumberStepper
                 value={count}
                 onChange={setCount}
-                maxCount={salesEditionCount}
+                maxCount={remainingCount}
               />
             </div>
             <div className='py-2 flex justify-between items-center'>
               <p className='font-normal text-lg lg:text-xl'>총 가격</p>
               <p className='font-bold text-xl lg:text-2xl'>
-                {exchangePrice * count}P &nbsp;
+                {purchacedPrice * count}P &nbsp;
                 <span className='font-light text-[#a5a5a5]'>({count}장)</span>
               </p>
             </div>
@@ -92,7 +92,9 @@ function CardDetailBottom({
                 </p>
               </div>
               <Divider />
-              <p className='font-normal text-base lg:text-lg'>{description}</p>
+              <p className='font-normal text-base lg:text-lg'>
+                {proposalContent}
+              </p>
               <div className='flex flex-col gap-4 mt-20'>
                 <Button onClick={onEditSale} size='h75'>
                   수정하기
@@ -114,12 +116,12 @@ function CardDetailBottom({
                 <NumberStepper
                   value={count}
                   onChange={setCount}
-                  maxCount={salesEditionCount}
+                  maxCount={remainingCount}
                 />
                 <div>
                   <p className='font-bold text-lg lg:text-xl'>/3</p>
                   <p className='font-light text-xs lg:text-sm text-[#dddddd]'>
-                    최대 {salesEditionCount}장
+                    최대 {remainingCount}장
                   </p>
                 </div>
               </div>

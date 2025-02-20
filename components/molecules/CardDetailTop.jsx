@@ -3,12 +3,12 @@ import GradeCardBadge from '../atoms/GradeCardBadge';
 
 function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
   const {
-    seller,
+    nickname,
     grade,
     genre,
-    salesEditionCount,
-    salesTotalCount,
-    exchangePrice,
+    purchacedPrice,
+    remainingCount,
+    reserveCount,
     description,
   } = cardDetail;
 
@@ -22,7 +22,9 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
             {genre}
           </p>
         </div>
-        <div className='font-bold text-lg lg:text-2xl underline'>{seller}</div>
+        <div className='font-bold text-lg lg:text-2xl underline'>
+          {nickname}
+        </div>
       </div>
       <Divider />
       {topIntent !== 'myCardDetail' && (
@@ -32,13 +34,13 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
           <div className='text-xl lg:text-2xl flex flex-col gap-[10px]'>
             <div className='flex justify-between'>
               <p className='text-[#a4a4a4]'>가격</p>
-              <p>{exchangePrice} P</p>
+              <p>{purchacedPrice} P</p>
             </div>
             <div className='flex justify-between font-normal text-xl lg:text-2xl'>
               <p className='text-[#a4a4a4]'>수량</p>
               <p>
-                {salesEditionCount} /{' '}
-                <span className='text-[#a4a4a4]'>{salesTotalCount}</span>
+                {remainingCount} /{' '}
+                <span className='text-[#a4a4a4]'>{reserveCount}</span>
               </p>
             </div>
           </div>
