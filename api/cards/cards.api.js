@@ -23,6 +23,7 @@ const createCard = async (dto) => {
   }
 };
 
+// 마이갤러리 카드 목록 조회
 const getMyCardsOfGallery = async () => {
   try {
     const url = '/cards/me/gallery';
@@ -34,9 +35,21 @@ const getMyCardsOfGallery = async () => {
   }
 };
 
+// 카드 상세 정보 조회
+const getMyCardOfGallery = async (cardId) => {
+  try {
+    const url = `/cards/me/gallery/${cardId}`;
+    const response = await client.get(url);
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const cardsApi = {
   createCard,
   getMyCardsOfGallery,
+  getMyCardOfGallery,
 };
 
 export default cardsApi;
