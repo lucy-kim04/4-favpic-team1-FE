@@ -2,31 +2,44 @@ import { client, errorHandler } from '../client';
 
 // 회원가입
 const singUp = async (dto) => {
-  try {
-    const url = '/users/sign-up';
-    const response = await client.post(url, dto);
+  const url = '/users/sign-up';
+  const response = await client.post(url, dto);
 
-    return response.data;
-  } catch (error) {
-    errorHandler(error);
-  }
+  return response.data;
+  // try {
+  //   const url = '/users/sign-up';
+  //   const response = await client.post(url, dto);
+
+  //   return response.data;
+  // } catch (error) {
+  //   errorHandler(error);
+  // }
 };
 
 // 로그인
 const logIn = async (dto) => {
-  try {
-    const url = '/users/log-in';
-    const response = await client.post(url, dto);
+  const url = '/users/log-in';
+  const response = await client.post(url, dto);
 
-    const { accessToken, refreshToken } = response.data;
+  const { accessToken, refreshToken } = response.data;
 
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('refreshToken', refreshToken);
 
-    return response.data;
-  } catch (error) {
-    errorHandler(error);
-  }
+  return response.data;
+  // try {
+  //   const url = '/users/log-in';
+  //   const response = await client.post(url, dto);
+
+  //   const { accessToken, refreshToken } = response.data;
+
+  //   localStorage.setItem('accessToken', accessToken);
+  //   localStorage.setItem('refreshToken', refreshToken);
+
+  //   return response.data;
+  // } catch (error) {
+  //   errorHandler(error);
+  // }
 };
 
 // 토큰 재발급

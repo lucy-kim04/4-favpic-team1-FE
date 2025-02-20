@@ -43,10 +43,10 @@ export function AuthProvider({ children }) {
         if (!accessToken) return;
 
         const user = await usersApi.getMe();
-        if (!user) return;
+        // if (!user) return;
 
-        setIsLoggedIn(true);
         setUserInfo(user);
+        setIsLoggedIn(true);
       } catch (error) {
         console.error('refreshToken이 없거나 만료', error);
       } finally {
@@ -54,7 +54,7 @@ export function AuthProvider({ children }) {
       }
     }
     initAuthStatus();
-  }, []);
+  }, [isLoggedIn]);
 
   const value = {
     isLoggedIn,
