@@ -12,7 +12,7 @@ import CardTop from '../molecules/CardTop';
  */
 function Card({ card, intent = 'shop' }) {
   return (
-    <div className="w-full max-w-[440px] md:max-w-[342px] sm:max-w-[170px] border border-card-border p-10 md:p-5 sm:p-[10px]">
+    <div className="border border-card-border p-10 md:p-5 sm:p-[10px]">
       <CardTop card={card} intent={intent} />
       <CardBottom card={card} intent={intent} />
     </div>

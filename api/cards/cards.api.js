@@ -1,4 +1,4 @@
-const { client, errorHandler } = require('../client');
+import { client, errorHandler } from '../client';
 
 const getMyCardsOfGallery = async () => {
   try {

@@ -2,7 +2,6 @@ import Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
 
 function CardBottom({ card, intent }) {
-  console.log(card);
   const { price, salesEditionCount, totalEditionCount, proposalContent } = card;
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
@@ -23,9 +22,9 @@ function CardBottom({ card, intent }) {
           </p>
           {isShop ? (
             <div className="flex">
-              <p className="font-normal text-lg sm:text-[10px]">{`${salesEditionCount}`}</p>
+              <p className="font-normal text-lg sm:text-[10px]">{`${card._count.cardEditions}`}</p>
               <p className="font-light text-[#a4a4a4] text-lg sm:text-[10px]">
-                &nbsp;{`/ ${totalEditionCount}`}
+                &nbsp;{`/ ${card.salesCount}`}
               </p>
             </div>
           ) : (
