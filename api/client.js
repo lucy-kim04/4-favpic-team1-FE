@@ -64,7 +64,7 @@ client.interceptors.response.use(
 );
 
 export function errorHandler(error) {
-  console.log('AxiosError', error);
+  // console.log('AxiosError', error);
   if (error.response) {
     throw new Error(`${error.response.status}: ${error.response.data}`);
   } else {
