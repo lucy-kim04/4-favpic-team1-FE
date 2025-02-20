@@ -1,15 +1,13 @@
 import cardsApi from '@/api/cards/cards.api';
 import PageContainer from '@/components/atoms/PageContainer';
-import CardList from '@/components/organisms/CardList';
-import MyGalleryHeader from '@/components/organisms/MyGalleryHeader';
+import MyGallery from '@/components/templates/MyGallery';
 
 async function MyCardsGalleryPage() {
   const cards = await cardsApi.getMyCardsOfGallery();
   return (
     <PageContainer>
       {/* client 컴포넌트 */}
-      <MyGalleryHeader />
-      <CardList cards={cards} intent="gallery" />
+      <MyGallery cards={cards} />
     </PageContainer>
   );
 }
