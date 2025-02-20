@@ -84,24 +84,6 @@ export default function Dropdown({
 
 {
   /*
-  onClick={() => {
-    const newSelection = selectedOption === option ? label : option;
-    setSelectedOption(newSelection);
-    onSelect(newSelection);
-    setIsOpen(false);
-    }}
-}
-
-onClick={() => {
-                setSelectedOption((prev) => {
-                  setSelectedOption(prev === option ? label : option);
-                  setIsOpen(false);
-                });
-              }}
-
-
-{
-  /*
 <Dropdown
 width="w-[134px]"
 label="등급"
