@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useId } from "react";
-import { useController } from "react-hook-form";
-import Label from "../atoms/Label";
+import clsx from 'clsx';
+import { useId } from 'react';
+import { useController } from 'react-hook-form';
+import Label from '../atoms/Label';
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
@@ -17,15 +17,15 @@ import Label from "../atoms/Label";
 function InputUpload({
   control,
   name,
-  size = "lg",
+  size = 'lg',
   label,
   placeholder,
   rules,
 }) {
   const sizeClassNames = clsx({
-    "w-[230px] h-[55px]": size === "sm",
-    "w-[310px] h-[55px]": size === "md",
-    "w-[390px] h-[60px]": size === "lg",
+    'w-[230px] h-[55px]': size === 'sm',
+    'w-[310px] h-[55px]': size === 'md',
+    'w-[390px] h-[60px]': size === 'lg',
   });
 
   const inputId = useId();
@@ -46,7 +46,7 @@ function InputUpload({
         <div
           className={clsx(
             sizeClassNames,
-            "border py-[20px] px-[18px] flex items-center"
+            'border py-[20px] px-[18px] flex items-center'
           )}
         >
           {field.value ? (
