@@ -43,9 +43,11 @@ function Gnb() {
                 alt="알림아이콘"
                 className="w-6 sm:w-[22px] mr-6 sm:mr-0"
               />
-              <p className="font-baskin text-lg mr-6 sm:hidden">
-                {userInfo ? userInfo.nickname : ''}
-              </p>
+              <Link href="/my-cards/gallery">
+                <p className="font-baskin text-lg mr-6 sm:hidden">
+                  {userInfo ? userInfo.nickname : ''}
+                </p>
+              </Link>
               <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>
               <p
                 className="text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50"
