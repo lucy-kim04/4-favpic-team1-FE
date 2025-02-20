@@ -57,7 +57,7 @@ function MarketPlace({ initialData }) {
               size="md"
             />
           </form>
-          <div className="flex gap-11 shrink-0 ml-[60px]">
+          <div className="flex shrink-0 ml-[60px]">
             <Dropdown
               width="w-[134px]"
               label={grade}
