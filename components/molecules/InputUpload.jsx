@@ -32,8 +32,11 @@ function InputUpload({
   const { field, fieldState } = useController({ name, control, rules });
 
   const handleChange = (e) => {
-    const file = e.target.files[0] || null;
-    field.onChange(file);
+    // 파일이 선택되었는지 확인
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0] || null;
+      field.onChange(file);
+    }
   };
 
   return (
