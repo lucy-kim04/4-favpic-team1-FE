@@ -58,12 +58,13 @@ export default function Dropdown({
           {options.map((option, index) => (
             <li
               key={index}
-              className="cursor-pointer text-base hover:bg-gray-400 w-full"
+              className={clsx(
+                "cursor-pointer text-base hover:bg-gray-400 w-full",
+                selectedOption === option && "bg-gray-600 w-full"
+              )}
               onClick={() => {
                 setSelectedOption((prev) => {
-                  setSelectedOption((prev) =>
-                    prev === option ? label : option
-                  );
+                  setSelectedOption(prev === option ? label : option);
                   setIsOpen(false);
                 });
               }}
