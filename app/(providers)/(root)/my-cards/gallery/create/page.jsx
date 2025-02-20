@@ -30,6 +30,12 @@ function CreateCardPage() {
     mode: 'onBlur',
     defaultValues: {
       name: '',
+      price: '',
+      grade: '',
+      genre: '',
+      imgUrl: '',
+      issuedQuantity: '',
+      description: '',
     },
   });
 
