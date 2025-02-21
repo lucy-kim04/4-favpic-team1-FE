@@ -32,6 +32,7 @@ function CardDetailBottom({
     exchangeGenre,
     exchangeGrade,
     remainingCount,
+    price,
     purchacedPrice,
     exchangeDesc,
   } = cardDetail;
@@ -44,7 +45,7 @@ function CardDetailBottom({
           <>
             <Divider />
             <div className='py-2 flex justify-between items-center'>
-              <p className='font-normal text-lg lg:text-xl'>구매 수량</p>
+              <p className='font-normal text-lg lg:text-xl'>구매수량</p>
               <NumberStepper
                 value={count}
                 onChange={setCount}
@@ -54,7 +55,7 @@ function CardDetailBottom({
             <div className='py-2 flex justify-between items-center'>
               <p className='font-normal text-lg lg:text-xl'>총 가격</p>
               <p className='font-bold text-xl lg:text-2xl'>
-                {purchacedPrice * count}P &nbsp;
+                {price * count}P &nbsp;
                 <span className='font-light text-[#a5a5a5]'>({count}장)</span>
               </p>
             </div>
@@ -151,7 +152,7 @@ function CardDetailBottom({
           </div>
         );
 
-      case 'myCardSale':
+      case 'gallery':
         return (
           <Button onClick={onStartSale} className='mt-8 lg:mt-16' size='h75'>
             포토카드 판매하기

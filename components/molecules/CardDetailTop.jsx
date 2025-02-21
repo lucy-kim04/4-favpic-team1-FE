@@ -37,7 +37,9 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
               <p>{price} P</p>
             </div>
             <div className='flex justify-between font-normal text-xl lg:text-2xl'>
-              <p className='text-[#a4a4a4]'>수량</p>
+              <p className='text-[#a4a4a4]'>
+                {topIntent === 'myGallery' ? '보유량' : '잔여'}
+              </p>
               <p>
                 {remainingCount} /{' '}
                 <span className='text-[#a4a4a4]'>{salesCount}</span>
