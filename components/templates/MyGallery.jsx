@@ -1,9 +1,11 @@
 'use client';
 
 import cardsApi from '@/api/cards/cards.api';
+import icDropdown from '@/assets/images/ic-dropdown.png';
 import constants from '@/constant';
 import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -38,7 +40,7 @@ function MyGallery({ initialData }) {
     setKeyword(dto.search);
   };
 
-  const cards = data?.resData || [];
+  const cards = data?.cards || [];
 
   if (isPending) return null;
 
@@ -55,10 +57,10 @@ function MyGallery({ initialData }) {
           마이갤러리
         </Title>
         <UserCardsSummary
-          nickname={userInfo.nickname}
+          nickname={userInfo?.nickname}
           userSummary={data?.userSummary}
         />
-        <div className="flex justify-between items-center mt-5">
+        <div className="flex justify-between items-center mt-5 sm:hidden">
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
@@ -82,15 +84,21 @@ function MyGallery({ initialData }) {
             />
           </div>
           <div className="w-full grow-1"></div>
-          <div className="shrink-0">
-            <Dropdown
-              width="w-[180px]"
-              label={orderBy}
-              options={constants.SORT_OPTIONS}
-              isBox={true}
-              onSelect={setOrderBy}
+        </div>
+        <div className="flex justify-between items-center mt-5 lg:hidden md:hidden">
+          <Image
+            src={icDropdown}
+            alt="드롭다운"
+            className="w-[45px] h-[45px]"
+          />
+          <form onSubmit={handleSubmit(handleSubmitSearch)}>
+            <InputSearch
+              control={control}
+              name={'search'}
+              placeholder={'검색'}
+              size="md"
             />
-          </div>
+          </form>
         </div>
       </div>
       <CardList cards={cards} intent="gallery" />
