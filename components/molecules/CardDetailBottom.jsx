@@ -68,8 +68,7 @@ function CardDetailBottom({
       case 'seller':
         return (
           <>
-            <Divider />
-            <div className="pt-2 flex gap-[10px] items-center">
+            <div className="pt-2 mt-[60px] flex gap-[10px] items-center">
               <Image
                 className="w-[19px] lg:w-[24px] h-[19px] lg:h-[24px]"
                 src={exchangeIcon}

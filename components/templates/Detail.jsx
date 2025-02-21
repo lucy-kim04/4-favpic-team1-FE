@@ -25,23 +25,25 @@ function Detail({ dataId, intent = 'gallery' }) {
   if (!data) return null;
   console.log(data);
   return (
-    <div className="mt-[60px]">
+    <div className={`${intent !== 'gallery'}?mt-[60px]:""`}>
       <Title intent="md">{data.name}</Title>
-      <div className="flex mt-[60px] items-start">
-        <div className="relative w-full aspect-[360/270] mr-20 md:mr-5">
-          <Image
-            src={data.imgUrl}
-            alt="상점이미지"
-            fill
-            className="object-cover"
-          />
-        </div>
-        <div>
-          <CardDetail
-            cardDetail={data}
-            topIntent={'gallery'}
-            bottomIntent={intent}
-          />
+      <div className="sm:flex justify-center">
+        <div className="flex sm:flex-col mt-[60px] md:mt-10 sm:mt-5 items-start sm:w-[345px]">
+          <div className="relative w-full aspect-[360/270] mr-20 md:mr-5 sm:mb-5">
+            <Image
+              src={data.imgUrl}
+              alt="상점이미지"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div>
+            <CardDetail
+              cardDetail={data}
+              topIntent={'gallery'}
+              bottomIntent={intent}
+            />
+          </div>
         </div>
       </div>
       <div className="mt-[120px]">

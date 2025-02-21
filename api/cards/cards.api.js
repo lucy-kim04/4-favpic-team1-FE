@@ -24,10 +24,17 @@ const createCard = async (dto) => {
 };
 
 // 마이갤러리 카드 목록 조회
-const getMyCardsOfGallery = async () => {
+const getMyCardsOfGallery = async ({
+  orderBy = '최신 순',
+  grade = '등급',
+  genre = '장르',
+  keyword = '',
+}) => {
   try {
     const url = '/cards/me/gallery';
-    const response = await client.get(url);
+    const response = await client.get(url, {
+      params: { orderBy, grade, genre, keyword },
+    });
 
     return response.data;
   } catch (error) {

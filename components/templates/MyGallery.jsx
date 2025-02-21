@@ -1,9 +1,13 @@
 'use client';
 
 import cardsApi from '@/api/cards/cards.api';
+import constants from '@/constant';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../atoms/Dropdown';
+import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 
@@ -14,6 +18,8 @@ function MyGallery({ initialData }) {
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
+  const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
+
   const searchOptions = { orderBy, grade, genre, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
@@ -23,6 +29,10 @@ function MyGallery({ initialData }) {
     placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
     retry: 0,
   });
+
+  const handleSubmitSearch = (dto) => {
+    setKeyword(dto.search);
+  };
 
   const cards = data || [];
 
@@ -41,6 +51,40 @@ function MyGallery({ initialData }) {
         >
           마이갤러리
         </Title>
+        <div className="flex justify-between items-center mt-5">
+          <form onSubmit={handleSubmit(handleSubmitSearch)}>
+            <InputSearch
+              control={control}
+              name={'search'}
+              placeholder={'검색'}
+              size="md"
+            />
+          </form>
+          <div className="flex shrink-0 ml-[60px]">
+            <Dropdown
+              width="w-[134px]"
+              label="등급"
+              options={constants.CARD_GRADES}
+              onSelect={setGrade}
+            />
+            <Dropdown
+              width="w-[134px]"
+              label="장르"
+              options={constants.CARD_GENRES}
+              onSelect={setGenre}
+            />
+          </div>
+          <div className="w-full grow-1"></div>
+          <div className="shrink-0">
+            <Dropdown
+              width="w-[180px]"
+              label={orderBy}
+              options={constants.SORT_OPTIONS}
+              isBox={true}
+              onSelect={setOrderBy}
+            />
+          </div>
+        </div>
       </div>
       <CardList cards={cards} intent="gallery" />
     </div>
