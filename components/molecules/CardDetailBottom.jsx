@@ -29,11 +29,11 @@ function CardDetailBottom({
   });
 
   const {
-    genreExchangeCard,
-    gradeExchangeCard,
+    exchangeGenre,
+    exchangeGrade,
     remainingCount,
     purchacedPrice,
-    proposalContent,
+    exchangeDesc,
   } = cardDetail;
 
   // 경우 수는 buyer, seller, exchange, myCardSale
@@ -84,17 +84,15 @@ function CardDetailBottom({
             <div>
               <div className='flex gap-[15px]'>
                 <GradeCardBadge variant='detail'>
-                  {gradeExchangeCard}
+                  {exchangeGrade}
                 </GradeCardBadge>
                 <span>|</span>
                 <p className='font-bold text-lg lg:text-2xl text-[#4a4a4a]'>
-                  {genreExchangeCard}
+                  {exchangeGenre}
                 </p>
               </div>
               <Divider />
-              <p className='font-normal text-base lg:text-lg'>
-                {proposalContent}
-              </p>
+              <p className='font-normal text-base lg:text-lg'>{exchangeDesc}</p>
               <div className='flex flex-col gap-4 mt-20'>
                 <Button onClick={onEditSale} size='h75'>
                   수정하기
