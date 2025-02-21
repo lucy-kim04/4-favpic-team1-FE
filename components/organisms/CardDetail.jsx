@@ -19,8 +19,8 @@ import CardDetailTop from '../molecules/CardDetailTop';
  */
 function CardDetail({ cardDetail, topIntent, bottomIntent }) {
   return (
-    <div className='flex justify-center items-center bg-[#0f0f0f] gap-4'>
-      <div className='w-[440px] md:w-[342px] sm:w-[342px] px-0 py-0'>
+    <div className="flex justify-center items-center bg-[#0f0f0f] gap-4">
+      <div className="w-[440px] md:w-[342px] sm:w-[342px] px-0 py-0">
         <CardDetailTop cardDetail={cardDetail} topIntent={topIntent} />
         <CardDetailBottom cardDetail={cardDetail} bottomIntent={bottomIntent} />
       </div>

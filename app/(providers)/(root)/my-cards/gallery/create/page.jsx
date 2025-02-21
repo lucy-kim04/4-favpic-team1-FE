@@ -50,7 +50,6 @@ function CreateCardPage() {
 
   const handleClickCreate = (dto) => {
     createCard(dto);
-    console.log(dto, typeof dto);
   };
 
   return (
