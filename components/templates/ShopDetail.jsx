@@ -13,7 +13,7 @@ function ShopDetail({ shopId }) {
   });
 
   if (!shop) return null;
-
+  console.log(shop);
   return (
     <div className="mt-[60px]">
       <Title intent="md">{shop.name}</Title>

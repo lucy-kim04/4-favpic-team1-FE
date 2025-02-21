@@ -19,11 +19,12 @@ export default function Dropdown({
   const handleClick = (option) => {
     if (selectedOption === option) {
       setSelectedOption(null);
+      onSelect(label);
     } else {
       setSelectedOption(option);
+      onSelect(option);
     }
     setIsOpen(false);
-    onSelect(option);
   };
   useEffect(() => {
     const handleClickOutside = (event) => {
