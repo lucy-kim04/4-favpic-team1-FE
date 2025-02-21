@@ -14,7 +14,6 @@ import CardTop from '../molecules/CardTop';
 function Card({ card, intent = 'shop' }) {
   const cardLink =
     intent === 'shop' ? `/${card.id}` : `/my-cards/gallery/${card.id}`;
-  console.log('🚀 ~ Card ~ cardLink:', cardLink);
 
   return (
     <Link href={cardLink}>

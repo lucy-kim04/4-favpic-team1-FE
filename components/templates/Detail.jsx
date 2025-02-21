@@ -23,7 +23,6 @@ function Detail({ dataId, intent = 'gallery' }) {
   });
 
   if (!data) return null;
-  console.log(data);
   return (
     <div className={`${intent !== 'gallery'}?mt-[60px]:""`}>
       <Title intent="md">{data.name}</Title>

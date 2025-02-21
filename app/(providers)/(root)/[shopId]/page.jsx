@@ -3,7 +3,6 @@ import Detail from '@/components/templates/Detail';
 
 async function ShopDetailPage({ params }) {
   const { shopId } = await params;
-  console.log(shopId);
   return (
     <PageContainer>
       <div>

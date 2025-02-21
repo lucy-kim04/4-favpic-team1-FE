@@ -2,6 +2,7 @@
 
 import cardsApi from '@/api/cards/cards.api';
 import constants from '@/constant';
+import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -9,6 +10,7 @@ import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
 import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
+import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
 
 function MyGallery({ initialData }) {
@@ -17,6 +19,8 @@ function MyGallery({ initialData }) {
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
+
+  const { userInfo } = useAuth();
 
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
 
@@ -34,9 +38,8 @@ function MyGallery({ initialData }) {
     setKeyword(dto.search);
   };
 
-  const cards = data || [];
+  const cards = data?.resData || [];
 
-  console.log(cards);
   if (isPending) return null;
 
   return (
@@ -51,6 +54,10 @@ function MyGallery({ initialData }) {
         >
           마이갤러리
         </Title>
+        <UserCardsSummary
+          nickname={userInfo.nickname}
+          userSummary={data?.userSummary}
+        />
         <div className="flex justify-between items-center mt-5">
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
