@@ -6,10 +6,10 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
     nickname,
     grade,
     genre,
-    purchacedPrice,
+    price,
     remainingCount,
-    reserveCount,
     description,
+    salesCount,
   } = cardDetail;
 
   return (
@@ -34,13 +34,13 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
           <div className='text-xl lg:text-2xl flex flex-col gap-[10px]'>
             <div className='flex justify-between'>
               <p className='text-[#a4a4a4]'>가격</p>
-              <p>{purchacedPrice} P</p>
+              <p>{price} P</p>
             </div>
             <div className='flex justify-between font-normal text-xl lg:text-2xl'>
               <p className='text-[#a4a4a4]'>수량</p>
               <p>
                 {remainingCount} /{' '}
-                <span className='text-[#a4a4a4]'>{reserveCount}</span>
+                <span className='text-[#a4a4a4]'>{salesCount}</span>
               </p>
             </div>
           </div>
