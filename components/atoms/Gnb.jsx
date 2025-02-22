@@ -36,7 +36,7 @@ function Gnb() {
           (isLoggedIn ? (
             <div className="flex items-center">
               <p className="text-sm font-bold mr-6 sm:hidden">
-                ${userInfo ? userInfo.point : ''}P
+                {userInfo ? userInfo.point : ''}P
               </p>
               <Image
                 src={icNotification}

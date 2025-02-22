@@ -33,8 +33,6 @@ function MarketPlace({ initialData }) {
     setKeyword(dto.search);
   };
 
-  console.log(shops);
-
   if (isPending) return null;
 
   return (
@@ -62,19 +60,19 @@ function MarketPlace({ initialData }) {
           <div className="flex shrink-0 ml-[60px]">
             <Dropdown
               width="w-[134px]"
-              label={grade}
+              label="등급"
               options={constants.CARD_GRADES}
               onSelect={setGrade}
             />
             <Dropdown
               width="w-[134px]"
-              label={genre}
+              label="장르"
               options={constants.CARD_GENRES}
               onSelect={setGenre}
             />
             <Dropdown
               width="w-[140px]"
-              label={onSale}
+              label="매진 여부"
               options={constants.CARD_ON_SALE}
               onSelect={setOnSale}
             />
