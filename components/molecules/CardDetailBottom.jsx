@@ -2,7 +2,7 @@
 
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -42,10 +42,13 @@ function CardDetailBottom({
     exchangeDesc,
   } = cardDetail;
 
+  const queryClient = useQueryClient();
+
   const { mutate: purchaseCards } = useMutation({
     mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
     onSuccess: () => {
       // TODO: 구매 성공 페이지로 이동
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       router.replace('/');
     },
     onError: () => {

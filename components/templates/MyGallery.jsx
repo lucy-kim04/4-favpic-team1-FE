@@ -72,7 +72,7 @@ function MyGallery({ initialData }) {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px]">
             <Dropdown
               width="w-[134px]"
               label="등급"
