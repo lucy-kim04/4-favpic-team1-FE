@@ -1,16 +1,24 @@
 'use client';
 
+import usersApi from '@/api/users/users.api';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Logo from './Logo';
 
 function Gnb() {
-  const { isLoggedIn, logout, userInfo, isAuthInitialized } = useAuth();
+  const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
+
+  const { data: user } = useQuery({
+    queryKey: ['me'],
+    queryFn: usersApi.getMe,
+  });
+
   const handleClickLogin = () => {
     router.push('/auth/log-in');
   };
@@ -36,7 +44,7 @@ function Gnb() {
           (isLoggedIn ? (
             <div className="flex items-center">
               <p className="text-sm font-bold mr-6 sm:hidden">
-                {userInfo ? userInfo.point : ''}P
+                {user ? user.point : ''}P
               </p>
               <Image
                 src={icNotification}
@@ -45,7 +53,7 @@ function Gnb() {
               />
               <Link href="/my-cards/gallery">
                 <p className="font-baskin text-lg mr-6 sm:hidden">
-                  {userInfo ? userInfo.nickname : ''}
+                  {user ? user.nickname : ''}
                 </p>
               </Link>
               <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>

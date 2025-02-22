@@ -2,7 +2,7 @@
 
 import cardsApi from '@/api/cards/cards.api';
 import shopsApi from '@/api/shops/shops.api';
-import { useAuth } from '@/contexts/AuthContext';
+import usersApi from '@/api/users/users.api';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import GradeCardBadge from '../atoms/GradeCardBadge';
@@ -15,8 +15,11 @@ import CardDetail from '../organisms/CardDetail';
  * - dataId: shop 또는 card의 id
  */
 function Detail({ dataId, intent = 'gallery' }) {
-  const { userInfo } = useAuth();
-  const currentUser = userInfo.nickname;
+  const { data: user } = useQuery({
+    queryKey: ['me'],
+    queryFn: usersApi.getMe,
+  });
+  const currentUser = user?.nickname || '';
   const { data } = useQuery({
     queryKey: ['shop', { dataId }],
     queryFn: () => {

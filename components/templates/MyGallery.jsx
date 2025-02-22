@@ -1,9 +1,9 @@
 'use client';
 
 import cardsApi from '@/api/cards/cards.api';
+import usersApi from '@/api/users/users.api';
 import icDropdown from '@/assets/images/ic-dropdown.png';
 import constants from '@/constant';
-import { useAuth } from '@/contexts/AuthContext';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -22,9 +22,12 @@ function MyGallery({ initialData }) {
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
-  const { userInfo } = useAuth();
-
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
+
+  const { data: user } = useQuery({
+    queryKey: ['me'],
+    queryFn: usersApi.getMe,
+  });
 
   const searchOptions = { orderBy, grade, genre, keyword };
   const { data, isPending } = useQuery({
@@ -57,7 +60,7 @@ function MyGallery({ initialData }) {
           마이갤러리
         </Title>
         <UserCardsSummary
-          nickname={userInfo?.nickname}
+          nickname={user?.nickname}
           userSummary={data?.userSummary}
         />
         <div className="flex justify-between items-center mt-5 sm:hidden">
