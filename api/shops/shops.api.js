@@ -32,9 +32,22 @@ const getShop = async (shopId) => {
   }
 };
 
+// 상점에서 카드 구매하기
+const purchaseCards = async (shopId, dto) => {
+  try {
+    const url = `/shops/${shopId}/purchase`;
+    const response = client.post(url, dto);
+
+    return (await response).data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const shopsApi = {
   getShops,
   getShop,
+  purchaseCards,
 };
 
 export default shopsApi;

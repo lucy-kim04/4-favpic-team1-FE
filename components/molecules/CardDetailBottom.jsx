@@ -1,7 +1,10 @@
 'use client';
 
+import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
+import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
@@ -16,8 +19,10 @@ function CardDetailBottom({
   onEditSale,
   onStopSale,
   onStartSale,
+  dataId,
 }) {
   const [count, setCount] = useState(1);
+  const router = useRouter();
   const {
     register,
     formState: { errors },
@@ -33,9 +38,34 @@ function CardDetailBottom({
     exchangeGrade,
     remainingCount,
     price,
-    purchacedPrice,
+    paidPrice,
     exchangeDesc,
   } = cardDetail;
+
+  const { mutate: purchaseCards } = useMutation({
+    mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
+    onSuccess: () => {
+      // TODO: 구매 성공 페이지로 이동
+      router.replace('/');
+    },
+    onError: () => {
+      // TODO:구매 실패 페이지로 이동
+    },
+  });
+
+  const handleClickPurchase = () => {
+    if (remainingCount === 0) return;
+    // TODO: 구매 확인 모달창 띄우고, 해당 창에서 '구매하기'를 하면 아래 함수 실행
+    const data = {
+      price,
+      purchaseCount: count,
+    };
+    purchaseCards(data);
+  };
+
+  const handleClickExchange = () => {
+    if (remainingCount === 0) return;
+  };
 
   // 경우 수는 buyer, seller, exchange, myCardSale
   const renderContent = () => {
@@ -59,8 +89,21 @@ function CardDetailBottom({
                 <span className="font-light text-[#a5a5a5]">({count}장)</span>
               </p>
             </div>
-            <Button onClick={onPurchase} className="mt-8 lg:mt-16" size="h75">
+            <Button
+              onClick={handleClickPurchase}
+              className="mt-8 lg:mt-16"
+              size="h75"
+              disabled={remainingCount === 0}
+            >
               포토카드 구매하기
+            </Button>
+            <Button
+              onClick={handleClickExchange}
+              className="mt-8 lg:mt-[34px]"
+              size="h75"
+              disabled={remainingCount === 0}
+            >
+              포토카드 교환하기
             </Button>
           </>
         );
