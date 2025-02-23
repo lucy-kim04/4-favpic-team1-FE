@@ -7,7 +7,7 @@ import PageContainer from '@/components/atoms/PageContainer';
 import InputPassword from '@/components/molecules/InputPassword';
 import InputText from '@/components/molecules/InputText';
 import { useAuth } from '@/contexts/AuthContext';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
@@ -19,9 +19,12 @@ function LoginPage() {
     defaultValues: { email: '', password: '' },
   });
 
+  const queryClient = useQueryClient();
+
   const { mutate: login } = useMutation({
     mutationFn: (data) => usersApi.logIn(data),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       router.replace('/');
       authLogin();
     },
