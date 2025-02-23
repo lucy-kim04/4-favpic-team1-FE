@@ -8,8 +8,11 @@ import cardsApi from '@/api/cards/cards.api';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import CardList from '../organisms/CardList';
+import CardDetailForSale from './CardDetailForSale';
 
 function SellPhotoCardModal() {
+  const [modalContent, setModalContent] = useState('list');
+  const [selectedCard, setSelectedCard] = useState(null);
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
@@ -20,11 +23,21 @@ function SellPhotoCardModal() {
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
-    keepPreviousData: true,
+    keepPreviousData: true, // 초기 깜빡임 해결을 위해 넣었으나, 잘안됨
   });
 
   const handleSubmitSearch = (e) => {
     setKeyword(e.search);
+  };
+
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+    setModalContent('detail');
+  };
+
+  const handleBack = () => {
+    setModalContent('list');
+    setSelectedCard(null);
   };
 
   const cards = data?.cards || [];
@@ -32,31 +45,42 @@ function SellPhotoCardModal() {
 
   return (
     <Modal>
-      <h3 className="font-baskin text-[#A4A4A4] text-[24px]">마이갤러리</h3>
-      <Title intent="lg" className={'mt-10 mb-5'}>
-        나의 포토카드 판매하기
-      </Title>
-      <div className="flex items-center gap-16 mb-10">
-        <form onSubmit={handleSubmit(handleSubmitSearch)}>
-          <InputSearch
-            control={control}
-            name={'search'}
-            placeholder={'검색'}
-            size={'md'}
+      {modalContent === 'list' ? (
+        <>
+          <h3 className="font-baskin text-[#A4A4A4] text-[24px]">마이갤러리</h3>
+          <Title intent="lg" className={'mt-10 mb-5'}>
+            나의 포토카드 판매하기
+          </Title>
+          <div className="flex items-center gap-16 mb-10">
+            <form onSubmit={handleSubmit(handleSubmitSearch)}>
+              <InputSearch
+                control={control}
+                name={'search'}
+                placeholder={'검색'}
+                size={'md'}
+              />
+            </form>
+            <Dropdown
+              label="등급"
+              options={constants.CARD_GRADES}
+              onSelect={setGrade}
+            />
+            <Dropdown
+              label="장르"
+              options={constants.CARD_GENRES}
+              onSelect={setGenre}
+            />
+          </div>
+          <CardList
+            cards={cards}
+            colNum={2}
+            intent="gallery"
+            onCardClick={handleCardClick}
           />
-        </form>
-        <Dropdown
-          label="등급"
-          options={constants.CARD_GRADES}
-          onSelect={setGrade}
-        />
-        <Dropdown
-          label="장르"
-          options={constants.CARD_GENRES}
-          onSelect={setGenre}
-        />
-      </div>
-      <CardList cards={cards} colNum={2} intent="gallery" />
+        </>
+      ) : (
+        <CardDetailForSale card={selectedCard} onBack={handleBack} />
+      )}
     </Modal>
   );
 }
