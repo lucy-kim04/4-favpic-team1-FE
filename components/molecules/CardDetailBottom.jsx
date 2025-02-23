@@ -56,9 +56,17 @@ function CardDetailBottom({
     },
   });
 
+  const { mutate: deleteShop } = useMutation({
+    mutationFn: () => shopsApi.deleteShop(dataId),
+    onSuccess: () => {
+      // TODO: 삭제 성공 페이지로 이동
+      router.push('/');
+    },
+  });
+
   const handleClickPurchase = () => {
     if (remainingCount === 0) return;
-    // TODO: 구매 확인 모달창 띄우고, 해당 창에서 '구매하기'를 하면 아래 함수 실행
+    // TODO: 확인 모달창 띄우고, 해당 창에서 '구매하기'를 하면 아래 함수 실행
     const data = {
       price,
       purchaseCount: count,
@@ -68,6 +76,11 @@ function CardDetailBottom({
 
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
+  };
+
+  const handleClickStopSale = () => {
+    // TODO: 확인 모달창 띄우고, 해당 창에서 '판매 내리기'를 하면 아래 함수 실행
+    deleteShop();
   };
 
   // 경우 수는 buyer, seller, exchange, myCardSale
@@ -143,7 +156,11 @@ function CardDetailBottom({
                 <Button onClick={onEditSale} size="h75">
                   수정하기
                 </Button>
-                <Button onClick={onStopSale} size="h75" intent="secondary">
+                <Button
+                  onClick={handleClickStopSale}
+                  size="h75"
+                  intent="secondary"
+                >
                   판매 내리기
                 </Button>
               </div>

@@ -32,7 +32,7 @@ function MySales() {
   const searchOptions = { orderBy, grade, genre, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
-    queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
+    queryFn: () => cardsApi.getMyCardsOfSales(searchOptions),
     staleTime: 0,
     placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
     retry: 0,
@@ -43,8 +43,8 @@ function MySales() {
   };
 
   const cards = data?.cards || [];
-  // console.log('totalEditions', data?.totalEditions);
-  // console.log('cards', data?.cards);
+  console.log('totalEditions', data?.totalEditions);
+  console.log('cards', data?.cards);
 
   if (isPending) return null;
   return (

@@ -1,6 +1,18 @@
 import { client, errorHandler } from '../client';
 
-// 상점 shop 목록 조회
+// 상점 생성
+const createShop = async (dto) => {
+  try {
+    const url = '/shops';
+    const reponse = await client.post(url, dto);
+
+    return reponse.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
+// 상점 목록 조회
 const getShops = async ({
   orderBy = '최신 순',
   grade = '등급',
@@ -32,6 +44,18 @@ const getShop = async (shopId) => {
   }
 };
 
+// 상점 삭제(판매 내리기)
+const deleteShop = async (shopId) => {
+  try {
+    const url = `/shops/${shopId}`;
+    const response = await client.delete(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 // 상점에서 카드 구매하기
 const purchaseCards = async (shopId, dto) => {
   try {
@@ -45,8 +69,10 @@ const purchaseCards = async (shopId, dto) => {
 };
 
 const shopsApi = {
+  createShop,
   getShops,
   getShop,
+  deleteShop,
   purchaseCards,
 };
 
