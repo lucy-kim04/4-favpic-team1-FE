@@ -15,7 +15,7 @@ import Title from '../molecules/Title';
 import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
 
-function MyGallery() {
+function MySales() {
   const [orderBy, setOrderBy] = useState('최신 순');
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
@@ -50,19 +50,12 @@ function MyGallery() {
   return (
     <div>
       <div className="mb-[60px] md:mb-10 sm:mb-5">
-        <Title
-          intent="xl"
-          onClick={() => {
-            router.push('/my-cards/gallery/create');
-          }}
-          className="sm:hidden"
-        >
-          마이갤러리
+        <Title intent="xl" className="sm:hidden">
+          나의 판매 포토카드
         </Title>
         <UserCardsSummary
           nickname={user?.nickname}
           userSummary={data?.userSummary}
-          intent="inPossesion"
         />
         <div className="flex justify-between items-center mt-5 sm:hidden">
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
@@ -84,6 +77,12 @@ function MyGallery() {
               width="w-[134px]"
               label="장르"
               options={constants.CARD_GENRES}
+              onSelect={setGenre}
+            />
+            <Dropdown
+              width="w-[134px]"
+              label="판매방법"
+              options={constants.HOW_TO_SALE}
               onSelect={setGenre}
             />
           </div>
@@ -110,4 +109,4 @@ function MyGallery() {
   );
 }
 
-export default MyGallery;
+export default MySales;

@@ -43,9 +43,11 @@ function Gnb() {
         {isAuthInitialized &&
           (isLoggedIn ? (
             <div className="flex items-center">
-              <p className="text-sm font-bold mr-6 sm:hidden">
-                {user ? user.point : ''}P
-              </p>
+              <Link href="/my-cards/sales">
+                <p className="text-sm font-bold mr-6 sm:hidden">
+                  {user ? user.point : ''}P
+                </p>
+              </Link>
               <Image
                 src={icNotification}
                 alt="알림아이콘"

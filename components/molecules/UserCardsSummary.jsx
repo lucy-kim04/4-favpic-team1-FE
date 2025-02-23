@@ -1,12 +1,14 @@
 import GradeMyCardCount from '../atoms/GradeMyCardCount';
 
-function UserCardsSummary({ nickname, userSummary }) {
+function UserCardsSummary({ nickname, userSummary, intent = 'notPossesion' }) {
+  const label =
+    intent === 'inPossesion' ? '보유한 포토카드' : '판매중인 포토카드';
   const totalCount = Object.values(userSummary).reduce((a, b) => a + b);
   return (
     <div className="mt-10 sm:mt-5">
       <div className="flex items-center">
         <p className="text-2xl font-bold mr-[10px]">
-          {nickname}님이 보유한 포토카드
+          {nickname}님이 {label}
         </p>
         <p className="text-xl text-[#a4a4a4]">({totalCount}장)</p>
       </div>
