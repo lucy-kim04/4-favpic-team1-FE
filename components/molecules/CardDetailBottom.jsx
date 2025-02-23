@@ -52,20 +52,20 @@ function CardDetailBottom({
   const { mutate: purchaseCards } = useMutation({
     mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
     onSuccess: () => {
-      // TODO: 구매 성공 페이지로 이동
+      router.push(
+        `/result?intent=purchase&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${count}`
+      );
       queryClient.invalidateQueries({ queryKey: ['me'] });
-      router.replace('/');
     },
-    onError: () => {
-      // TODO:구매 실패 페이지로 이동
-    },
+    onError: () => {},
   });
 
   const { mutate: deleteShop } = useMutation({
     mutationFn: () => shopsApi.deleteShop(dataId),
     onSuccess: () => {
-      // TODO: 삭제 성공 페이지로 이동
-      router.push('/');
+      router.push(
+        `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
+      );
     },
   });
 
@@ -79,7 +79,6 @@ function CardDetailBottom({
 
   const handleClickPurchase = () => {
     if (remainingCount === 0) return;
-    // TODO: 확인 모달창 띄우고, 해당 창에서 '구매하기'를 하면 아래 함수 실행
     modal.open(
       <ConfirmModal
         title={`포토카드 구매`}

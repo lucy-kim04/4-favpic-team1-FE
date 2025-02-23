@@ -26,7 +26,7 @@ const genreOptions = [
 ];
 
 function CreateCardPage() {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     mode: 'onBlur',
     defaultValues: {
       name: '',
@@ -44,7 +44,18 @@ function CreateCardPage() {
   const { mutate: createCard } = useMutation({
     mutationFn: (data) => cardsApi.createCard(data),
     onSuccess: () => {
-      router.push('/my-cards/gallery');
+      const { name, grade } = getValues();
+
+      router.push(
+        `/result?intent=createCard&&isSuccess=true&&name=${name}&&grade=${grade}`
+      );
+    },
+    onError: () => {
+      const { name, grade } = getValues();
+
+      router.push(
+        `/result?intent=createCard&&isSuccess=false&&name=${name}&&grade=${grade}`
+      );
     },
   });
 
