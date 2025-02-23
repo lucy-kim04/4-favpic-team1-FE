@@ -39,13 +39,7 @@ function MarketPlace({ initialData }) {
     <div>
       {/* <MarketPlaceHeader /> */}
       <div className="mb-[60px] md:mb-10 sm:mb-5">
-        <Title
-          intent="xl"
-          onClick={() => {
-            alert('구현중');
-          }}
-          className="sm:hidden"
-        >
+        <Title intent="xl" onClick={() => {}} className="sm:hidden">
           마켓플레이스
         </Title>
         <div className="flex justify-between items-center mt-5">
