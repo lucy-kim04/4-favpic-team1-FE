@@ -14,13 +14,18 @@ function SellPhotoCardModal() {
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
 
-  const { control } = useForm({ defaultValues: { search: '' } });
+  const { control, handleSubmit } = useForm({ defaultValues: { search: '' } });
 
   const searchOptions = { grade, genre, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
+    keepPreviousData: true,
   });
+
+  const handleSubmitSearch = (e) => {
+    setKeyword(e.search);
+  };
 
   const cards = data?.cards || [];
   if (isPending) return null;
@@ -32,7 +37,7 @@ function SellPhotoCardModal() {
         나의 포토카드 판매하기
       </Title>
       <div className="flex items-center gap-16 mb-10">
-        <form>
+        <form onSubmit={handleSubmit(handleSubmitSearch)}>
           <InputSearch
             control={control}
             name={'search'}
@@ -40,10 +45,18 @@ function SellPhotoCardModal() {
             size={'md'}
           />
         </form>
-        <Dropdown label="등급" options={constants.CARD_GRADES} />
-        <Dropdown label="장르" options={constants.CARD_GENRES} />
+        <Dropdown
+          label="등급"
+          options={constants.CARD_GRADES}
+          onSelect={setGrade}
+        />
+        <Dropdown
+          label="장르"
+          options={constants.CARD_GENRES}
+          onSelect={setGenre}
+        />
       </div>
-      <CardList cards={cards} intent="gallery" />
+      <CardList cards={cards} colNum={2} intent="gallery" />
     </Modal>
   );
 }
