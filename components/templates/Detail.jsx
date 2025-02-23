@@ -2,6 +2,7 @@
 
 import cardsApi from '@/api/cards/cards.api';
 import shopsApi from '@/api/shops/shops.api';
+import usersApi from '@/api/users/users.api';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import GradeCardBadge from '../atoms/GradeCardBadge';
@@ -10,10 +11,15 @@ import CardDetail from '../organisms/CardDetail';
 
 /**
  * Detail 컴포넌트 설정 방법
- * - intent: gallery(기본값), seller, buyer
+ * - intent: gallery(마이갤러리에서 상세 조회), market(마켓플레이스에서 상세 조회)
  * - dataId: shop 또는 card의 id
  */
 function Detail({ dataId, intent = 'gallery' }) {
+  const { data: user } = useQuery({
+    queryKey: ['me'],
+    queryFn: usersApi.getMe,
+  });
+  const currentUser = user?.nickname || '';
   const { data } = useQuery({
     queryKey: ['shop', { dataId }],
     queryFn: () => {
@@ -23,6 +29,7 @@ function Detail({ dataId, intent = 'gallery' }) {
   });
 
   if (!data) return null;
+
   return (
     <div className={`${intent !== 'gallery'}?mt-[60px]:""`}>
       <Title intent="md">{data.name}</Title>
@@ -39,17 +46,24 @@ function Detail({ dataId, intent = 'gallery' }) {
           <div>
             <CardDetail
               cardDetail={data}
-              topIntent={'gallery'}
-              bottomIntent={intent}
+              topIntent={intent === 'gallery' ? 'gallery' : 'detailAll'}
+              bottomIntent={
+                intent === 'gallery'
+                  ? intent
+                  : currentUser === data.seller
+                  ? 'seller'
+                  : 'buyer'
+              }
+              dataId={dataId}
             />
           </div>
         </div>
       </div>
       <div className="mt-[120px]">
-        {intent === 'seller' ? (
+        {intent !== 'gallery' && currentUser === data.seller ? (
           <Title intent="md">교환 제시 목록</Title>
         ) : // 응답 목록에 아직 포함되어 있지 않음(2025.02.21)
-        intent === 'buyer' ? (
+        intent !== 'gallery' && currentUser !== data.seller ? (
           <div>
             <Title intent="md">교환 희망 정보</Title>
             <p className="mt-[66px] mb-5 text-2xl font-bold">

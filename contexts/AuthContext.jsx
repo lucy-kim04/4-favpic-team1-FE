@@ -1,7 +1,6 @@
 'use client';
 
 import { client } from '@/api/client';
-import usersApi from '@/api/users/users.api';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
 
@@ -12,7 +11,6 @@ export const useAuth = () => useContext(AuthContext);
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAuthInitialized, setIsAuthInitialized] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
   const pathName = usePathname();
   const router = useRouter();
 
@@ -42,10 +40,6 @@ export function AuthProvider({ children }) {
         const accessToken = localStorage.getItem('accessToken');
         if (!accessToken) return;
 
-        const user = await usersApi.getMe();
-        // if (!user) return;
-
-        setUserInfo(user);
         setIsLoggedIn(true);
       } catch (error) {
         console.error('refreshToken이 없거나 만료', error);
@@ -59,7 +53,6 @@ export function AuthProvider({ children }) {
   const value = {
     isLoggedIn,
     isAuthInitialized,
-    userInfo,
     login,
     logout,
   };

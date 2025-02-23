@@ -9,7 +9,7 @@ async function ShopDetailPage({ params }) {
         <p className="font-baskinB text-2xl md:text-base text-[#a4a4a4] mb-[60px] md:mb-10 sm:hidden">
           마켓플레이스
         </p>
-        <Detail dataId={shopId} intent="seller" />
+        <Detail dataId={shopId} intent="market" />
       </div>
     </PageContainer>
   );
