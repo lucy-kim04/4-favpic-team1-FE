@@ -18,6 +18,7 @@ function CardTop({ card, intent }) {
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
   const isOnSale = remainingCount !== 0;
+  console.log(isOnSale);
 
   return (
     <div>

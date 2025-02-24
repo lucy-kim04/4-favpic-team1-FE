@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import shopsApi from '@/api/shops/shops.api';
 import constants from '@/constant';
@@ -20,11 +20,12 @@ function MarketPlace({ initialData }) {
   const [keyword, setKeyword] = useState('');
   const modal = useModal();
 
-  const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
+
+  const { handleSubmit, control } = useForm({ defaultValues: { search: "" } });
 
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
   const { data: shops, isPending } = useQuery({
-    queryKey: ['shops', { ...searchOptions }],
+    queryKey: ["shops", { ...searchOptions }],
     queryFn: () => shopsApi.getShops(searchOptions),
     initialData,
     staleTime: 0,
@@ -57,26 +58,23 @@ function MarketPlace({ initialData }) {
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
-              name={'search'}
-              placeholder={'검색'}
+              name={"search"}
+              placeholder={"검색"}
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[70px] md:gap-[40px]">
             <Dropdown
-              width="w-[134px]"
               label="등급"
               options={constants.CARD_GRADES}
               onSelect={setGrade}
             />
             <Dropdown
-              width="w-[134px]"
               label="장르"
               options={constants.CARD_GENRES}
               onSelect={setGenre}
             />
             <Dropdown
-              width="w-[140px]"
               label="매진 여부"
               options={constants.CARD_ON_SALE}
               onSelect={setOnSale}
@@ -85,7 +83,6 @@ function MarketPlace({ initialData }) {
           <div className="w-full grow-1"></div>
           <div className="shrink-0">
             <Dropdown
-              width="w-[180px]"
               label={orderBy}
               options={constants.SORT_OPTIONS}
               isBox={true}
