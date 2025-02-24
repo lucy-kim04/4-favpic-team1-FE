@@ -11,7 +11,7 @@ function GradeMyCardCount({
   const gradeClassName = clsx(
     {
       // 기본 스타일
-      'px-[10px] lg:px-4 py-[6px] lg:py-2 rounded-none flex gap-1 w-fit bg-[#0F0F0F] border': true,
+      'px-[10px] lg:px-4 py-[6px] lg:py-2 rounded-none flex gap-1 w-fit bg-[#0F0F0F] border whitespace-nowrap': true,
 
       // 카드 레벨별 색상과 보더
       'text-[#EFFF04] border-[#EFFF04]': gradeCard === 'COMMON',
