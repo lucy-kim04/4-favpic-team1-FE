@@ -24,10 +24,17 @@ const createCard = async (dto) => {
 };
 
 // 마이갤러리 카드 목록 조회
-const getMyCardsOfGallery = async () => {
+const getMyCardsOfGallery = async ({
+  orderBy = '최신 순',
+  grade = '등급',
+  genre = '장르',
+  keyword = '',
+}) => {
   try {
     const url = '/cards/me/gallery';
-    const response = await client.get(url);
+    const response = await client.get(url, {
+      params: { orderBy, grade, genre, keyword },
+    });
 
     return response.data;
   } catch (error) {
@@ -35,7 +42,7 @@ const getMyCardsOfGallery = async () => {
   }
 };
 
-// 카드 상세 정보 조회
+// 마이갤러리 카드 상세 정보 조회
 const getMyCardOfGallery = async (cardId) => {
   try {
     const url = `/cards/me/gallery/${cardId}`;
@@ -46,10 +53,30 @@ const getMyCardOfGallery = async (cardId) => {
   }
 };
 
+// 나의 판매 포토 목록 조회
+const getMyCardsOfSales = async ({
+  orderBy = '최신 순',
+  grade = '등급',
+  genre = '장르',
+  keyword = '',
+}) => {
+  try {
+    const url = '/cards/me/sales';
+    const response = await client.get(url, {
+      params: { orderBy, grade, genre, keyword },
+    });
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const cardsApi = {
   createCard,
   getMyCardsOfGallery,
   getMyCardOfGallery,
+  getMyCardsOfSales,
 };
 
 export default cardsApi;

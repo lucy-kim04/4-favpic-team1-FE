@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React, { useId } from "react";
-import { useController } from "react-hook-form";
-import Label from "../atoms/Label";
-import Input from "../atoms/Input";
+import React, { useId } from 'react';
+import { useController } from 'react-hook-form';
+import Label from '../atoms/Label';
+import Input from '../atoms/Input';
 
 /**
  * - control : useFrom에서 꺼낸 컨트롤러
@@ -17,10 +17,10 @@ import Input from "../atoms/Input";
 
 function InputText({
   control,
-  type = "text",
+  type = 'text',
   name,
   rules = {},
-  size = "lg",
+  size = 'lg',
   label,
   placeholder,
 }) {
@@ -36,6 +36,7 @@ function InputText({
         size={size}
         placeholder={placeholder}
         error={!!fieldState.error}
+        value={field.value}
         {...field}
       />
       {<small className="text-[#ff483d]">{fieldState.error?.message}</small>}

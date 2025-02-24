@@ -46,7 +46,7 @@ const logIn = async (dto) => {
 const refreshToken = async (prevRefreshToken) => {
   try {
     const url = '/users/refresh-token';
-    const response = await client.post(url, prevRefreshToken);
+    const response = await client.post(url, { prevRefreshToken });
 
     const { accessToken, refreshToken } = response.data;
 

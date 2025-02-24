@@ -19,11 +19,12 @@ export default function Dropdown({
   const handleClick = (option) => {
     if (selectedOption === option) {
       setSelectedOption(null);
+      onSelect(label);
     } else {
       setSelectedOption(option);
+      onSelect(option);
     }
     setIsOpen(false);
-    onSelect(option);
   };
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -45,7 +46,7 @@ export default function Dropdown({
     >
       <button
         className={clsx(
-          'text-white text-[18px] py-[18px] text-base cursor-pointer flex items-center',
+          'text-white text-[18px] py-[13px] font-bold cursor-pointer flex items-center',
           width,
           isBox ? 'gap-[38px]' : 'gap-[15px]',
 
