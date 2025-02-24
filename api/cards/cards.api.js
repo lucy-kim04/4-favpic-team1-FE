@@ -58,12 +58,13 @@ const getMyCardsOfSales = async ({
   orderBy = '최신 순',
   grade = '등급',
   genre = '장르',
+  onSale = '매진 여부',
   keyword = '',
 }) => {
   try {
     const url = '/cards/me/sales';
     const response = await client.get(url, {
-      params: { orderBy, grade, genre, keyword },
+      params: { orderBy, grade, genre, onSale, keyword },
     });
 
     return response.data;

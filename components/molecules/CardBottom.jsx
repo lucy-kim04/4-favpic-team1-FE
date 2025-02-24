@@ -31,7 +31,7 @@ function CardBottom({ card, intent }) {
           ) : (
             <p className="font-normal text-lg sm:text-[10px]">
               {/* {isGallery ? reserveCount : salesCount} */}
-              {reserveCount}
+              {isGallery ? reserveCount : remainingCount}
             </p>
           )}
         </div>

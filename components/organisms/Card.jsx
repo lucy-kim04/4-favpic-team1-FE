@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import CardBottom from '../molecules/CardBottom';
 import CardTop from '../molecules/CardTop';
 
@@ -11,6 +10,7 @@ import CardTop from '../molecules/CardTop';
  *   - sales: /my-cards/sales의 목록
  *   - exchange: 판매포토 카드 상세(판매자) 페이지의 하단 '교환 제시 목록'
  */
+
 function Card({ card, intent = 'shop', ...props }) {
   const cardLink =
     intent === 'shop' ? `/${card.id}` : `/my-cards/gallery/${card.id}`;
@@ -28,12 +28,15 @@ function Card({ card, intent = 'shop', ...props }) {
   }
 
   return (
-    <Link href={cardLink}>
-      <div className="border border-card-border p-10 md:p-5 sm:p-[10px]">
-        <CardTop card={card} intent={intent} />
-        <CardBottom card={card} intent={intent} />
-      </div>
-    </Link>
+    // <Link href={cardLink}>
+    <div
+      className="border border-card-border p-10 md:p-5 sm:p-[10px]"
+      onClick={handleClickCard}
+    >
+      <CardTop card={card} intent={intent} />
+      <CardBottom card={card} intent={intent} />
+    </div>
+    // </Link>
   );
 }
 

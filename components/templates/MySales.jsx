@@ -19,6 +19,7 @@ function MySales() {
   const [orderBy, setOrderBy] = useState('최신 순');
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
+  const [onSale, setOnSale] = useState('매진 여부');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
@@ -29,7 +30,7 @@ function MySales() {
     queryFn: usersApi.getMe,
   });
 
-  const searchOptions = { orderBy, grade, genre, keyword };
+  const searchOptions = { orderBy, grade, genre, onSale, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfSales(searchOptions),
@@ -84,6 +85,12 @@ function MySales() {
               label="판매방법"
               options={constants.HOW_TO_SALE}
               onSelect={setGenre}
+            />
+            <Dropdown
+              width="w-[140px]"
+              label="매진 여부"
+              options={constants.CARD_ON_SALE}
+              onSelect={setOnSale}
             />
           </div>
           <div className="w-full grow-1"></div>
