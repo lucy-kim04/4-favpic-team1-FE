@@ -16,10 +16,10 @@ import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
 
 function MySales() {
-  const [orderBy, setOrderBy] = useState('최신 순');
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [onSale, setOnSale] = useState('매진 여부');
+  const [howToSale, setHowToSale] = useState('판매 방법');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
@@ -30,7 +30,7 @@ function MySales() {
     queryFn: usersApi.getMe,
   });
 
-  const searchOptions = { orderBy, grade, genre, onSale, keyword };
+  const searchOptions = { grade, genre, onSale, howToSale, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfSales(searchOptions),
@@ -82,9 +82,9 @@ function MySales() {
             />
             <Dropdown
               width="w-[134px]"
-              label="판매방법"
+              label="판매 방법"
               options={constants.HOW_TO_SALE}
-              onSelect={setGenre}
+              onSelect={setHowToSale}
             />
             <Dropdown
               width="w-[140px]"

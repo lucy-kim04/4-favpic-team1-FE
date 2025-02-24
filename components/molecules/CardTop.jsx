@@ -1,5 +1,6 @@
 import soldOut from '@/assets/images/sold-out.png';
 import Image from 'next/image';
+import ExchangeCountChip from '../atoms/ExchangeCountChip';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import SaleStatusChip from '../atoms/SaleStatusChip';
 
@@ -13,6 +14,8 @@ function CardTop({ card, intent }) {
     salesCount,
     remainingCount,
     price,
+    isWaitingExchange,
+    exchangesCount,
   } = card;
   const isGallery = intent === 'gallery';
   const isExchange = intent === 'exchange';
@@ -20,12 +23,14 @@ function CardTop({ card, intent }) {
   const isOnSale = remainingCount !== 0;
   console.log(intent, isOnSale);
   console.log(intent === 'sales' && isOnSale);
+  console.log('isWaitingExchange', isWaitingExchange);
 
   return (
     <div className="relative">
       {intent === 'sales' && isOnSale && (
-        <div className="absolute z-20 top-[10px] sm:top-[5px] left-[10px] sm:left-[5px]">
-          <SaleStatusChip isSale={true} />
+        <div className="absolute flex gap-3 z-20 top-[10px] sm:top-[5px] left-[10px] sm:left-[5px]">
+          <SaleStatusChip isSale={!isWaitingExchange} />
+          <ExchangeCountChip exchangesCount={exchangesCount} />
         </div>
       )}
 
