@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import icX from '@/assets/images/ic-x.png';
 import { useModal } from '@/contexts/ModalContext';
@@ -15,7 +15,7 @@ import ModalBackGround from '../atoms/ModalBackGround';
  * - buttonText: 버튼명(기본값 '확인')
  * - onClick: 버튼 클릭 시 실행 함수(전달하지 않을 경우 기본적으로 'modal.close()' 작동)
  */
-function ConfirmModal({ title, content, buttonText = '확인', onClick }) {
+function ConfirmModal({ title, content, buttonText = "확인", onClick }) {
   const modal = useModal();
 
   const handleClickConfirm = () => {

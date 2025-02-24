@@ -1,32 +1,35 @@
 'use client';
 
-import shopsApi from '@/api/shops/shops.api';
-import constants from '@/constant';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
-import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Dropdown from '../atoms/Dropdown';
 import ConfirmModal from '../molecules/ConfirmModal';
-import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
-import SellPhotoCardModal from './SellPhotoCardModal';
+import shopsApi from "@/api/shops/shops.api";
+import constants from "@/constant";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useModal } from "@/contexts/ModalContext";
+import Dropdown from "../atoms/Dropdown";
+import InputSearch from "../molecules/InputSearch";
+import Title from "../molecules/Title";
+import CardList from "../organisms/CardList";
+import SellPhotoCardModal from "./SellPhotoCardModal";
+import FilterModal from "../atoms/Filter";
 
 function MarketPlace({ initialData }) {
-  const [orderBy, setOrderBy] = useState('최신 순');
-  const [grade, setGrade] = useState('등급');
-  const [genre, setGenre] = useState('장르');
-  const [onSale, setOnSale] = useState('매진 여부');
-  const [keyword, setKeyword] = useState('');
+  const [orderBy, setOrderBy] = useState("최신 순");
+  const [grade, setGrade] = useState("등급");
+  const [genre, setGenre] = useState("장르");
+  const [onSale, setOnSale] = useState("매진 여부");
+  const [keyword, setKeyword] = useState("");
   const modal = useModal();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
-
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
   const { data: shops, isPending } = useQuery({
     queryKey: ['shops', { ...searchOptions }],
@@ -111,6 +114,17 @@ function MarketPlace({ initialData }) {
             />
           </div>
           <div className="w-full grow-1"></div>
+          <button
+            className="lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded"
+            onClick={() => setIsFilterOpen(true)}
+          >
+            <img
+              src="@/assets/images/dropdown.png"
+              alt="필터 열기"
+              className="w-6 h-6"
+            />
+          </button>
+
           <div className="shrink-0">
             <Dropdown
               label={orderBy}
@@ -122,6 +136,28 @@ function MarketPlace({ initialData }) {
         </div>
       </div>
       <CardList cards={shops} intent="shop" onCardClick={handleClickCard} />
+      <div>
+        {isFilterOpen && (
+          <FilterModal
+            onClose={() => setIsFilterOpen(false)}
+            filters={{
+              등급: constants.CARD_GRADES.map((grade) => ({
+                label: grade,
+                count: shops.filter((shop) => shop.grade === grade).length,
+              })),
+              장르: constants.CARD_GENRES.map((genre) => ({
+                label: genre,
+                count: shops.filter((shop) => shop.genre === genre).length,
+              })),
+              매진: constants.CARD_ON_SALE.map((sale) => ({
+                label: sale,
+                count: shops.filter((shop) => shop.onSale === sale).length,
+              })),
+            }}
+            onSelect={(selected) => console.log("선택된 필터:", selected)}
+          />
+        )}
+      </div>
     </div>
   );
 }
