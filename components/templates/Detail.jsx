@@ -8,6 +8,8 @@ import Image from 'next/image';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import Title from '../molecules/Title';
 import CardDetail from '../organisms/CardDetail';
+import MyProposeExchangeList from './MyProposeExchangeList';
+import ProposedExchangeList from './ProposedExchangeList';
 
 /**
  * Detail 컴포넌트 설정 방법
@@ -61,21 +63,24 @@ function Detail({ dataId, intent = 'gallery' }) {
       </div>
       <div className="mt-[120px]">
         {intent !== 'gallery' && currentUser === data.seller ? (
-          <Title intent="md">교환 제시 목록</Title>
+          <ProposedExchangeList shopId={dataId} />
         ) : // 응답 목록에 아직 포함되어 있지 않음(2025.02.21)
         intent !== 'gallery' && currentUser !== data.seller ? (
           <div>
-            <Title intent="md">교환 희망 정보</Title>
-            <p className="mt-[66px] mb-5 text-2xl font-bold">
-              {data.exchangeDesc}
-            </p>
-            <div className="flex gap-3 items-center">
-              <GradeCardBadge variant="detail">{data.grade}</GradeCardBadge>
-              <div className="w-[2px] h-5 sm:h -3 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
-              <p className="text-2xl text-[#a4a4a4] sm:text-[10px] font-bold">
-                {data.genre}
+            <div>
+              <Title intent="md">교환 희망 정보</Title>
+              <p className="mt-[66px] mb-5 text-2xl font-bold">
+                {data.exchangeDesc}
               </p>
+              <div className="flex gap-3 items-center">
+                <GradeCardBadge variant="detail">{data.grade}</GradeCardBadge>
+                <div className="w-[2px] h-5 sm:h -3 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
+                <p className="text-2xl text-[#a4a4a4] sm:text-[10px] font-bold">
+                  {data.genre}
+                </p>
+              </div>
             </div>
+            <MyProposeExchangeList shopId={dataId} />
           </div>
         ) : null}
       </div>

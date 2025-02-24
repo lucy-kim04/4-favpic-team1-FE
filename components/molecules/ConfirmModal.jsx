@@ -1,11 +1,11 @@
 "use client";
 
-import icX from "@/assets/images/ic-x.png";
-import { useModal } from "@/contexts/ModalContext";
-import lineBreakText from "@/libs/lineBreakText";
-import Image from "next/image";
-import ModalBackGround from "../atoms/ModalBackGround";
-import Button from "../atoms/Button";
+import icX from '@/assets/images/ic-x.png';
+import { useModal } from '@/contexts/ModalContext';
+import lineBreakText from '@/libs/lineBreakText';
+import Image from 'next/image';
+import Button from '../atoms/Button';
+import ModalBackGround from '../atoms/ModalBackGround';
 
 /**
  * 컨펌 모달창 사용 방법

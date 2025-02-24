@@ -69,7 +69,7 @@ function CardDetailBottom({
     },
   });
 
-  const handleClickModalButton = () => {
+  const handleClickModalPurchase = () => {
     const data = {
       price,
       purchaseCount: count,
@@ -85,7 +85,7 @@ function CardDetailBottom({
         content={`[${grade} | ${name}]
         ${count}장을 구매하시겠습니까?`}
         buttonText="구매하기"
-        onClick={handleClickModalButton}
+        onClick={handleClickModalPurchase}
       />
     );
   };
@@ -94,9 +94,19 @@ function CardDetailBottom({
     if (remainingCount === 0) return;
   };
 
-  const handleClickStopSale = () => {
-    // TODO: 확인 모달창 띄우고, 해당 창에서 '판매 내리기'를 하면 아래 함수 실행
+  const handleClickModalStopSale = () => {
     deleteShop();
+  };
+
+  const handleClickStopSale = () => {
+    modal.open(
+      <ConfirmModal
+        title={`포토카드 판매 내리기`}
+        content={`정말로 판매를 중단하시겠습니까?`}
+        buttonText="판매 내리기"
+        onClick={handleClickModalStopSale}
+      />
+    );
   };
 
   // 경우 수는 buyer, seller, exchange, myCardSale
