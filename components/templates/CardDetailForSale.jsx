@@ -1,10 +1,7 @@
-import React from 'react';
-import Detail from './Detail';
-import Title from '../molecules/Title';
 import Image from 'next/image';
-import GradeCardBadge from '../atoms/GradeCardBadge';
 import Divider from '../atoms/Divider';
-import CardDetail from '../organisms/CardDetail';
+import GradeCardBadge from '../atoms/GradeCardBadge';
+import Title from '../molecules/Title';
 
 function CardDetailForSale({ card, onBack }) {
   const {
@@ -17,8 +14,6 @@ function CardDetailForSale({ card, onBack }) {
     salesCount,
     purchacedPrice,
   } = card;
-
-  console.log(card);
 
   return (
     // <div>

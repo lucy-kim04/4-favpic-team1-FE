@@ -1,13 +1,65 @@
+import shopsApi from '@/api/shops/shops.api';
+import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
+import ConfirmModal from './ConfirmModal';
 
 function CardBottom({ card, intent, isProposedByMe = false }) {
+  const modal = useModal();
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { nickname, price, remainingCount, salesCount, reserveCount, content } =
     card;
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
   const isGallery = intent === 'gallery';
   const quantityLabel = isShop ? '잔여' : '수량';
+
+  const { mutate: cancelProposeExchange } = useMutation({
+    mutationFn: () =>
+      shopsApi.cancelProposeExchange(card.id, { editionId: card.editionId }),
+    onSuccess: () => {
+      // shop의 내가 제시한 교환 목록 갱신
+      queryClient.invalidateQueries({
+        queryKey: ['my-exchanges', { shopId: card.shopId }],
+      });
+    },
+  });
+
+  const handleClickModalLogin = () => {
+    router.push('/auth/log-in');
+  };
+
+  const handleClickModalCancelExchange = () => {
+    cancelProposeExchange();
+  };
+
+  const handleClickExchangeCancel = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalLogin}
+        />
+      );
+
+    return modal.open(
+      <ConfirmModal
+        title={'교환 제안 취소'}
+        content={`교환 제안을 취소하시겠습니까?`}
+        buttonText="제안 취소하기"
+        onClick={handleClickModalCancelExchange}
+      />
+    );
+  };
 
   // 교환이 아닐 경우(shop, gallery, sales)
   if (!isExchange)
@@ -47,13 +99,27 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
       <p className="font-normal sm:text-[10px] line-clamp-2">{content}</p>
       {isProposedByMe ? (
         <div className="mt-10 md:mt-6">
-          <Button intent="secondary" className="sm:hidden md:hidden">
+          <Button
+            intent="secondary"
+            className="sm:hidden md:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
-          <Button intent="secondary" size="h55" className="sm:hidden lg:hidden">
+          <Button
+            intent="secondary"
+            size="h55"
+            className="sm:hidden lg:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
-          <Button intent="secondary" size="h40" className="lg:hidden md:hidden">
+          <Button
+            intent="secondary"
+            size="h40"
+            className="lg:hidden md:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
         </div>

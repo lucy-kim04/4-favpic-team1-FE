@@ -60,9 +60,9 @@ const deleteShop = async (shopId) => {
 const purchaseCards = async (shopId, dto) => {
   try {
     const url = `/shops/${shopId}/purchase`;
-    const response = client.post(url, dto);
+    const response = await client.post(url, dto);
 
-    return (await response).data;
+    return response.data;
   } catch (error) {
     errorHandler(error);
   }
@@ -72,9 +72,9 @@ const purchaseCards = async (shopId, dto) => {
 const getExchangesOfShop = async (shopId) => {
   try {
     const url = `/shops/${shopId}/exchanges`;
-    const response = client.get(url);
+    const response = await client.get(url);
 
-    return (await response).data;
+    return response.data;
   } catch (error) {
     errorHandler(error);
   }
@@ -84,9 +84,33 @@ const getExchangesOfShop = async (shopId) => {
 const getMyExchangesOfShop = async (shopId) => {
   try {
     const url = `/shops/${shopId}/my-exchanges`;
-    const response = client.get(url);
+    const response = await client.get(url);
 
-    return (await response).data;
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
+// 카드 교환 제안하기
+const proposeExchange = async (shopId, dto) => {
+  try {
+    const url = `/shops/${shopId}/exchanges`;
+    const response = await client.post(url, dto);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
+// 교환 제안 취소하기
+const cancelProposeExchange = async (exchangeId, dto) => {
+  try {
+    const url = `/shops/exchanges/${exchangeId}`;
+    const reponse = await client.put(url, dto);
+
+    return reponse.data;
   } catch (error) {
     errorHandler(error);
   }
@@ -100,6 +124,8 @@ const shopsApi = {
   purchaseCards,
   getExchangesOfShop,
   getMyExchangesOfShop,
+  proposeExchange,
+  cancelProposeExchange,
 };
 
 export default shopsApi;
