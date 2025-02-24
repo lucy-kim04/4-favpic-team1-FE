@@ -16,6 +16,8 @@ import CardDetailTop from '../molecules/CardDetailTop';
  *   - seller : 판매자가 상점의 자신의 카드 상세페이지 조회 시
  *   - exchange : 교환 희망 정보 입력 모달(판매할 포토카드 선택 후)
  *   - gallery : 마이 갤러리 카드 상세
+ *
+ * - dataId : shopID 또는 CardIㅇ
  */
 function CardDetail({ cardDetail, topIntent, bottomIntent, dataId }) {
   return (
