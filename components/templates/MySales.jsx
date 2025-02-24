@@ -67,7 +67,7 @@ function MySales() {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
             <Dropdown
               width="w-[134px]"
               label="등급"

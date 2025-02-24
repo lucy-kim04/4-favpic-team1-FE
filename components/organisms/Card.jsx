@@ -12,31 +12,20 @@ import CardTop from '../molecules/CardTop';
  */
 
 function Card({ card, intent = 'shop', ...props }) {
-  const cardLink =
-    intent === 'shop' ? `/${card.id}` : `/my-cards/gallery/${card.id}`;
-
-  if (props.onCardClick) {
-    return (
-      <div
-        onClick={() => props.onCardClick(card)}
-        className="border border-card-border p-10 md:p-5 sm:p-[10px]"
-      >
-        <CardTop card={card} intent={intent} />
-        <CardBottom card={card} intent={intent} />
-      </div>
-    );
-  }
-
+  const handleClickCard = () => {
+    const isPossibleClick = !!props.onCardClick;
+    if (!isPossibleClick) return;
+    props.onCardClick(card, intent);
+  };
+  const cursorClassName = `${props.onCardClick ? 'cursor-pointer' : ''}`;
   return (
-    // <Link href={cardLink}>
     <div
-      className="border border-card-border p-10 md:p-5 sm:p-[10px]"
       onClick={handleClickCard}
+      className={`border border-card-border p-10 md:p-5 sm:p-[10px] ${cursorClassName}`}
     >
       <CardTop card={card} intent={intent} />
       <CardBottom card={card} intent={intent} />
     </div>
-    // </Link>
   );
 }
 

@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
 import shopsApi from '@/api/shops/shops.api';
 import constants from '@/constant';
+import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
 import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useModal } from '@/contexts/ModalContext';
 import Dropdown from '../atoms/Dropdown';
+import ConfirmModal from '../molecules/ConfirmModal';
 import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
@@ -19,13 +22,14 @@ function MarketPlace({ initialData }) {
   const [onSale, setOnSale] = useState('매진 여부');
   const [keyword, setKeyword] = useState('');
   const modal = useModal();
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
 
-
-  const { handleSubmit, control } = useForm({ defaultValues: { search: "" } });
+  const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
 
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
   const { data: shops, isPending } = useQuery({
-    queryKey: ["shops", { ...searchOptions }],
+    queryKey: ['shops', { ...searchOptions }],
     queryFn: () => shopsApi.getShops(searchOptions),
     initialData,
     staleTime: 0,
@@ -35,6 +39,32 @@ function MarketPlace({ initialData }) {
 
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
+  };
+
+  const handleClickModalButton = () => {
+    router.push('/auth/log-in');
+  };
+
+  const handleClickCard = (card, intent) => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalButton}
+        />
+      );
+
+    const cardLink =
+      intent === 'shop'
+        ? `/${card.id}`
+        : intent === 'gallery'
+        ? `/my-cards/gallery/${card.id}`
+        : `/my-cards/sales/${card.id}`;
+
+    router.push(`${cardLink}`);
   };
 
   const handleTitleButtonClick = () => {
@@ -58,12 +88,12 @@ function MarketPlace({ initialData }) {
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
-              name={"search"}
-              placeholder={"검색"}
+              name={'search'}
+              placeholder={'검색'}
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[70px] md:gap-[40px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
             <Dropdown
               label="등급"
               options={constants.CARD_GRADES}
@@ -91,7 +121,7 @@ function MarketPlace({ initialData }) {
           </div>
         </div>
       </div>
-      <CardList cards={shops} intent="shop" />
+      <CardList cards={shops} intent="shop" onCardClick={handleClickCard} />
     </div>
   );
 }

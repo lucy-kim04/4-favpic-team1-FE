@@ -19,12 +19,13 @@ function CardTop({ card, intent }) {
   const isShop = intent === 'shop';
   const isOnSale = remainingCount !== 0;
   console.log(intent, isOnSale);
+  console.log(intent === 'sales' && isOnSale);
 
   return (
-    <div>
+    <div className="relative">
       {intent === 'sales' && isOnSale && (
-        <div className="absolute top-[10px]  sm:top-[5px] left-[10px] sm:left-[5px]">
-          <SaleStatusChip isSale={false} />
+        <div className="absolute z-20 top-[10px] sm:top-[5px] left-[10px] sm:left-[5px]">
+          <SaleStatusChip isSale={true} />
         </div>
       )}
 
