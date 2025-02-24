@@ -21,6 +21,7 @@ function InputSearch({
   size = 'lg',
   placeholder = '검색',
   rules = {},
+  ...props
 }) {
   const inputId = useId();
   const { field, fieldState } = useController({ name, control, rules });
@@ -51,6 +52,7 @@ function InputSearch({
         placeholder={placeholder}
         size={size}
         {...field}
+        {...props}
       />
       <div
         className={clsx(iconPositionClassNames, 'absolute pointer-events-none')}
