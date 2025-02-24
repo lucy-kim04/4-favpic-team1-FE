@@ -104,7 +104,7 @@ function MySales() {
           </form>
         </div>
       </div>
-      <CardList cards={cards} intent="gallery" />
+      <CardList cards={cards} intent="sales" />
     </div>
   );
 }
