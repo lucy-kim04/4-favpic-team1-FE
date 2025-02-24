@@ -12,7 +12,7 @@ function CardTop({ card, intent }) {
     nickname,
     salesCount,
     remainingCount,
-    paidPrice,
+    price,
   } = card;
   const isGallery = intent === 'gallery';
   const isExchange = intent === 'exchange';
@@ -57,20 +57,27 @@ function CardTop({ card, intent }) {
 
       {isExchange ? (
         <div>
-          <div className="flex items-center">
-            <GradeCardBadge>{grade}</GradeCardBadge>
-            <div className="w-[1px] h-5 sm:h-3 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
-            <p className="text-[#a4a4a4] sm:text-[10px] font-normal">{genre}</p>
-            <div className="w-[1px] h-5 bg-[#5a5a5a] mx-[10px] sm:mx-[5px] md:hidden sm:hidden"></div>
-            <div className="flex md:hidden sm:hidden">
-              <p>{paidPrice} P</p>
-              <p className="text-[#a4a4a4]">&nbsp;에 구매</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <GradeCardBadge>{grade}</GradeCardBadge>
+              <div className="w-[1px] h-5 sm:h-3 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
+              <p className="text-[#a4a4a4] sm:text-[10px] font-normal">
+                {genre}
+              </p>
+              <div className="w-[1px] h-5 bg-[#5a5a5a] mx-[10px] sm:mx-[5px] md:hidden sm:hidden"></div>
+              <div className="flex md:hidden sm:hidden">
+                <p>{price} P</p>
+                {/* <p className="text-[#a4a4a4]">&nbsp;에 구매</p> */}
+              </div>
             </div>
+            <p className="underline font-normal sm:text-[10px] sm:hidden md:hidden">
+              {nickname}
+            </p>
           </div>
           <div className="flex justify-between lg:hidden">
             <div className="flex">
-              <p className="sm:text-[10px]">{paidPrice} P</p>
-              <p className="text-[#a4a4a4] sm:text-[10px]">&nbsp;에 구매</p>
+              <p className="sm:text-[10px]">{price} P</p>
+              {/* <p className="text-[#a4a4a4] sm:text-[10px]">&nbsp;에 구매</p> */}
             </div>
             <p className="underline font-normal sm:text-[10px]">{nickname}</p>
           </div>

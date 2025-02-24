@@ -63,12 +63,7 @@ function Detail({ dataId, intent = 'gallery' }) {
       </div>
       <div className="mt-[120px]">
         {intent !== 'gallery' && currentUser === data.seller ? (
-          <div>
-            <div className="mb-10 lg:mb-[60px]">
-              <Title intent="md">교환 제시 목록</Title>
-            </div>
-            <ProposedExchangeList shopId={dataId} />
-          </div>
+          <ProposedExchangeList shopId={dataId} />
         ) : // 응답 목록에 아직 포함되어 있지 않음(2025.02.21)
         intent !== 'gallery' && currentUser !== data.seller ? (
           <div>
@@ -85,12 +80,7 @@ function Detail({ dataId, intent = 'gallery' }) {
                 </p>
               </div>
             </div>
-            <div className="mt-[120px]">
-              <div className="mb-10 lg:mb-[60px]">
-                <Title intent="md">내가 제시한 교환 목록</Title>
-              </div>
-              <MyProposeExchangeList />
-            </div>
+            <MyProposeExchangeList shopId={dataId} />
           </div>
         ) : null}
       </div>

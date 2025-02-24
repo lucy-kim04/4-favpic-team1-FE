@@ -24,7 +24,11 @@ function Card({ card, intent = 'shop', ...props }) {
       className={`border border-card-border p-10 md:p-5 sm:p-[10px] ${cursorClassName}`}
     >
       <CardTop card={card} intent={intent} />
-      <CardBottom card={card} intent={intent} />
+      <CardBottom
+        card={card}
+        intent={intent}
+        isProposedByMe={props.isProposedByMe}
+      />
     </div>
   );
 }
