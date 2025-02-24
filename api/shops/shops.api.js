@@ -68,12 +68,25 @@ const purchaseCards = async (shopId, dto) => {
   }
 };
 
+// 상점의 교환 제시 목록 불러오기
+const getExchangesOfShop = async (shopId) => {
+  try {
+    const url = `/shops/${shopId}/exchanges`;
+    const response = client.get(url);
+
+    return (await response).data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const shopsApi = {
   createShop,
   getShops,
   getShop,
   deleteShop,
   purchaseCards,
+  getExchangesOfShop,
 };
 
 export default shopsApi;
