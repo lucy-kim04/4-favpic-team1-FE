@@ -1,13 +1,141 @@
+import shopsApi from '@/api/shops/shops.api';
+import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 import Button from '../atoms/Button';
 import Logo from '../atoms/Logo';
+import ConfirmModal from './ConfirmModal';
 
 function CardBottom({ card, intent, isProposedByMe = false }) {
-  const { nickname, price, remainingCount, salesCount, reserveCount, content } =
-    card;
+  const modal = useModal();
+  const { isLoggedIn } = useAuth();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const {
+    id,
+    editionId,
+    proposerId,
+    shopId,
+    nickname,
+    price,
+    grade,
+    name,
+    remainingCount,
+    salesCount,
+    reserveCount,
+    content,
+  } = card;
   const isExchange = intent === 'exchange';
   const isShop = intent === 'shop';
   const isGallery = intent === 'gallery';
   const quantityLabel = isShop ? '잔여' : '수량';
+
+  const { mutate: cancelProposeExchange } = useMutation({
+    mutationFn: () => shopsApi.cancelProposeExchange(id, { editionId }),
+    onSuccess: () => {
+      // shop의 내가 제시한 교환 목록 갱신 - 취소 시
+      queryClient.invalidateQueries({
+        queryKey: ['my-exchanges', { shopId }],
+      });
+      // shop의 내가 제안받은 교환 목록 갱신 - 거절 시
+      queryClient.invalidateQueries({
+        queryKey: ['exchanges', { shopId }],
+      });
+    },
+  });
+
+  const { mutate: approveExchange } = useMutation({
+    mutationFn: () =>
+      shopsApi.approveExchange(id, { editionId, proposerId, shopId }),
+    onSuccess: () => {
+      // shop의 내가 제안받은 교환 목록 갱신 - 승인 시
+      queryClient.invalidateQueries({
+        queryKey: ['exchanges', { shopId }],
+      });
+    },
+  });
+
+  const handleClickModalLogin = () => {
+    router.push('/auth/log-in');
+  };
+
+  const handleClickExchangeCancel = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+      로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalLogin}
+        />
+      );
+
+    return modal.open(
+      <ConfirmModal
+        title={'교환 제안 취소'}
+        content={`교환 제안을 취소하시겠습니까?`}
+        buttonText="제안 취소하기"
+        onClick={handleClickModalCancelExchange}
+      />
+    );
+  };
+
+  const handleClickModalCancelExchange = () => {
+    cancelProposeExchange();
+  };
+
+  const handleClickExchangeRefuse = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalLogin}
+        />
+      );
+
+    return modal.open(
+      <ConfirmModal
+        title={'교환 제시 거절'}
+        content={`[${grade} | ${name}]
+         카드와의 교환을 거절하시겠습니까?`}
+        buttonText="거절하기"
+        onClick={handleClickModalCancelExchange}
+      />
+    );
+  };
+
+  const handleClickModalApproveExchange = () => {
+    approveExchange();
+  };
+
+  const handleClickExchangeApprove = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalLogin}
+        />
+      );
+
+    return modal.open(
+      <ConfirmModal
+        title={'교환 제시 승인'}
+        content={`[${grade} | ${name}]
+         카드와의 교환을 승인하시겠습니까?`}
+        buttonText="승인하기"
+        onClick={handleClickModalApproveExchange}
+      />
+    );
+  };
 
   // 교환이 아닐 경우(shop, gallery, sales)
   if (!isExchange)
@@ -41,27 +169,45 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
       </div>
     );
 
+  console.log(card);
+
   // 교환일 경우
   return (
     <div>
       <p className="font-normal sm:text-[10px] line-clamp-2">{content}</p>
       {isProposedByMe ? (
         <div className="mt-10 md:mt-6">
-          <Button intent="secondary" className="sm:hidden md:hidden">
+          <Button
+            intent="secondary"
+            className="sm:hidden md:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
-          <Button intent="secondary" size="h55" className="sm:hidden lg:hidden">
+          <Button
+            intent="secondary"
+            size="h55"
+            className="sm:hidden lg:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
-          <Button intent="secondary" size="h40" className="lg:hidden md:hidden">
+          <Button
+            intent="secondary"
+            size="h40"
+            className="lg:hidden md:hidden"
+            onClick={handleClickExchangeCancel}
+          >
             취소하기
           </Button>
         </div>
       ) : (
         <div>
           <div className="flex gap-5 mt-10 md:mt-10-6 sm:hidden">
-            <Button intent="secondary">거절하기</Button>
-            <Button>승인하기</Button>
+            <Button intent="secondary" onClick={handleClickExchangeRefuse}>
+              거절하기
+            </Button>
+            <Button onClick={handleClickExchangeApprove}>승인하기</Button>
           </div>
           <div className="flex gap-[5px] mt-5 mb-0 lg:hidden md:hidden">
             <Button intent="secondary" size="h40">

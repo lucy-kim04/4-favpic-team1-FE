@@ -44,8 +44,6 @@ function MySales() {
   };
 
   const cards = data?.cards || [];
-  console.log('totalEditions', data?.totalEditions);
-  console.log('cards', data?.cards);
 
   if (isPending) return null;
   return (
