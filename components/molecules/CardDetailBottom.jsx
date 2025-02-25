@@ -92,7 +92,11 @@ function CardDetailBottom({
       );
       queryClient.invalidateQueries({ queryKey: ['me'] });
     },
-    onError: () => {},
+    onError: () => {
+      router.push(
+        `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
+      );
+    },
   });
 
   const { mutate: deleteShop } = useMutation({
@@ -100,7 +104,12 @@ function CardDetailBottom({
     onSuccess: () => {
       queryClient.invalidateQueries(['shop']);
       router.push(
-        `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
+        `/result?intent=stopSales&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${count}`
+      );
+    },
+    onError: () => {
+      router.push(
+        `/result?intent=stopSales&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
       );
     },
   });
