@@ -22,7 +22,7 @@ function CardDetailForSale({ card, onBack }) {
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
       quantity: 1,
-      price: 0,
+      price: '',
       rank: '',
       genre: '',
       description: '',
@@ -86,6 +86,9 @@ function CardDetailForSale({ card, onBack }) {
           size={'md'}
           options={constants.GRADE_OPTIONS}
           placeholder={'등급을 선택해 주세요'}
+          rules={{
+            required: '옵션을 선택해 주세요',
+          }}
         />
         <InputDropdown
           control={control}
@@ -94,6 +97,9 @@ function CardDetailForSale({ card, onBack }) {
           size={'md'}
           options={constants.GENRE_OPTIONS}
           placeholder={'장르을 선택해 주세요'}
+          rules={{
+            required: '옵션을 선택해 주세요',
+          }}
         />
       </div>
       <InputTextBox
@@ -102,6 +108,9 @@ function CardDetailForSale({ card, onBack }) {
         label={'교환 희망 설명'}
         size={'full'}
         placeholder={'설명을 입력해 주세요.'}
+        rules={{
+          required: '설명을 입력해 주세요',
+        }}
       />
       <div className="flex gap-10 mt-14">
         <Button intent="secondary" onClick={() => modal.close()}>

@@ -27,15 +27,6 @@ function CardDetailBottom({
 }) {
   const [count, setCount] = useState(1);
   const router = useRouter();
-  const {
-    register,
-    formState: { errors },
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      price: '',
-    },
-  });
 
   const { nameForQuantity, nameForPrice, control } = props;
 
@@ -44,13 +35,14 @@ function CardDetailBottom({
     fieldForQuantity = useController({
       name: nameForQuantity,
       control,
-      defaultValue: 0,
+      defaultValue: 1,
     }).field;
   }
 
   let fieldForPrice;
+  let fieldStateForPrice;
   if (nameForPrice) {
-    fieldForPrice = useController({
+    const { field, fieldState } = useController({
       name: nameForPrice,
       control,
       defaultValue: '',
@@ -61,7 +53,9 @@ function CardDetailBottom({
           message: '숫자만 입력 가능합니다',
         },
       },
-    }).field;
+    });
+    fieldForPrice = field;
+    fieldStateForPrice = fieldState;
   }
 
   const {
@@ -109,6 +103,7 @@ function CardDetailBottom({
   };
 
   const handleClickModalButton = () => {
+    ㅂ2;
     router.push('/auth/log-in');
   };
 
@@ -269,12 +264,12 @@ function CardDetailBottom({
               <div className="relative">
                 <input
                   className="w-[202px] lg:w-[245px] h-[45px] lg:h-[50px] border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
-                  placeholder="숫자만 입력"
                   {...fieldForPrice}
+                  placeholder="숫자만 입력"
                 />
-                {errors.price && (
+                {fieldStateForPrice.error && (
                   <p className="absolute top-full left-0 text-red-500 text-sm mt-1">
-                    {errors.price.message}
+                    {fieldStateForPrice.error.message}
                   </p>
                 )}
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">

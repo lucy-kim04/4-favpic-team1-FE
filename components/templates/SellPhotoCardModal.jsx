@@ -6,7 +6,7 @@ import Dropdown from '../atoms/Dropdown';
 import constants from '@/constant';
 import cardsApi from '@/api/cards/cards.api';
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CardList from '../organisms/CardList';
 import CardDetailForSale from './CardDetailForSale';
 
@@ -16,6 +16,7 @@ function SellPhotoCardModal() {
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
+  const containerRef = useRef(null);
 
   const { control, handleSubmit } = useForm({ defaultValues: { search: '' } });
 
@@ -25,6 +26,13 @@ function SellPhotoCardModal() {
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
     keepPreviousData: true, // 초기 깜빡임 해결을 위해 넣었으나, 잘안됨
   });
+
+  useEffect(() => {
+    // 모달내 화면(콘텐츠)가 변경될 때마다 스크롤을 맨 위로 설정
+    if (containerRef.current) {
+      containerRef.current.scrollTop = 0;
+    }
+  }, [modalContent]);
 
   const handleSubmitSearch = (e) => {
     setKeyword(e.search);
@@ -44,7 +52,7 @@ function SellPhotoCardModal() {
   if (isPending) return null;
 
   return (
-    <Modal>
+    <Modal ref={containerRef}>
       {modalContent === 'list' ? (
         <>
           <h3 className="font-baskin text-[#A4A4A4] text-[24px]">마이갤러리</h3>
