@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useController, useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
 import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
@@ -23,6 +23,7 @@ function CardDetailBottom({
   onStopSale,
   onStartSale,
   dataId,
+  ...props
 }) {
   const [count, setCount] = useState(1);
   const router = useRouter();
@@ -36,6 +37,33 @@ function CardDetailBottom({
     },
   });
 
+  const { nameForQuantity, nameForPrice, control } = props;
+
+  let fieldForQuantity;
+  if (nameForQuantity) {
+    fieldForQuantity = useController({
+      name: nameForQuantity,
+      control,
+      defaultValue: 0,
+    }).field;
+  }
+
+  let fieldForPrice;
+  if (nameForPrice) {
+    fieldForPrice = useController({
+      name: nameForPrice,
+      control,
+      defaultValue: '',
+      rules: {
+        required: '가격을 입력해주세요',
+        pattern: {
+          value: /^[0-9]+$/,
+          message: '숫자만 입력 가능합니다',
+        },
+      },
+    }).field;
+  }
+
   const {
     name,
     grade,
@@ -44,6 +72,7 @@ function CardDetailBottom({
     remainingCount,
     price,
     paidPrice,
+    reserveCount,
     exchangeDesc,
   } = cardDetail;
 
@@ -216,16 +245,21 @@ function CardDetailBottom({
           <div className="pt-4">
             <div className="py-2 flex justify-between items-center">
               <p className="font-normal text-lg lg:text-xl">총 판매 수량</p>
-              <div className="flex justify-center gap-4 items-center">
+              <div className="flex justify-center gap-4 items-center w-[245px]">
                 <NumberStepper
                   value={count}
-                  onChange={setCount}
-                  maxCount={remainingCount}
+                  onChange={(count) => {
+                    setCount(count);
+                    fieldForQuantity.onChange(count);
+                  }}
+                  maxCount={!!remainingCount ? remainingCount : reserveCount}
                 />
                 <div>
-                  <p className="font-bold text-lg lg:text-xl">/3</p>
+                  <p className="font-bold text-lg lg:text-xl">
+                    /<span className="ml-1">{reserveCount}</span>
+                  </p>
                   <p className="font-light text-xs lg:text-sm text-[#dddddd]">
-                    최대 {remainingCount}장
+                    최대 {reserveCount}장
                   </p>
                 </div>
               </div>
@@ -234,15 +268,9 @@ function CardDetailBottom({
               <p className="font-normal text-lg lg:text-xl">장당 가격</p>
               <div className="relative">
                 <input
-                  {...register('price', {
-                    required: '가격을 입력해주세요',
-                    pattern: {
-                      value: /^[0-9]+$/,
-                      message: '숫자만 입력 가능합니다',
-                    },
-                  })}
-                  className="w-[202px] lg:w-[245px] h-[45px] lg:h-[50px] border rounded-sm bg-black placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
+                  className="w-[202px] lg:w-[245px] h-[45px] lg:h-[50px] border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
                   placeholder="숫자만 입력"
+                  {...fieldForPrice}
                 />
                 {errors.price && (
                   <p className="absolute top-full left-0 text-red-500 text-sm mt-1">

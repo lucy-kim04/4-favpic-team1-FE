@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import React, { useId } from "react";
-import { useController } from "react-hook-form";
-import Label from "../atoms/Label";
-import TextArea from "../atoms/TextArea";
+import React, { useId } from 'react';
+import { useController } from 'react-hook-form';
+import Label from '../atoms/Label';
+import TextArea from '../atoms/TextArea';
 
 /**
- * control : useFrom에서 꺼낸 컨트롤러
- * name : useForm에 등록할 name, 예) "rank"
- * size : "sm", "md", "lg(기본값)" 택1
- * label
- * placeholder
- * rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
+ * - control : useFrom에서 꺼낸 컨트롤러
+ * - name : useForm에 등록할 name, 예) "rank"
+ * - size : "sm", "md", "lg(기본값)" 택1
+ * - label
+ * - placeholder
+ * - rules : useFrom rule 객체, 예) {maxLength: {value: 30, message: "30자 이하로 작성해주세요" }}
  */
 
 function InputTextBox({
   control,
   name,
-  size = "lg",
+  size = 'lg',
   label,
   placeholder,
   rules = {},
