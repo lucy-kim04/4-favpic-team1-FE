@@ -14,15 +14,7 @@ import ConfirmModal from '../molecules/ConfirmModal';
 import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
-import shopsApi from '@/api/shops/shops.api';
-import constants from '@/constant';
-import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Dropdown from '../atoms/Dropdown';
-import InputSearch from '../molecules/InputSearch';
 import SellPhotoCardModal from './SellPhotoCardModal';
-import FilterModal from '../atoms/Filter';
 
 function MarketPlace({ initialData }) {
   const [orderBy, setOrderBy] = useState('최신 순');
