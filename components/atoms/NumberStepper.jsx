@@ -2,11 +2,7 @@
 
 import clsx from 'clsx';
 
-const NumberStepper = ({
-  value = 0,
-  onChange,
-  maxCount = salesEditionCount,
-}) => {
+const NumberStepper = ({ value = 0, onChange, maxCount, ...props }) => {
   const handleIncrement = () => {
     if (value < maxCount) {
       onChange(value + 1);
@@ -30,11 +26,11 @@ const NumberStepper = ({
 
   return (
     <div className={container}>
-      <button onClick={handleDecrement} className={button}>
+      <button type="button" onClick={handleDecrement} className={button}>
         -
       </button>
-      <div className='items-center'>{value}</div>
-      <button onClick={handleIncrement} className={button}>
+      <div className="items-center">{value}</div>
+      <button type="button" onClick={handleIncrement} className={button}>
         +
       </button>
     </div>

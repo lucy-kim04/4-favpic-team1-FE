@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import CardDetailBottom from '../molecules/CardDetailBottom';
 import CardDetailTop from '../molecules/CardDetailTop';
 
@@ -17,17 +18,40 @@ import CardDetailTop from '../molecules/CardDetailTop';
  *   - exchange : 교환 희망 정보 입력 모달(판매할 포토카드 선택 후)
  *   - gallery : 마이 갤러리 카드 상세
  *
- * - dataId : shopID 또는 CardIㅇ
+ * - dataId : shopID 또는 CardID
+ *
+ * - bgColor : 배경 색
+ *   - black(기본값)
+ *   - none
+ *
  */
-function CardDetail({ cardDetail, topIntent, bottomIntent, dataId }) {
+function CardDetail({
+  cardDetail,
+  topIntent,
+  bottomIntent,
+  dataId,
+  bgColor = 'black',
+  ...props
+}) {
+  const bgColorClassNames = clsx({
+    'bg-[#0f0f0f]': bgColor === 'black',
+    '': bgColor === 'none',
+  });
+
   return (
-    <div className="flex justify-center items-center bg-[#0f0f0f] gap-4">
+    <div
+      className={clsx(
+        bgColorClassNames,
+        'flex justify-center items-center gap-4'
+      )}
+    >
       <div className="w-[440px] md:w-[342px] sm:w-[342px] px-0 py-0">
         <CardDetailTop cardDetail={cardDetail} topIntent={topIntent} />
         <CardDetailBottom
           cardDetail={cardDetail}
           bottomIntent={bottomIntent}
           dataId={dataId}
+          {...props}
         />
       </div>
     </div>
