@@ -116,6 +116,18 @@ const cancelProposeExchange = async (exchangeId, dto) => {
   }
 };
 
+// 교환 제안 승인하기
+const approveExchange = async (exchangeId, dto) => {
+  try {
+    const url = `/shops/exchanges/${exchangeId}/approve`;
+    const reponse = await client.post(url, dto);
+
+    return reponse.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const shopsApi = {
   createShop,
   getShops,
@@ -126,6 +138,7 @@ const shopsApi = {
   getMyExchangesOfShop,
   proposeExchange,
   cancelProposeExchange,
+  approveExchange,
 };
 
 export default shopsApi;

@@ -68,6 +68,16 @@ function MarketPlace({ initialData }) {
   };
 
   const handleTitleButtonClick = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalButton}
+        />
+      );
     modal.open(<SellPhotoCardModal />);
   };
 

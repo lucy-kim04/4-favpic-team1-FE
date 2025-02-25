@@ -13,6 +13,8 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
     reserveCount,
   } = cardDetail;
 
+  console.log(cardDetail);
+
   return (
     <div>
       <div className="flex justify-between">

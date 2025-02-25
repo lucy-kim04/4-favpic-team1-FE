@@ -13,8 +13,6 @@ function MyProposeExchangeList({ shopId }) {
 
   const exchanges = data || [];
 
-  console.log(data);
-
   if (exchanges.length === 0) return null;
 
   return (
