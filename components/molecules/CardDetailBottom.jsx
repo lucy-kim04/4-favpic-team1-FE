@@ -2,6 +2,7 @@
 
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
+import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -77,6 +78,7 @@ function CardDetailBottom({
 
   const queryClient = useQueryClient();
   const modal = useModal();
+  const { isLoggedIn } = useAuth();
 
   const { mutate: purchaseCards } = useMutation({
     mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
@@ -106,7 +108,22 @@ function CardDetailBottom({
     purchaseCards(data);
   };
 
+  const handleClickModalButton = () => {
+    router.push('/auth/log-in');
+  };
+
   const handleClickPurchase = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalButton}
+        />
+      );
+
     if (remainingCount === 0) return;
     modal.open(
       <ConfirmModal

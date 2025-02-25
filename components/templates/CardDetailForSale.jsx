@@ -1,8 +1,4 @@
-import React from 'react';
-import Detail from './Detail';
-import Title from '../molecules/Title';
 import Image from 'next/image';
-import GradeCardBadge from '../atoms/GradeCardBadge';
 import Divider from '../atoms/Divider';
 import CardDetail from '../organisms/CardDetail';
 import InputDropdown from '../molecules/InputDropdown';
@@ -14,6 +10,8 @@ import { useModal } from '@/contexts/ModalContext';
 import { useRouter } from 'next/navigation';
 import shopsApi from '@/api/shops/shops.api';
 import { useMutation } from '@tanstack/react-query';
+import GradeCardBadge from '../atoms/GradeCardBadge';
+import Title from '../molecules/Title';
 
 function CardDetailForSale({ card, onBack }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =

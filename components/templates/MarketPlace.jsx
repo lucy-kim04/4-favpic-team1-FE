@@ -1,9 +1,17 @@
 'use client';
 
+import shopsApi from '@/api/shops/shops.api';
+import constants from '@/constant';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
+import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../atoms/Dropdown';
+import FilterModal from '../atoms/Filter';
 import ConfirmModal from '../molecules/ConfirmModal';
+import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import shopsApi from '@/api/shops/shops.api';
@@ -68,6 +76,16 @@ function MarketPlace({ initialData }) {
   };
 
   const handleTitleButtonClick = () => {
+    if (!isLoggedIn)
+      return modal.open(
+        <ConfirmModal
+          title={'로그인이 필요합니다.'}
+          content={`로그인이 필요한 서비스입니다.
+            로그인 하시겠습니까?`}
+          buttonText="로그인하기"
+          onClick={handleClickModalButton}
+        />
+      );
     modal.open(<SellPhotoCardModal />);
   };
 
