@@ -2,7 +2,7 @@
 
 import clsx from 'clsx';
 
-const NumberStepper = ({ value = 0, onChange, maxCount, ...props }) => {
+const NumberStepper = ({ value = 1, onChange, maxCount, ...props }) => {
   const handleIncrement = () => {
     if (value < maxCount) {
       onChange(value + 1);

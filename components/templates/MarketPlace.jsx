@@ -6,25 +6,22 @@ import { useRouter } from 'next/navigation';
 import ConfirmModal from '../molecules/ConfirmModal';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
-import shopsApi from "@/api/shops/shops.api";
-import constants from "@/constant";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useModal } from "@/contexts/ModalContext";
-import Dropdown from "../atoms/Dropdown";
-import InputSearch from "../molecules/InputSearch";
-import Title from "../molecules/Title";
-import CardList from "../organisms/CardList";
-import SellPhotoCardModal from "./SellPhotoCardModal";
-import FilterModal from "../atoms/Filter";
+import shopsApi from '@/api/shops/shops.api';
+import constants from '@/constant';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../atoms/Dropdown';
+import InputSearch from '../molecules/InputSearch';
+import SellPhotoCardModal from './SellPhotoCardModal';
+import FilterModal from '../atoms/Filter';
 
 function MarketPlace({ initialData }) {
-  const [orderBy, setOrderBy] = useState("최신 순");
-  const [grade, setGrade] = useState("등급");
-  const [genre, setGenre] = useState("장르");
-  const [onSale, setOnSale] = useState("매진 여부");
-  const [keyword, setKeyword] = useState("");
+  const [orderBy, setOrderBy] = useState('최신 순');
+  const [grade, setGrade] = useState('등급');
+  const [genre, setGenre] = useState('장르');
+  const [onSale, setOnSale] = useState('매진 여부');
+  const [keyword, setKeyword] = useState('');
   const modal = useModal();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
@@ -154,7 +151,7 @@ function MarketPlace({ initialData }) {
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
             }}
-            onSelect={(selected) => console.log("선택된 필터:", selected)}
+            onSelect={(selected) => console.log('선택된 필터:', selected)}
           />
         )}
       </div>

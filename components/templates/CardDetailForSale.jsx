@@ -13,6 +13,7 @@ import Button from '../atoms/Button';
 import { useModal } from '@/contexts/ModalContext';
 import { useRouter } from 'next/navigation';
 import shopsApi from '@/api/shops/shops.api';
+import { useMutation } from '@tanstack/react-query';
 
 function CardDetailForSale({ card, onBack }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -20,9 +21,9 @@ function CardDetailForSale({ card, onBack }) {
   const modal = useModal();
   const router = useRouter();
 
-  const { handleSubmit, control } = useForm({
+  const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
-      quantity: 0,
+      quantity: 1,
       price: 0,
       rank: '',
       genre: '',
@@ -32,14 +33,26 @@ function CardDetailForSale({ card, onBack }) {
 
   const { mutate: createShop } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(getValues(), data);
       modal.close();
-      router.push();
+      router.push(
+        `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
+      );
     },
   });
 
   const handleCreateClick = (dto) => {
-    console.log(dto);
+    const { quantity, price, rank, genre, description } = dto;
+    const formData = {
+      cardId: id,
+      salesCount: quantity,
+      price: Number(price),
+      exchangeGrade: rank,
+      exchangeGenre: genre,
+      exchangeDesc: description,
+    };
+    createShop(formData);
   };
 
   return (
