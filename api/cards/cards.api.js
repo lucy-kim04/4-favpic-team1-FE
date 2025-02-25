@@ -55,15 +55,16 @@ const getMyCardOfGallery = async (cardId) => {
 
 // 나의 판매 포토 목록 조회
 const getMyCardsOfSales = async ({
-  orderBy = '최신 순',
   grade = '등급',
   genre = '장르',
+  onSale = '매진 여부',
+  howToSale = '판매 방법',
   keyword = '',
 }) => {
   try {
     const url = '/cards/me/sales';
     const response = await client.get(url, {
-      params: { orderBy, grade, genre, keyword },
+      params: { grade, genre, onSale, howToSale, keyword },
     });
 
     return response.data;

@@ -16,9 +16,10 @@ import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
 
 function MySales() {
-  const [orderBy, setOrderBy] = useState('최신 순');
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
+  const [onSale, setOnSale] = useState('매진 여부');
+  const [howToSale, setHowToSale] = useState('판매 방법');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
 
@@ -29,7 +30,7 @@ function MySales() {
     queryFn: usersApi.getMe,
   });
 
-  const searchOptions = { orderBy, grade, genre, keyword };
+  const searchOptions = { grade, genre, onSale, howToSale, keyword };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfSales(searchOptions),
@@ -66,7 +67,7 @@ function MySales() {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
             <Dropdown
               width="w-[134px]"
               label="등급"
@@ -81,9 +82,15 @@ function MySales() {
             />
             <Dropdown
               width="w-[134px]"
-              label="판매방법"
+              label="판매 방법"
               options={constants.HOW_TO_SALE}
-              onSelect={setGenre}
+              onSelect={setHowToSale}
+            />
+            <Dropdown
+              width="w-[140px]"
+              label="매진 여부"
+              options={constants.CARD_ON_SALE}
+              onSelect={setOnSale}
             />
           </div>
           <div className="w-full grow-1"></div>
@@ -104,7 +111,7 @@ function MySales() {
           </form>
         </div>
       </div>
-      <CardList cards={cards} intent="gallery" />
+      <CardList cards={cards} intent="sales" />
     </div>
   );
 }

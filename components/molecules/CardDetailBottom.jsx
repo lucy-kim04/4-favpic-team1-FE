@@ -2,6 +2,7 @@
 
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
+import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,6 +12,7 @@ import Button from '../atoms/Button';
 import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import NumberStepper from '../atoms/NumberStepper';
+import ConfirmModal from './ConfirmModal';
 
 function CardDetailBottom({
   cardDetail,
@@ -62,6 +64,8 @@ function CardDetailBottom({
   }
 
   const {
+    name,
+    grade,
     exchangeGenre,
     exchangeGrade,
     remainingCount,
@@ -72,30 +76,29 @@ function CardDetailBottom({
   } = cardDetail;
 
   const queryClient = useQueryClient();
+  const modal = useModal();
 
   const { mutate: purchaseCards } = useMutation({
     mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
     onSuccess: () => {
-      // TODO: 구매 성공 페이지로 이동
+      router.push(
+        `/result?intent=purchase&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${count}`
+      );
       queryClient.invalidateQueries({ queryKey: ['me'] });
-      router.replace('/');
     },
-    onError: () => {
-      // TODO:구매 실패 페이지로 이동
-    },
+    onError: () => {},
   });
 
   const { mutate: deleteShop } = useMutation({
     mutationFn: () => shopsApi.deleteShop(dataId),
     onSuccess: () => {
-      // TODO: 삭제 성공 페이지로 이동
-      router.push('/');
+      router.push(
+        `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
+      );
     },
   });
 
-  const handleClickPurchase = () => {
-    if (remainingCount === 0) return;
-    // TODO: 확인 모달창 띄우고, 해당 창에서 '구매하기'를 하면 아래 함수 실행
+  const handleClickModalPurchase = () => {
     const data = {
       price,
       purchaseCount: count,
@@ -103,13 +106,36 @@ function CardDetailBottom({
     purchaseCards(data);
   };
 
+  const handleClickPurchase = () => {
+    if (remainingCount === 0) return;
+    modal.open(
+      <ConfirmModal
+        title={`포토카드 구매`}
+        content={`[${grade} | ${name}]
+        ${count}장을 구매하시겠습니까?`}
+        buttonText="구매하기"
+        onClick={handleClickModalPurchase}
+      />
+    );
+  };
+
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
   };
 
-  const handleClickStopSale = () => {
-    // TODO: 확인 모달창 띄우고, 해당 창에서 '판매 내리기'를 하면 아래 함수 실행
+  const handleClickModalStopSale = () => {
     deleteShop();
+  };
+
+  const handleClickStopSale = () => {
+    modal.open(
+      <ConfirmModal
+        title={`포토카드 판매 내리기`}
+        content={`정말로 판매를 중단하시겠습니까?`}
+        buttonText="판매 내리기"
+        onClick={handleClickModalStopSale}
+      />
+    );
   };
 
   // 경우 수는 buyer, seller, exchange, myCardSale
