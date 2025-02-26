@@ -31,9 +31,6 @@ function CardDetailBottom({
   const [count, setCount] = useState(1);
   const router = useRouter();
 
-  //test
-  console.log('cardDetail', cardDetail);
-
   const { nameForQuantity, nameForPrice, control } = props;
 
   let fieldForQuantity;

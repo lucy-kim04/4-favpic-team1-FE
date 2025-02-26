@@ -1,7 +1,7 @@
 import shopsApi from '@/api/shops/shops.api';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Card from '../organisms/Card';
 import Title from '../molecules/Title';
@@ -13,6 +13,7 @@ function CardDetailModalForExchange({ card, onBack }) {
     card;
   const modal = useModal();
   const router = useRouter();
+  const pathname = usePathname();
 
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
@@ -21,18 +22,26 @@ function CardDetailModalForExchange({ card, onBack }) {
   });
 
   const { mutate: proposeExchange } = useMutation({
-    mutationFn: (data) => shopsApi.proposeExchange(data),
+    mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
     onSuccess: (data) => {
       console.log(getValues(), data);
       modal.close();
       router.push(
-        `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
+        `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
     },
   });
 
   const handleExchangeClick = (dto) => {
-    console.log(dto);
+    const shopId = pathname.replace(/^\/+/, '');
+    console.log(dto.description);
+
+    const data = {
+      content: dto.description,
+      cardId: id,
+    };
+
+    proposeExchange({ id: shopId, data });
   };
 
   return (
@@ -54,6 +63,7 @@ function CardDetailModalForExchange({ card, onBack }) {
             size={'md'}
             label={'교환 제시 내용'}
             placeholder={'내용을 입력해 주세요'}
+            rules={{ required: '설명을 입력해 주세요' }}
           />
           <div className="flex mt-5 gap-5">
             <Button intent="secondary" onClick={() => modal.close()}>
