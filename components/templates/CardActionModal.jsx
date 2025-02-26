@@ -1,3 +1,5 @@
+'use client';
+
 import Modal from '../organisms/Modal';
 import Title from '../molecules/Title';
 import InputSearch from '../molecules/InputSearch';
@@ -8,17 +10,32 @@ import cardsApi from '@/api/cards/cards.api';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import CardList from '../organisms/CardList';
-import CardDetailForSale from './CardDetailForSale';
+import CardDetailModalForSale from './CardDetailModalForSale';
+import CardDetailModalForExchange from './CardDetailModalForExchange';
 
-function SellPhotoCardModal() {
+/**
+ *  - intent : sale, exchange
+ */
+function CardActionModal({ intent }) {
   const [modalContent, setModalContent] = useState('list');
   const [selectedCard, setSelectedCard] = useState(null);
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
   const containerRef = useRef(null);
-
   const { control, handleSubmit } = useForm({ defaultValues: { search: '' } });
+
+  let title, subTitle;
+  switch (intent) {
+    case 'sale':
+      title = '나의 포토카드 판매하기';
+      subTitle = '마이갤러리';
+      break;
+    case 'exchange':
+      title = '포토카드 교환하기';
+      subTitle = '마이갤러리';
+      break;
+  }
 
   const searchOptions = { grade, genre, keyword };
   const { data, isPending } = useQuery({
@@ -55,9 +72,9 @@ function SellPhotoCardModal() {
     <Modal ref={containerRef}>
       {modalContent === 'list' ? (
         <>
-          <h3 className="font-baskin text-[#A4A4A4] text-[24px]">마이갤러리</h3>
+          <h3 className="font-baskin text-[#A4A4A4] text-[24px]">{subTitle}</h3>
           <Title intent="lg" className={'mt-10 mb-5'}>
-            나의 포토카드 판매하기
+            {title}
           </Title>
           <div className="flex items-center gap-16 mb-10">
             <form onSubmit={handleSubmit(handleSubmitSearch)}>
@@ -86,11 +103,15 @@ function SellPhotoCardModal() {
             onCardClick={handleCardClick}
           />
         </>
+      ) : intent === 'sale' ? (
+        // 카드 판매하기 디테일
+        <CardDetailModalForSale card={selectedCard} onBack={handleBack} />
       ) : (
-        <CardDetailForSale card={selectedCard} onBack={handleBack} />
+        // 카드 교환하기 디테일
+        <CardDetailModalForExchange card={selectedCard} onBack={handleBack} />
       )}
     </Modal>
   );
 }
 
-export default SellPhotoCardModal;
+export default CardActionModal;

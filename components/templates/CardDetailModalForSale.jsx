@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import Title from '../molecules/Title';
 
-function CardDetailForSale({ card, onBack }) {
+function CardDetailModalForSale({ card, onBack }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
@@ -32,7 +32,6 @@ function CardDetailForSale({ card, onBack }) {
   const { mutate: createShop } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
-      console.log(getValues(), data);
       modal.close();
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
@@ -122,4 +121,4 @@ function CardDetailForSale({ card, onBack }) {
   );
 }
 
-export default CardDetailForSale;
+export default CardDetailModalForSale;

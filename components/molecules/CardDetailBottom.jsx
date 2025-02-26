@@ -14,6 +14,9 @@ import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import NumberStepper from '../atoms/NumberStepper';
 import ConfirmModal from './ConfirmModal';
+import CardDetailModalForSale from '../templates/CardDetailModalForSale';
+import Modal from '../organisms/Modal';
+import CardActionModal from '../templates/CardActionModal';
 
 function CardDetailBottom({
   cardDetail,
@@ -27,6 +30,9 @@ function CardDetailBottom({
 }) {
   const [count, setCount] = useState(1);
   const router = useRouter();
+
+  //test
+  console.log('cardDetail', cardDetail);
 
   const { nameForQuantity, nameForPrice, control } = props;
 
@@ -131,8 +137,10 @@ function CardDetailBottom({
     );
   };
 
+  // '포토카드 교환하기' 버튼 클릭시
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
+    modal.open(<CardActionModal intent={'exchange'} />);
   };
 
   const handleClickModalStopSale = () => {
@@ -282,7 +290,17 @@ function CardDetailBottom({
 
       case 'gallery':
         return (
-          <Button onClick={onStartSale} className="mt-8 lg:mt-16" size="h75">
+          <Button
+            onClick={() =>
+              modal.open(
+                <Modal>
+                  <CardDetailModalForSale card={cardDetail} />
+                </Modal>
+              )
+            }
+            className="mt-8 lg:mt-16"
+            size="h75"
+          >
             포토카드 판매하기
           </Button>
         );

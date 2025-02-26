@@ -14,7 +14,7 @@ import ConfirmModal from '../molecules/ConfirmModal';
 import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
-import SellPhotoCardModal from './SellPhotoCardModal';
+import CardActionModal from './CardActionModal';
 
 function MarketPlace({ initialData }) {
   const [orderBy, setOrderBy] = useState('최신 순');
@@ -78,7 +78,7 @@ function MarketPlace({ initialData }) {
           onClick={handleClickModalButton}
         />
       );
-    modal.open(<SellPhotoCardModal />);
+    modal.open(<CardActionModal intent="sale" />);
   };
 
   if (isPending) return null;
@@ -103,7 +103,7 @@ function MarketPlace({ initialData }) {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-0">
             <Dropdown
               label="등급"
               options={constants.CARD_GRADES}
@@ -132,7 +132,7 @@ function MarketPlace({ initialData }) {
             />
           </button>
 
-          <div className="shrink-0">
+          <div className="shrink-0 z-0">
             <Dropdown
               label={orderBy}
               options={constants.SORT_OPTIONS}
