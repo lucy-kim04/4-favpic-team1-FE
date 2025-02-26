@@ -179,7 +179,7 @@ function MarketPlace({ initialData }) {
                 label: genre,
                 count: shops.filter((shop) => shop.genre === genre).length,
               })),
-              매진: constants.CARD_ON_SALE.map((sale) => ({
+              "매진 여부": constants.CARD_ON_SALE.map((sale) => ({
                 label: sale,
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
