@@ -1,42 +1,44 @@
-'use client';
+"use client";
 
-import cardsApi from '@/api/cards/cards.api';
-import usersApi from '@/api/users/users.api';
-import icDropdown from '@/assets/images/ic-dropdown.png';
-import constants from '@/constant';
-import { useAuth } from '@/contexts/AuthContext';
-import { useModal } from '@/contexts/ModalContext';
-import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import Dropdown from '../atoms/Dropdown';
-import ConfirmModal from '../molecules/ConfirmModal';
-import InputSearch from '../molecules/InputSearch';
-import Title from '../molecules/Title';
-import UserCardsSummary from '../molecules/UserCardsSummary';
-import CardList from '../organisms/CardList';
+import cardsApi from "@/api/cards/cards.api";
+import usersApi from "@/api/users/users.api";
+import icDropdown from "@/assets/images/ic-dropdown.png";
+import constants from "@/constant";
+import { useAuth } from "@/contexts/AuthContext";
+import { useModal } from "@/contexts/ModalContext";
+import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import Dropdown from "../atoms/Dropdown";
+import ConfirmModal from "../molecules/ConfirmModal";
+import InputSearch from "../molecules/InputSearch";
+import Title from "../molecules/Title";
+import UserCardsSummary from "../molecules/UserCardsSummary";
+import CardList from "../organisms/CardList";
+import FilterModal from "../atoms/Filter";
 
 function MyGallery() {
-  const [orderBy, setOrderBy] = useState('최신 순');
-  const [grade, setGrade] = useState('등급');
-  const [genre, setGenre] = useState('장르');
-  const [keyword, setKeyword] = useState('');
+  const [orderBy, setOrderBy] = useState("최신 순");
+  const [grade, setGrade] = useState("등급");
+  const [genre, setGenre] = useState("장르");
+  const [keyword, setKeyword] = useState("");
   const router = useRouter();
   const modal = useModal();
   const { isLoggedIn } = useAuth();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
+  const { handleSubmit, control } = useForm({ defaultValues: { search: "" } });
 
   const { data: user } = useQuery({
-    queryKey: ['me'],
+    queryKey: ["me"],
     queryFn: usersApi.getMe,
   });
 
   const searchOptions = { orderBy, grade, genre, keyword };
   const { data, isPending } = useQuery({
-    queryKey: ['cards', { ...searchOptions }],
+    queryKey: ["cards", { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
     staleTime: 0,
     placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
@@ -44,14 +46,14 @@ function MyGallery() {
   });
 
   const handleClickModalButton = () => {
-    router.push('/auth/log-in');
+    router.push("/auth/log-in");
   };
 
   const handleClickCard = (card, intent) => {
     if (!isLoggedIn)
       return modal.open(
         <ConfirmModal
-          title={'로그인이 필요합니다.'}
+          title={"로그인이 필요합니다."}
           content={`로그인이 필요한 서비스입니다.
             로그인 하시겠습니까?`}
           buttonText="로그인하기"
@@ -60,9 +62,9 @@ function MyGallery() {
       );
 
     const cardLink =
-      intent === 'shop'
+      intent === "shop"
         ? `/${card.id}`
-        : intent === 'gallery'
+        : intent === "gallery"
         ? `/my-cards/gallery/${card.id}`
         : `/my-cards/sales/${card.id}`;
 
@@ -82,7 +84,7 @@ function MyGallery() {
         <Title
           intent="xl"
           onClick={() => {
-            router.push('/my-cards/gallery/create');
+            router.push("/my-cards/gallery/create");
           }}
           className="sm:hidden"
         >
@@ -97,8 +99,8 @@ function MyGallery() {
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
-              name={'search'}
-              placeholder={'검색'}
+              name={"search"}
+              placeholder={"검색"}
               size="md"
             />
           </form>
@@ -122,18 +124,39 @@ function MyGallery() {
           <Image
             src={icDropdown}
             alt="드롭다운"
-            className="w-[45px] h-[45px]"
+            className="w-[45px] h-[45px] cursor-pointer"
+            onClick={() => setIsFilterOpen(true)}
           />
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
-              name={'search'}
-              placeholder={'검색'}
+              name={"search"}
+              placeholder={"검색"}
               size="md"
             />
           </form>
         </div>
       </div>
+      {isFilterOpen && (
+        <FilterModal
+          onClose={() => setIsFilterOpen(false)}
+          filters={{
+            등급: constants.CARD_GRADES.map((grade) => ({
+              label: grade,
+              count: cards.filter((card) => card.grade === grade).length,
+            })),
+            장르: constants.CARD_GENRES.map((genre) => ({
+              label: genre,
+              count: cards.filter((card) => card.genre === genre).length,
+            })),
+            "매진 여부": constants.CARD_ON_SALE.map((sale) => ({
+              label: sale,
+              count: cards.filter((card) => card.onSale === sale).length,
+            })),
+          }}
+          onSelect={(selected) => console.log("선택된 필터:", selected)}
+        />
+      )}
       <CardList cards={cards} intent="gallery" onCardClick={handleClickCard} />
     </div>
   );
