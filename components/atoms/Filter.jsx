@@ -37,7 +37,7 @@ export default function FilterModal({ filters, onSelect, onClose }) {
   return (
     <div
       className={clsx(
-        "fixed inset-0 flex items-end justify-center bg-black bg-opacity-50 transition-opacity duration-300",
+        "fixed z-50 inset-0 flex items-end justify-center bg-black bg-opacity-50 transition-opacity duration-300",
         isVisible ? "opacity-100" : "opacity-0"
       )}
     >
