@@ -15,6 +15,8 @@ import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import CardActionModal from './CardActionModal';
+import SellPhotoCardModal from './SellPhotoCardModal';
+import icDropdown from '@/assets/images/ic-dropdown.png';
 
 function MarketPlace({ initialData }) {
   const [orderBy, setOrderBy] = useState('최신 순');
@@ -94,7 +96,7 @@ function MarketPlace({ initialData }) {
         >
           마켓플레이스
         </Title>
-        <div className="flex justify-between items-center mt-5">
+        <div className="flex justify-between items-center mt-5 sm:hidden">
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
@@ -103,7 +105,8 @@ function MarketPlace({ initialData }) {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-0">
+
+          <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-0">
             <Dropdown
               label="등급"
               options={constants.CARD_GRADES}
@@ -124,15 +127,37 @@ function MarketPlace({ initialData }) {
           <button
             className="lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded"
             onClick={() => setIsFilterOpen(true)}
-          >
-            <img
-              src="@/assets/images/dropdown.png"
-              alt="필터 열기"
-              className="w-6 h-6"
-            />
-          </button>
+          ></button>
 
           <div className="shrink-0 z-0">
+            <Dropdown
+              label={orderBy}
+              options={constants.SORT_OPTIONS}
+              isBox={true}
+              onSelect={setOrderBy}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center mt-5 lg:hidden md:hidden w-full">
+          <form
+            onSubmit={handleSubmit(handleSubmitSearch)}
+            className="w-[345px]"
+          >
+            <InputSearch
+              control={control}
+              name={'search'}
+              placeholder={'검색'}
+              size="md"
+            />
+          </form>
+          <div className="w-full border-t border-[#5A5a5a] mt-3"></div>
+          <div className="flex justify-between items-center w-full mt-4 cursor-pointer">
+            <img
+              src={icDropdown.src}
+              alt="드롭다운"
+              className="w-[45px] h-[45px] cursor-pointer"
+              onClick={() => setIsFilterOpen(true)}
+            />
             <Dropdown
               label={orderBy}
               options={constants.SORT_OPTIONS}
@@ -156,7 +181,7 @@ function MarketPlace({ initialData }) {
                 label: genre,
                 count: shops.filter((shop) => shop.genre === genre).length,
               })),
-              매진: constants.CARD_ON_SALE.map((sale) => ({
+              '매진 여부': constants.CARD_ON_SALE.map((sale) => ({
                 label: sale,
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
