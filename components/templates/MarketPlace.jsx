@@ -15,7 +15,6 @@ import InputSearch from "../molecules/InputSearch";
 import Title from "../molecules/Title";
 import CardList from "../organisms/CardList";
 import SellPhotoCardModal from "./SellPhotoCardModal";
-import Image from "next/image";
 import icDropdown from "@/assets/images/ic-dropdown.png";
 
 function MarketPlace({ initialData }) {
@@ -126,13 +125,7 @@ function MarketPlace({ initialData }) {
           <button
             className="lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded"
             onClick={() => setIsFilterOpen(true)}
-          >
-            <Image
-              src={icDropdown}
-              alt="드롭다운"
-              className="w-[45px] h-[45px]"
-            />
-          </button>
+          ></button>
 
           <div className="shrink-0">
             <Dropdown
@@ -157,10 +150,10 @@ function MarketPlace({ initialData }) {
           </form>
           <div className="w-full border-t border-[#5A5a5a] mt-3"></div>
           <div className="flex justify-between items-center w-full mt-4 cursor-pointer">
-            <Image
-              src={icDropdown}
+            <img
+              src={icDropdown.src}
               alt="드롭다운"
-              className="w-[45px] h-[45px]"
+              className="w-[45px] h-[45px] cursor-pointer"
               onClick={() => setIsFilterOpen(true)}
             />
             <Dropdown
