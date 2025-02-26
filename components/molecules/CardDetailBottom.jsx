@@ -14,6 +14,9 @@ import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import NumberStepper from '../atoms/NumberStepper';
 import ConfirmModal from './ConfirmModal';
+import CardDetailModalForSale from '../templates/CardDetailModalForSale';
+import Modal from '../organisms/Modal';
+import CardActionModal from '../templates/CardActionModal';
 
 function CardDetailBottom({
   cardDetail,
@@ -27,15 +30,6 @@ function CardDetailBottom({
 }) {
   const [count, setCount] = useState(1);
   const router = useRouter();
-  const {
-    register,
-    formState: { errors },
-  } = useForm({
-    mode: 'onChange',
-    defaultValues: {
-      price: '',
-    },
-  });
 
   const { nameForQuantity, nameForPrice, control } = props;
 
@@ -44,13 +38,14 @@ function CardDetailBottom({
     fieldForQuantity = useController({
       name: nameForQuantity,
       control,
-      defaultValue: 0,
+      defaultValue: 1,
     }).field;
   }
 
   let fieldForPrice;
+  let fieldStateForPrice;
   if (nameForPrice) {
-    fieldForPrice = useController({
+    const { field, fieldState } = useController({
       name: nameForPrice,
       control,
       defaultValue: '',
@@ -61,7 +56,9 @@ function CardDetailBottom({
           message: '숫자만 입력 가능합니다',
         },
       },
-    }).field;
+    });
+    fieldForPrice = field;
+    fieldStateForPrice = fieldState;
   }
 
   const {
@@ -109,6 +106,7 @@ function CardDetailBottom({
   };
 
   const handleClickModalButton = () => {
+    ㅂ2;
     router.push('/auth/log-in');
   };
 
@@ -136,8 +134,10 @@ function CardDetailBottom({
     );
   };
 
+  // '포토카드 교환하기' 버튼 클릭시
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
+    modal.open(<CardActionModal intent={'exchange'} />);
   };
 
   const handleClickModalStopSale = () => {
@@ -269,12 +269,12 @@ function CardDetailBottom({
               <div className="relative">
                 <input
                   className="w-[202px] lg:w-[245px] h-[45px] lg:h-[50px] border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
-                  placeholder="숫자만 입력"
                   {...fieldForPrice}
+                  placeholder="숫자만 입력"
                 />
-                {errors.price && (
+                {fieldStateForPrice.error && (
                   <p className="absolute top-full left-0 text-red-500 text-sm mt-1">
-                    {errors.price.message}
+                    {fieldStateForPrice.error.message}
                   </p>
                 )}
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -287,7 +287,17 @@ function CardDetailBottom({
 
       case 'gallery':
         return (
-          <Button onClick={onStartSale} className="mt-8 lg:mt-16" size="h75">
+          <Button
+            onClick={() =>
+              modal.open(
+                <Modal>
+                  <CardDetailModalForSale card={cardDetail} />
+                </Modal>
+              )
+            }
+            className="mt-8 lg:mt-16"
+            size="h75"
+          >
             포토카드 판매하기
           </Button>
         );

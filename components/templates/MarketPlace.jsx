@@ -1,36 +1,37 @@
-"use client";
+'use client';
 
-import shopsApi from "@/api/shops/shops.api";
-import constants from "@/constant";
-import { useAuth } from "@/contexts/AuthContext";
-import { useModal } from "@/contexts/ModalContext";
-import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import Dropdown from "../atoms/Dropdown";
-import FilterModal from "../atoms/Filter";
-import ConfirmModal from "../molecules/ConfirmModal";
-import InputSearch from "../molecules/InputSearch";
-import Title from "../molecules/Title";
-import CardList from "../organisms/CardList";
-import SellPhotoCardModal from "./SellPhotoCardModal";
-import icDropdown from "@/assets/images/ic-dropdown.png";
+import shopsApi from '@/api/shops/shops.api';
+import constants from '@/constant';
+import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
+import { useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../atoms/Dropdown';
+import FilterModal from '../atoms/Filter';
+import ConfirmModal from '../molecules/ConfirmModal';
+import InputSearch from '../molecules/InputSearch';
+import Title from '../molecules/Title';
+import CardList from '../organisms/CardList';
+import CardActionModal from './CardActionModal';
+import SellPhotoCardModal from './SellPhotoCardModal';
+import icDropdown from '@/assets/images/ic-dropdown.png';
 
 function MarketPlace({ initialData }) {
-  const [orderBy, setOrderBy] = useState("최신 순");
-  const [grade, setGrade] = useState("등급");
-  const [genre, setGenre] = useState("장르");
-  const [onSale, setOnSale] = useState("매진 여부");
-  const [keyword, setKeyword] = useState("");
+  const [orderBy, setOrderBy] = useState('최신 순');
+  const [grade, setGrade] = useState('등급');
+  const [genre, setGenre] = useState('장르');
+  const [onSale, setOnSale] = useState('매진 여부');
+  const [keyword, setKeyword] = useState('');
   const modal = useModal();
   const { isLoggedIn } = useAuth();
   const router = useRouter();
-  const { handleSubmit, control } = useForm({ defaultValues: { search: "" } });
+  const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
   const { data: shops, isPending } = useQuery({
-    queryKey: ["shops", { ...searchOptions }],
+    queryKey: ['shops', { ...searchOptions }],
     queryFn: () => shopsApi.getShops(searchOptions),
     initialData,
     staleTime: 0,
@@ -43,14 +44,14 @@ function MarketPlace({ initialData }) {
   };
 
   const handleClickModalButton = () => {
-    router.push("/auth/log-in");
+    router.push('/auth/log-in');
   };
 
   const handleClickCard = (card, intent) => {
     if (!isLoggedIn)
       return modal.open(
         <ConfirmModal
-          title={"로그인이 필요합니다."}
+          title={'로그인이 필요합니다.'}
           content={`로그인이 필요한 서비스입니다.
             로그인 하시겠습니까?`}
           buttonText="로그인하기"
@@ -59,9 +60,9 @@ function MarketPlace({ initialData }) {
       );
 
     const cardLink =
-      intent === "shop"
+      intent === 'shop'
         ? `/${card.id}`
-        : intent === "gallery"
+        : intent === 'gallery'
         ? `/my-cards/gallery/${card.id}`
         : `/my-cards/sales/${card.id}`;
 
@@ -72,14 +73,14 @@ function MarketPlace({ initialData }) {
     if (!isLoggedIn)
       return modal.open(
         <ConfirmModal
-          title={"로그인이 필요합니다."}
+          title={'로그인이 필요합니다.'}
           content={`로그인이 필요한 서비스입니다.
             로그인 하시겠습니까?`}
           buttonText="로그인하기"
           onClick={handleClickModalButton}
         />
       );
-    modal.open(<SellPhotoCardModal />);
+    modal.open(<CardActionModal intent="sale" />);
   };
 
   if (isPending) return null;
@@ -99,12 +100,13 @@ function MarketPlace({ initialData }) {
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
               control={control}
-              name={"search"}
-              placeholder={"검색"}
+              name={'search'}
+              placeholder={'검색'}
               size="md"
             />
           </form>
-          <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
+
+          <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-0">
             <Dropdown
               label="등급"
               options={constants.CARD_GRADES}
@@ -127,7 +129,7 @@ function MarketPlace({ initialData }) {
             onClick={() => setIsFilterOpen(true)}
           ></button>
 
-          <div className="shrink-0">
+          <div className="shrink-0 z-0">
             <Dropdown
               label={orderBy}
               options={constants.SORT_OPTIONS}
@@ -143,8 +145,8 @@ function MarketPlace({ initialData }) {
           >
             <InputSearch
               control={control}
-              name={"search"}
-              placeholder={"검색"}
+              name={'search'}
+              placeholder={'검색'}
               size="md"
             />
           </form>
@@ -179,12 +181,12 @@ function MarketPlace({ initialData }) {
                 label: genre,
                 count: shops.filter((shop) => shop.genre === genre).length,
               })),
-              "매진 여부": constants.CARD_ON_SALE.map((sale) => ({
+              '매진 여부': constants.CARD_ON_SALE.map((sale) => ({
                 label: sale,
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
             }}
-            onSelect={(selected) => console.log("선택된 필터:", selected)}
+            onSelect={(selected) => console.log('선택된 필터:', selected)}
           />
         )}
       </div>

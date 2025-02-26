@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import Title from '../molecules/Title';
 
-function CardDetailForSale({ card, onBack }) {
+function CardDetailModalForSale({ card, onBack }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
@@ -22,7 +22,7 @@ function CardDetailForSale({ card, onBack }) {
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
       quantity: 1,
-      price: 0,
+      price: '',
       rank: '',
       genre: '',
       description: '',
@@ -32,7 +32,6 @@ function CardDetailForSale({ card, onBack }) {
   const { mutate: createShop } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
-      console.log(getValues(), data);
       modal.close();
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
@@ -86,6 +85,9 @@ function CardDetailForSale({ card, onBack }) {
           size={'md'}
           options={constants.GRADE_OPTIONS}
           placeholder={'등급을 선택해 주세요'}
+          rules={{
+            required: '옵션을 선택해 주세요',
+          }}
         />
         <InputDropdown
           control={control}
@@ -94,6 +96,9 @@ function CardDetailForSale({ card, onBack }) {
           size={'md'}
           options={constants.GENRE_OPTIONS}
           placeholder={'장르을 선택해 주세요'}
+          rules={{
+            required: '옵션을 선택해 주세요',
+          }}
         />
       </div>
       <InputTextBox
@@ -102,6 +107,9 @@ function CardDetailForSale({ card, onBack }) {
         label={'교환 희망 설명'}
         size={'full'}
         placeholder={'설명을 입력해 주세요.'}
+        rules={{
+          required: '설명을 입력해 주세요',
+        }}
       />
       <div className="flex gap-10 mt-14">
         <Button intent="secondary" onClick={() => modal.close()}>
@@ -113,4 +121,4 @@ function CardDetailForSale({ card, onBack }) {
   );
 }
 
-export default CardDetailForSale;
+export default CardDetailModalForSale;

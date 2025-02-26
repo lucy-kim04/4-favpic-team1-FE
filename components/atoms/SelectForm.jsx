@@ -11,6 +11,7 @@ function SelectForm({
   name,
   placeholder,
   size = 'lg',
+  error = false,
   options,
   onChange,
   value,
@@ -26,6 +27,11 @@ function SelectForm({
     'h-[55px]': size === 'sm',
     'h-[55px]': size === 'md',
     'h-[60px]': size === 'lg',
+  });
+
+  const errorBorderClassNames = clsx({
+    'border-[#ff483d]': error === true,
+    'border-gray-200': error === false,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -67,6 +73,7 @@ function SelectForm({
         className={clsx(
           widthClassNames,
           hieghtClassNames,
+          errorBorderClassNames,
           'flex items-center py-[20px] px-[18px] border'
         )}
         style={{
