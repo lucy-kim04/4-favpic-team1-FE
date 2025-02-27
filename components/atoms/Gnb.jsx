@@ -24,7 +24,6 @@ function Gnb() {
     queryKey: ['me'],
     queryFn: usersApi.getMe,
   });
-
   const handleClickLogin = () => {
     router.push('/auth/log-in');
   };
@@ -58,7 +57,7 @@ function Gnb() {
                   className='text-sm font-bold mr-6 sm:hidden cursor-pointer'
                   onClick={() => setShowPointMenu(!showPointMenu)}
                 >
-                  {userInfo ? userInfo.point : ''}P
+                  {user ? user.point : ''}P
                 </p>
                 {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
                 <div className='relative'>
@@ -77,7 +76,7 @@ function Gnb() {
                 </div>
                 <Link href='/my-cards/gallery'>
                   <p className='font-baskin text-lg mr-6 sm:hidden'>
-                    {userInfo ? userInfo.nickname : ''}
+                    {user ? user.nickname : ''}
                   </p>
                 </Link>
                 <div className='w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden'></div>
@@ -108,7 +107,7 @@ function Gnb() {
           <PointPopup
             isOpen={showPointMenu}
             setIsOpen={setShowPointMenu}
-            userInfo={userInfo}
+            user={user}
             onLogin={handleClickLogin}
             onSignUp={handleClickSignUp}
             onLogout={handleClickLogout}

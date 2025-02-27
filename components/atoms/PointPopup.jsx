@@ -5,14 +5,7 @@ import { useEffect, useRef } from 'react';
 import Button from './Button';
 import Divider from './Divider';
 
-function PointPopup({
-  isOpen,
-  setIsOpen,
-  userInfo,
-  onLogin,
-  onSignUp,
-  onLogout,
-}) {
+function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -58,15 +51,15 @@ function PointPopup({
         transition-opacity sm:transition-transform duration-300 ease-in-out
       `}
       >
-        {userInfo ? (
+        {user ? (
           <>
             <div className='px-6 pt-6 sm:mt-5'>
               <p className='font-bold text-lg text-white mb-5'>
-                안녕하세요, {userInfo.nickname}님!
+                안녕하세요, {user.nickname}님!
               </p>
               <div className='flex justify-between pb-[10px]'>
                 <p className='text-sm text-[#5a5a5a]'>보유포인트</p>
-                <p className='text-sm text-[#EFFF04]'>{userInfo.point}P</p>
+                <p className='text-sm text-[#EFFF04]'>{user.point}P</p>
               </div>
             </div>
             <Divider />
@@ -84,7 +77,7 @@ function PointPopup({
                 </Link>
               </ul>
               <p
-                className='absolute bottom-10 text-sm text-[#5a5a5a] cursor-pointer hover:brightness-75 active:brightness-50'
+                className='absolute bottom-10 text-sm text-[#5a5a5a] cursor-pointer hover:brightness-75 active:brightness-50 md:hidden lg:hidden'
                 onClick={onLogout}
               >
                 로그아웃
