@@ -1,8 +1,10 @@
 'use client';
 
+import usersApi from '@/api/users/users.api';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,6 +19,12 @@ function Gnb() {
   const [showPointMenu, setShowPointMenu] = useState(false);
   const { isLoggedIn, logout, userInfo, isAuthInitialized } = useAuth();
   const router = useRouter();
+
+  const { data: user } = useQuery({
+    queryKey: ['me'],
+    queryFn: usersApi.getMe,
+  });
+
   const handleClickLogin = () => {
     router.push('/auth/log-in');
   };
