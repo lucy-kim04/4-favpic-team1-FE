@@ -6,6 +6,20 @@ import Button from './Button';
 import Divider from './Divider';
 
 function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
+  const handleLinkClick = () => {
+    setIsOpen(false);
+  };
+
+  const handleLoginClick = () => {
+    onLogin();
+    setIsOpen(false);
+  };
+
+  const handleSignUpClick = () => {
+    onSignUp();
+    setIsOpen(false);
+  };
+
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -65,12 +79,12 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
             <Divider />
             <div className='px-6 pb-6'>
               <ul className='flex flex-col gap-[10px] pt-[10px]'>
-                <Link href='/my-cards/gallery'>
+                <Link href='/my-cards/gallery' onClick={handleLinkClick}>
                   <li className='text-sm text-white cursor-pointer'>
                     마이갤러리
                   </li>
                 </Link>
-                <Link href='/my-cards/sales'>
+                <Link href='/my-cards/sales' onClick={handleLinkClick}>
                   <li className='text-sm text-white cursor-pointer'>
                     나의 판매 포토카드
                   </li>
@@ -92,10 +106,10 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
               있어요.
             </p>
             <div className='flex flex-col gap-3'>
-              <Button onClick={onLogin} size='h40'>
+              <Button onClick={handleLoginClick} size='h40'>
                 로그인
               </Button>
-              <Button onClick={onSignUp} size='h40' intent='secondary'>
+              <Button onClick={handleSignUpClick} size='h40' intent='secondary'>
                 회원가입
               </Button>
             </div>
