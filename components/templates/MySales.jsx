@@ -22,6 +22,7 @@ function MySales() {
   const [howToSale, setHowToSale] = useState('판매 방법');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
 
@@ -65,7 +66,7 @@ function MySales() {
               size="md"
             />
           </form>
-          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px]">
+          <div className="flex shrink-0 ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] sm:hidden">
             <Dropdown
               width="w-[134px]"
               label="등급"
@@ -97,7 +98,8 @@ function MySales() {
           <Image
             src={icDropdown}
             alt="드롭다운"
-            className="w-[45px] h-[45px]"
+            className="w-[45px] h-[45px] cursor-pointer"
+            onClick={() => setIsFilterOpen(true)}
           />
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch
@@ -108,6 +110,26 @@ function MySales() {
             />
           </form>
         </div>
+        {isFilterOpen && (
+          <FilterModal
+            onClose={() => setIsFilterOpen(false)}
+            filters={{
+              등급: constants.CARD_GRADES.map((grade) => ({
+                label: grade,
+                count: cards.filter((card) => card.grade === grade).length,
+              })),
+              장르: constants.CARD_GENRES.map((genre) => ({
+                label: genre,
+                count: cards.filter((card) => card.genre === genre).length,
+              })),
+              '매진 여부': constants.CARD_ON_SALE.map((sale) => ({
+                label: sale,
+                count: cards.filter((card) => card.onSale === sale).length,
+              })),
+            }}
+            onSelect={(selected) => console.log('선택된 필터:', selected)}
+          />
+        )}
       </div>
       <CardList cards={cards} intent="sales" />
     </div>
