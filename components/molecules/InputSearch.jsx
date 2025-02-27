@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useId } from "react";
-import { useController } from "react-hook-form";
-import Input from "../atoms/Input";
-import Image from "next/image";
 import icSearch from "@/assets/images/ic-search.png";
 import clsx from "clsx";
+import Image from "next/image";
+import { useId } from "react";
+import { useController } from "react-hook-form";
+import Input from "../atoms/Input";
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
@@ -21,6 +21,7 @@ function InputSearch({
   size = "lg",
   placeholder = "검색",
   rules = {},
+  ...props
 }) {
   const inputId = useId();
   const { field, fieldState } = useController({ name, control, rules });
@@ -51,6 +52,7 @@ function InputSearch({
         placeholder={placeholder}
         size={size}
         {...field}
+        {...props}
       />
       <div
         className={clsx(iconPositionClassNames, "absolute pointer-events-none")}

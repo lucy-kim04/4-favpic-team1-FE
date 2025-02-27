@@ -1,6 +1,6 @@
-import clsx from "clsx";
-import icDown from "@/assets/images/ic-down.png";
-import { useState } from "react";
+import clsx from 'clsx';
+import icDown from '@/assets/images/ic-down.png';
+import { useState } from 'react';
 
 // boxSize => sm: 345x55 / md: 440x55 / lg:520x60
 // name = "genre"
@@ -10,22 +10,28 @@ function SelectForm({
   id,
   name,
   placeholder,
-  size = "lg",
+  size = 'lg',
+  error = false,
   options,
   onChange,
   value,
   ...props
 }) {
   const widthClassNames = clsx({
-    "w-[345px]": size === "sm",
-    "w-[440px]": size === "md",
-    "w-[520px]": size === "lg",
+    'w-[345px]': size === 'sm',
+    'w-[440px]': size === 'md',
+    'w-[520px]': size === 'lg',
   });
 
   const hieghtClassNames = clsx({
-    "h-[55px]": size === "sm",
-    "h-[55px]": size === "md",
-    "h-[60px]": size === "lg",
+    'h-[55px]': size === 'sm',
+    'h-[55px]': size === 'md',
+    'h-[60px]': size === 'lg',
+  });
+
+  const errorBorderClassNames = clsx({
+    'border-[#ff483d]': error === true,
+    'border-gray-200': error === false,
   });
 
   const [isOpen, setIsOpen] = useState(false);
@@ -67,13 +73,14 @@ function SelectForm({
         className={clsx(
           widthClassNames,
           hieghtClassNames,
-          "flex items-center py-[20px] px-[18px] border"
+          errorBorderClassNames,
+          'flex items-center py-[20px] px-[18px] border'
         )}
         style={{
           backgroundImage: `url(${icDown.src})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "calc(100% - 15px) center",
-          backgroundSize: "1.5rem",
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'calc(100% - 15px) center',
+          backgroundSize: '1.5rem',
         }}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -90,11 +97,11 @@ function SelectForm({
         <div
           className={clsx(
             widthClassNames,
-            "absolute bg-black flex flex-col gap-5 border mt-1 py-[20px] px-[18px] z-10"
+            'absolute bg-black flex flex-col gap-5 border mt-1 py-[20px] px-[18px] z-10'
           )}
         >
-          {options.map((option) => (
-            <div key={option.value} onClick={() => handleOptionClick(option)}>
+          {options.map((option, index) => (
+            <div key={index} onClick={() => handleOptionClick(option)}>
               {option.label}
             </div>
           ))}

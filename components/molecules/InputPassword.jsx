@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useId, useState } from "react";
-import { useController } from "react-hook-form";
-import Label from "../atoms/Label";
-import Input from "../atoms/Input";
-import icEye from "../../assets/images/ic-eye.png";
-import icEyeOff from "../../assets/images/ic-eye-off.png";
-import Image from "next/image";
-import clsx from "clsx";
+import React, { useId, useState } from 'react';
+import { useController } from 'react-hook-form';
+import Label from '../atoms/Label';
+import Input from '../atoms/Input';
+import icEye from '../../assets/images/ic-eye.png';
+import icEyeOff from '../../assets/images/ic-eye-off.png';
+import Image from 'next/image';
+import clsx from 'clsx';
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
@@ -22,7 +22,7 @@ function InputPassword({
   control,
   name,
   rules = {},
-  size = "lg",
+  size = 'lg',
   label,
   placeholder,
 }) {
@@ -31,9 +31,9 @@ function InputPassword({
   const inputId = useId();
 
   const sizeClassNames = clsx({
-    "max-w-[520px]": size === "lg",
-    "max-w-[440px]": size === "md",
-    "max-w-[345px]": size === "sm",
+    'max-w-[520px]': size === 'lg',
+    'max-w-[440px]': size === 'md',
+    'max-w-[345px]': size === 'sm',
   });
 
   const handleTogglePassword = () => {
@@ -44,11 +44,11 @@ function InputPassword({
     <div className="flex flex-col gap-[10px]">
       <Label htmlFor={inputId}>{label}</Label>
       <div
-        className={clsx(sizeClassNames, "relative flex items-center w-full")}
+        className={clsx(sizeClassNames, 'relative flex items-center w-full')}
       >
         <Input
           id={inputId}
-          type={showPassword ? "text" : "password"}
+          type={showPassword ? 'text' : 'password'}
           placeholder={placeholder}
           error={!!fieldState.error}
           {...field}
@@ -58,7 +58,7 @@ function InputPassword({
             src={showPassword ? icEye : icEyeOff}
             height={24}
             width={24}
-            alt={"show password Icon"}
+            alt={'show password Icon'}
             onClick={handleTogglePassword}
           />
         </div>
