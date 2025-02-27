@@ -15,7 +15,6 @@ import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import CardActionModal from './CardActionModal';
-import SellPhotoCardModal from './SellPhotoCardModal';
 import icDropdown from '@/assets/images/ic-dropdown.png';
 
 function MarketPlace({ initialData }) {

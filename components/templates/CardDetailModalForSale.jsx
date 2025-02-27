@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Divider from '../atoms/Divider';
 import CardDetail from '../organisms/CardDetail';
 import InputDropdown from '../molecules/InputDropdown';
 import { useForm } from 'react-hook-form';
@@ -9,17 +8,17 @@ import Button from '../atoms/Button';
 import { useModal } from '@/contexts/ModalContext';
 import { useRouter } from 'next/navigation';
 import shopsApi from '@/api/shops/shops.api';
-import { useMutation } from '@tanstack/react-query';
-import GradeCardBadge from '../atoms/GradeCardBadge';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import Title from '../molecules/Title';
+import { useEffect } from 'react';
 
-function CardDetailModalForSale({ card, onBack }) {
+function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
   const router = useRouter();
 
-  const { handleSubmit, control, getValues } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       quantity: 1,
       price: '',
@@ -28,6 +27,28 @@ function CardDetailModalForSale({ card, onBack }) {
       description: '',
     },
   });
+
+  const { data: shopData, isLoading } = useQuery({
+    queryKey: ['shop', { shopId }],
+    queryFn: () => shopsApi.getShop(shopId),
+    enabled: intent !== 'sale' ? true : false,
+    onSuccess: (data) => {
+      console.log('fetched shop', data);
+    },
+  });
+
+  useEffect(() => {
+    if (shopData) {
+      reset({
+        quantity: shopData.remainingCount,
+        price: shopData.price,
+        rank: shopData.grade,
+        genre: shopData.genre,
+        description: shopData.description,
+      });
+    }
+    console.log(shopData);
+  }, [shopData, reset]);
 
   const { mutate: createShop } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
@@ -52,10 +73,26 @@ function CardDetailModalForSale({ card, onBack }) {
     createShop(formData);
   };
 
+  const handleEditClick = (dto) => {
+    const { quantity, price, rank, genre, description } = dto;
+    const formData = {
+      cardId: id,
+      salesCount: quantity,
+      price: Number(price),
+      exchangeGrade: rank,
+      exchangeGenre: genre,
+      exchangeDesc: description,
+    };
+    createShop(formData);
+  };
+  const onSubmit = intent === 'sale' ? handleCreateClick : handleEditClick;
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
-    <form onSubmit={handleSubmit(handleCreateClick)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <h3 onClick={onBack} className="font-baskin text-[#A4A4A4] text-[24px]">
-        {'< '} 나의 포토카드 판매하기
+        {intent === 'sale' ? '< 나의 포토카드 판매하기' : '수정하기'}
       </h3>
       <Title intent="md" className={'mt-10 mb-12'}>
         {name}
@@ -115,7 +152,9 @@ function CardDetailModalForSale({ card, onBack }) {
         <Button intent="secondary" onClick={() => modal.close()}>
           취소하기
         </Button>
-        <Button intent="primary">판매하기</Button>
+        <Button intent="primary">
+          {intent === 'sale' ? '판매하기' : '수정하기'}
+        </Button>
       </div>
     </form>
   );
