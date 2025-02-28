@@ -73,10 +73,12 @@ function Detail({ dataId, intent = 'gallery' }) {
                 {data.exchangeDesc}
               </p>
               <div className="flex gap-3 items-center">
-                <GradeCardBadge variant="detail">{data.grade}</GradeCardBadge>
+                <GradeCardBadge variant="detail">
+                  {data.exchangeGrade}
+                </GradeCardBadge>
                 <div className="w-[2px] h-5 sm:h -3 bg-[#5a5a5a] mx-[10px] sm:mx-[5px]"></div>
                 <p className="text-2xl text-[#a4a4a4] sm:text-[10px] font-bold">
-                  {data.genre}
+                  {data.exchangeGenre}
                 </p>
               </div>
             </div>

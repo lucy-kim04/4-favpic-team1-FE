@@ -7,7 +7,7 @@ import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useController, useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
 import Divider from '../atoms/Divider';
@@ -71,7 +71,14 @@ function CardDetailBottom({
     paidPrice,
     reserveCount,
     exchangeDesc,
+    availableQuantity,
   } = cardDetail;
+
+  useEffect(() => {
+    if (!!remainingCount) {
+      setCount(remainingCount);
+    }
+  }, [remainingCount]);
 
   const queryClient = useQueryClient();
   const modal = useModal();
@@ -91,6 +98,7 @@ function CardDetailBottom({
   const { mutate: deleteShop } = useMutation({
     mutationFn: () => shopsApi.deleteShop(dataId),
     onSuccess: () => {
+      queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
       );
@@ -106,7 +114,6 @@ function CardDetailBottom({
   };
 
   const handleClickModalButton = () => {
-    ㅂ2;
     router.push('/auth/log-in');
   };
 
@@ -225,7 +232,20 @@ function CardDetailBottom({
               <Divider />
               <p className="font-normal text-base lg:text-lg">{exchangeDesc}</p>
               <div className="flex flex-col gap-4 mt-20">
-                <Button onClick={onEditSale} size="h75">
+                <Button
+                  onClick={() =>
+                    modal.open(
+                      <Modal>
+                        <CardDetailModalForSale
+                          card={cardDetail}
+                          shopId={dataId}
+                          intent={'edit'}
+                        />
+                      </Modal>
+                    )
+                  }
+                  size="h75"
+                >
                   수정하기
                 </Button>
                 <Button
@@ -252,14 +272,20 @@ function CardDetailBottom({
                     setCount(count);
                     fieldForQuantity.onChange(count);
                   }}
-                  maxCount={!!remainingCount ? remainingCount : reserveCount}
+                  maxCount={
+                    !!availableQuantity ? availableQuantity : reserveCount
+                  }
                 />
                 <div>
                   <p className="font-bold text-lg lg:text-xl">
-                    /<span className="ml-1">{reserveCount}</span>
+                    /
+                    <span className="ml-1">
+                      {!!availableQuantity ? availableQuantity : reserveCount}
+                    </span>
                   </p>
                   <p className="font-light text-xs lg:text-sm text-[#dddddd]">
-                    최대 {reserveCount}장
+                    최대{' '}
+                    {!!availableQuantity ? availableQuantity : reserveCount}장
                   </p>
                 </div>
               </div>

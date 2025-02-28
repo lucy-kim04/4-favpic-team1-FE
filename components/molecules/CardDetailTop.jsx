@@ -48,7 +48,7 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
                   <p className="text-[#a4a4a4]">잔여</p>
                   <p>
                     {remainingCount} /
-                    <span className="text-[#a4a4a4]">{salesCount}</span>
+                    <span className="text-[#a4a4a4]"> {salesCount}</span>
                   </p>
                 </div>
               )}

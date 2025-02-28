@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Divider from '../atoms/Divider';
 import CardDetail from '../organisms/CardDetail';
 import InputDropdown from '../molecules/InputDropdown';
 import { useForm } from 'react-hook-form';
@@ -9,17 +8,18 @@ import Button from '../atoms/Button';
 import { useModal } from '@/contexts/ModalContext';
 import { useRouter } from 'next/navigation';
 import shopsApi from '@/api/shops/shops.api';
-import { useMutation } from '@tanstack/react-query';
-import GradeCardBadge from '../atoms/GradeCardBadge';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Title from '../molecules/Title';
+import { useEffect } from 'react';
 
-function CardDetailModalForSale({ card, onBack }) {
+function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  const { handleSubmit, control, getValues } = useForm({
+  const { handleSubmit, control, reset } = useForm({
     defaultValues: {
       quantity: 1,
       price: '',
@@ -29,12 +29,45 @@ function CardDetailModalForSale({ card, onBack }) {
     },
   });
 
+  const { data: shopData, isLoading } = useQuery({
+    queryKey: ['shop', { shopId }],
+    queryFn: () => shopsApi.getShop(shopId),
+    enabled: intent !== 'sale' ? true : false,
+    refetchOnMount: true,
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+  });
+
+  useEffect(() => {
+    if (shopData) {
+      reset({
+        quantity: shopData.availableQuantity,
+        price: shopData.price,
+        rank: shopData.exchangeGrade,
+        genre: shopData.exchangeGenre,
+        description: shopData.exchangeDesc,
+      });
+    }
+  }, [shopData, reset]);
+
   const { mutate: createShop } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
       modal.close();
+      queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
+      );
+    },
+  });
+
+  const { mutate: updateShop } = useMutation({
+    mutationFn: (data) => shopsApi.updateShop(shopId, data),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['shop']);
+      modal.close();
+      router.push(
+        `/result?intent=updateShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
     },
   });
@@ -52,10 +85,27 @@ function CardDetailModalForSale({ card, onBack }) {
     createShop(formData);
   };
 
+  const handleEditClick = (dto) => {
+    const { quantity, price, rank, genre, description } = dto;
+    const formData = {
+      countToEdit: quantity,
+      price: Number(price),
+      exchangeGrade: rank,
+      exchangeGenre: genre,
+      exchangeDesc: description,
+      remainingCount: shopData.remainingCount,
+    };
+
+    updateShop(formData);
+  };
+  const onSubmit = intent === 'sale' ? handleCreateClick : handleEditClick;
+
+  if (isLoading) return <div>Loading...</div>;
+
   return (
-    <form onSubmit={handleSubmit(handleCreateClick)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <h3 onClick={onBack} className="font-baskin text-[#A4A4A4] text-[24px]">
-        {'< '} 나의 포토카드 판매하기
+        {intent === 'sale' ? '< 나의 포토카드 판매하기' : '수정하기'}
       </h3>
       <Title intent="md" className={'mt-10 mb-12'}>
         {name}
@@ -73,7 +123,9 @@ function CardDetailModalForSale({ card, onBack }) {
             nameForQuantity={'quantity'}
             nameForPrice={'price'}
           />
-          <p className="font-thin text-sm text-right">출시가 : {price}p</p>
+          <p className="font-thin text-sm text-right">{`${
+            intent === 'sale' ? '출시가' : '현재가'
+          } : ${price}p`}</p>
         </div>
       </div>
       <Title intent="sm">교환 희망 정보</Title>
@@ -115,7 +167,9 @@ function CardDetailModalForSale({ card, onBack }) {
         <Button intent="secondary" onClick={() => modal.close()}>
           취소하기
         </Button>
-        <Button intent="primary">판매하기</Button>
+        <Button intent="primary">
+          {intent === 'sale' ? '판매하기' : '수정하기'}
+        </Button>
       </div>
     </form>
   );

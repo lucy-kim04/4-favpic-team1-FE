@@ -36,36 +36,36 @@ function Gnb() {
     window.location.reload(); // 페이지 리프레시
   };
   return (
-    <header className='bg-[#0f0f0f] sticky z-20 top-0 flex justify-center'>
-      <div className='w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4'>
+    <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
+      <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4">
         <button
-          className='hidden sm:block'
+          className="hidden sm:block"
           onClick={() => setShowPointMenu(!showPointMenu)}
         >
-          <Image src={icMenu} alt='메뉴' className='w-[22px]' />
+          <Image src={icMenu} alt="메뉴" className="w-[22px]" />
         </button>
         <Link href={'/'}>
           <Logo />
         </Link>
         {/* 포인트 팝업 위치 조정을 위한 div 열기 -김주영 */}
-        <div className='relative'>
+        <div className="relative">
           {isAuthInitialized &&
             (isLoggedIn ? (
-              <div className='flex items-center'>
+              <div className="flex items-center">
                 {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
                 <p
-                  className='text-sm font-bold mr-6 sm:hidden cursor-pointer'
+                  className="text-sm font-bold mr-6 sm:hidden cursor-pointer"
                   onClick={() => setShowPointMenu(!showPointMenu)}
                 >
                   {user ? user.point : ''}P
                 </p>
                 {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
-                <div className='relative'>
+                <div className="relative">
                   {/* 알림팝업 호출 start - 주영  */}
                   <Image
                     src={icNotification}
-                    alt='알림아이콘'
-                    className='w-6 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer'
+                    alt="알림아이콘"
+                    className="w-6 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer"
                     onClick={() => setShowNotification(!showNotification)}
                   />
                   <NotificationPopup
@@ -74,29 +74,29 @@ function Gnb() {
                   />
                   {/* 알림팝업 호출 end - 김주영  */}
                 </div>
-                <Link href='/my-cards/gallery'>
-                  <p className='font-baskin text-lg mr-6 sm:hidden'>
+                <Link href="/my-cards/gallery">
+                  <p className="font-baskin text-lg mr-6 sm:hidden">
                     {user ? user.nickname : ''}
                   </p>
                 </Link>
-                <div className='w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden'></div>
+                <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>
                 <p
-                  className='text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50'
+                  className="text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50"
                   onClick={handleClickLogout}
                 >
                   로그아웃
                 </p>
               </div>
             ) : (
-              <div className='flex items-center sm:w-[22px]'>
+              <div className="flex items-center sm:w-[22px]">
                 <p
-                  className='text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                  className="text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                   onClick={handleClickLogin}
                 >
                   로그인
                 </p>
                 <p
-                  className='text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                  className="text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                   onClick={handleClickSignUp}
                 >
                   회원가입
