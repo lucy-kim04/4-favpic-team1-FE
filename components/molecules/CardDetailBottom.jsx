@@ -71,6 +71,7 @@ function CardDetailBottom({
     paidPrice,
     reserveCount,
     exchangeDesc,
+    availableQuantity,
   } = cardDetail;
 
   useEffect(() => {
@@ -97,6 +98,7 @@ function CardDetailBottom({
   const { mutate: deleteShop } = useMutation({
     mutationFn: () => shopsApi.deleteShop(dataId),
     onSuccess: () => {
+      queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
       );
@@ -270,17 +272,20 @@ function CardDetailBottom({
                     setCount(count);
                     fieldForQuantity.onChange(count);
                   }}
-                  maxCount={!!remainingCount ? remainingCount : reserveCount}
+                  maxCount={
+                    !!availableQuantity ? availableQuantity : reserveCount
+                  }
                 />
                 <div>
                   <p className="font-bold text-lg lg:text-xl">
                     /
                     <span className="ml-1">
-                      {!!remainingCount ? remainingCount : reserveCount}
+                      {!!availableQuantity ? availableQuantity : reserveCount}
                     </span>
                   </p>
                   <p className="font-light text-xs lg:text-sm text-[#dddddd]">
-                    최대 {!!remainingCount ? remainingCount : reserveCount}장
+                    최대{' '}
+                    {!!availableQuantity ? availableQuantity : reserveCount}장
                   </p>
                 </div>
               </div>

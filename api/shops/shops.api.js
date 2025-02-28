@@ -12,6 +12,18 @@ const createShop = async (dto) => {
   }
 };
 
+// 상점 수정
+const updateShop = async (shopId, dto) => {
+  try {
+    const url = `/shops/${shopId}`;
+    const response = await client.put(url, dto);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 // 상점 목록 조회
 const getShops = async ({
   orderBy = '최신 순',
@@ -139,6 +151,7 @@ const shopsApi = {
   proposeExchange,
   cancelProposeExchange,
   approveExchange,
+  updateShop,
 };
 
 export default shopsApi;
