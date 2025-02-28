@@ -29,6 +29,8 @@ function MarketPlace({ initialData }) {
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
+  const [selectedFilter, setSelectedFilter] = useState(null);
+
   const { data: shops, isPending } = useQuery({
     queryKey: ['shops', { ...searchOptions }],
     queryFn: () => shopsApi.getShops(searchOptions),
@@ -67,6 +69,12 @@ function MarketPlace({ initialData }) {
 
     router.push(`${cardLink}`);
   };
+
+  const filteredShops = selectedFilter
+    ? shops.filter((shop) =>
+        [shop.grade, shop.genre, shop.onSale].includes(selectedFilter)
+      )
+    : shops;
 
   const handleTitleButtonClick = () => {
     if (!isLoggedIn)
@@ -166,7 +174,12 @@ function MarketPlace({ initialData }) {
           </div>
         </div>
       </div>
-      <CardList cards={shops} intent="shop" onCardClick={handleClickCard} />
+      <CardList
+        cards={filteredShops}
+        intent="shop"
+        onCardClick={handleClickCard}
+      />
+
       <div>
         {isFilterOpen && (
           <FilterModal
@@ -185,7 +198,9 @@ function MarketPlace({ initialData }) {
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
             }}
-            onSelect={(selected) => console.log('선택된 필터:', selected)}
+            onSelect={(selected) => {
+              setSelectedFilter(selected);
+            }}
           />
         )}
       </div>

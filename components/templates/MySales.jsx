@@ -14,6 +14,7 @@ import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
+import FilterModal from '../atoms/Filter';
 
 function MySales() {
   const [grade, setGrade] = useState('등급');
@@ -127,7 +128,12 @@ function MySales() {
                 count: cards.filter((card) => card.onSale === sale).length,
               })),
             }}
-            onSelect={(selected) => console.log('선택된 필터:', selected)}
+            onSelect={(selectedFilter) => {
+              if (selectedFilter) {
+                console.log('선택된 필터:', selectedFilter);
+                // ✅ 여기서만 필터 적용 (즉시 실행 X)
+              }
+            }}
           />
         )}
       </div>
