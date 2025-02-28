@@ -1,6 +1,7 @@
 'use client';
 
 import shopsApi from '@/api/shops/shops.api';
+import icDropdown from '@/assets/images/ic-dropdown.png';
 import constants from '@/constant';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
@@ -15,7 +16,6 @@ import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import CardActionModal from './CardActionModal';
-import icDropdown from '@/assets/images/ic-dropdown.png';
 
 function MarketPlace({ initialData }) {
   const [orderBy, setOrderBy] = useState('최신 순');
