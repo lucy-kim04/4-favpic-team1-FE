@@ -19,7 +19,10 @@ module.exports = {
         baskinB: ['var(--font-baskinB)'],
       },
       colors: {
-        'card-border': '#2d2d2d',
+        card: '#2d2d2d',
+      },
+      boxShadow: {
+        card: '0 0 30px 4px rgb(255 255 255 / 0.1)',
       },
     },
   },
