@@ -104,8 +104,13 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h3 onClick={onBack} className="font-baskin text-[#A4A4A4] text-[24px]">
-        {intent === 'sale' ? '< 나의 포토카드 판매하기' : '수정하기'}
+      <h3
+        onClick={onBack}
+        className={`font-baskin text-[#A4A4A4] text-[24px] ${
+          intent === 'sale' ? 'cursor-pointer' : ''
+        }`}
+      >
+        {intent === 'sale' ? '< 소유중인 카드 목록' : '수정하기'}
       </h3>
       <Title intent="md" className={'mt-10 mb-12'}>
         {name}
