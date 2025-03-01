@@ -1,12 +1,13 @@
+import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import Card from '../organisms/Card';
-import Title from '../molecules/Title';
-import InputTextBox from '../molecules/InputTextBox';
 import Button from '../atoms/Button';
+import InputTextBox from '../molecules/InputTextBox';
+import Title from '../molecules/Title';
+import Card from '../organisms/Card';
 
 function CardDetailModalForExchange({ card, onBack }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -29,7 +30,19 @@ function CardDetailModalForExchange({ card, onBack }) {
       router.push(
         `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
+      // 상점의 판매자에게 알림 전송
+      sendNotification({
+        notificationCase: 'arriveProposal',
+        userId: sellerId,
+        shopId: id,
+        grade,
+        name,
+      });
     },
+  });
+
+  const { mutate: sendNotification } = useMutation({
+    mutationFn: (dto) => notificationsApi.sendNotification(dto),
   });
 
   const handleExchangeClick = (dto) => {
