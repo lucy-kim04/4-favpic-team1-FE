@@ -1,5 +1,6 @@
 'use client';
 
+import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
 import { useAuth } from '@/contexts/AuthContext';
@@ -8,15 +9,15 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useController, useForm } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import Button from '../atoms/Button';
 import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 import NumberStepper from '../atoms/NumberStepper';
-import ConfirmModal from './ConfirmModal';
-import CardDetailModalForSale from '../templates/CardDetailModalForSale';
 import Modal from '../organisms/Modal';
 import CardActionModal from '../templates/CardActionModal';
+import CardDetailModalForSale from '../templates/CardDetailModalForSale';
+import ConfirmModal from './ConfirmModal';
 
 function CardDetailBottom({
   cardDetail,
@@ -72,6 +73,8 @@ function CardDetailBottom({
     reserveCount,
     exchangeDesc,
     availableQuantity,
+    sellerId,
+    id,
   } = cardDetail;
 
   useEffect(() => {
@@ -86,17 +89,46 @@ function CardDetailBottom({
 
   const { mutate: purchaseCards } = useMutation({
     mutationFn: (dto) => shopsApi.purchaseCards(dataId, dto),
-    onSuccess: () => {
+    onSuccess: async (data) => {
       router.push(
         `/result?intent=purchase&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${count}`
       );
       queryClient.invalidateQueries({ queryKey: ['me'] });
+      // 나에게 구매 성공 알림 발송
+      sendNotification({
+        notificationCase: 'purchaseCard',
+        grade,
+        name,
+        purchaseCount: count,
+      });
+      // 상점의 판매자에게 판매 알림 발송
+      sendNotification({
+        notificationCase: 'soldMyCard',
+        userId: sellerId,
+        shopId: id,
+        grade,
+        name,
+        purchaseCount: count,
+      });
+      // 판매로 인해 매진이 됐을 경우 판매자에게 매진 알림도 발송
+      if (!data.isSoldOut) return;
+      sendNotification({
+        notificationCase: 'soldOut',
+        userId: sellerId,
+        shopId: id,
+        grade,
+        name,
+      });
     },
     onError: () => {
       router.push(
         `/result?intent=purchase&&isSuccess=false&&grade=${grade}&&name=${name}&&count=${count}`
       );
     },
+  });
+
+  const { mutate: sendNotification } = useMutation({
+    mutationFn: (dto) => notificationsApi.sendNotification(dto),
   });
 
   const { mutate: deleteShop } = useMutation({
@@ -113,7 +145,7 @@ function CardDetailBottom({
       );
     },
   });
-
+  console.log(cardDetail);
   const handleClickModalPurchase = () => {
     const data = {
       price,
