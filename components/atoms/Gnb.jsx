@@ -17,7 +17,7 @@ function Gnb() {
   // 포인트,알람 팝업 state 추가 -김주영
   const [showNotification, setShowNotification] = useState(false);
   const [showPointMenu, setShowPointMenu] = useState(false);
-  const { isLoggedIn, logout, userInfo, isAuthInitialized } = useAuth();
+  const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
 
   const { data: user } = useQuery({
@@ -33,7 +33,6 @@ function Gnb() {
   const handleClickLogout = () => {
     logout();
     setShowPointMenu(false);
-    window.location.reload(); // 페이지 리프레시
   };
   return (
     <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">

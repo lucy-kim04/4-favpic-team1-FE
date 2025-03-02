@@ -168,7 +168,12 @@ function CreateCardPage() {
               }}
             />
           </div>
-          <Button intent={'primary'} isPending={isPending}>
+          <Button
+            intent={'primary'}
+            isPending={isPending}
+            size="h55"
+            className="lg:h-[60px] text-lg"
+          >
             생성하기
           </Button>
         </form>

@@ -227,7 +227,7 @@ function CardDetailBottom({
             </div>
             <Button
               onClick={handleClickPurchase}
-              className="mt-8 lg:mt-16"
+              className="mt-8 lg:mt-16 lg:h-[80px] lg:text-2xl"
               size="h75"
               disabled={remainingCount === 0}
             >
@@ -235,7 +235,7 @@ function CardDetailBottom({
             </Button>
             <Button
               onClick={handleClickExchange}
-              className="mt-8 lg:mt-[34px]"
+              className="mt-8 lg:mt-[34px] lg:h-[80px] lg:text-2xl"
               size="h75"
               disabled={remainingCount === 0}
             >

@@ -37,7 +37,7 @@ function CardTop({ card, intent }) {
             <Image
               src={soldOut}
               alt="매진"
-              className="z-10 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
+              className="z-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
             />
           )}
           <Image
