@@ -128,12 +128,7 @@ function MySales() {
                 count: cards.filter((card) => card.onSale === sale).length,
               })),
             }}
-            onSelect={(selectedFilter) => {
-              if (selectedFilter) {
-                console.log('선택된 필터:', selectedFilter);
-                // ✅ 여기서만 필터 적용 (즉시 실행 X)
-              }
-            }}
+            onSelect={(selected) => console.log('선택된 필터:', selected)}
           />
         )}
       </div>

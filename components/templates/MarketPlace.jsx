@@ -29,7 +29,6 @@ function MarketPlace({ initialData }) {
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
-  const [selectedFilter, setSelectedFilter] = useState(null);
 
   const { data: shops, isPending } = useQuery({
     queryKey: ['shops', { ...searchOptions }],
@@ -69,12 +68,6 @@ function MarketPlace({ initialData }) {
 
     router.push(`${cardLink}`);
   };
-
-  const filteredShops = selectedFilter
-    ? shops.filter((shop) =>
-        [shop.grade, shop.genre, shop.onSale].includes(selectedFilter)
-      )
-    : shops;
 
   const handleTitleButtonClick = () => {
     if (!isLoggedIn)
@@ -174,12 +167,7 @@ function MarketPlace({ initialData }) {
           </div>
         </div>
       </div>
-      <CardList
-        cards={filteredShops}
-        intent="shop"
-        onCardClick={handleClickCard}
-      />
-
+      <CardList cards={shops} intent="shop" onCardClick={handleClickCard} />
       <div>
         {isFilterOpen && (
           <FilterModal
