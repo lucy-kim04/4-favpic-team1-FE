@@ -129,6 +129,9 @@ function CardDetailBottom({
 
   const { mutate: sendNotification } = useMutation({
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
   });
 
   const { mutate: deleteShop } = useMutation({
@@ -145,7 +148,6 @@ function CardDetailBottom({
       );
     },
   });
-  console.log(cardDetail);
   const handleClickModalPurchase = () => {
     const data = {
       price,
@@ -185,7 +187,7 @@ function CardDetailBottom({
   // '포토카드 교환하기' 버튼 클릭시
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
-    modal.open(<CardActionModal intent={'exchange'} />);
+    modal.open(<CardActionModal intent={'exchange'} sellerId={sellerId} />);
   };
 
   const handleClickModalStopSale = () => {
