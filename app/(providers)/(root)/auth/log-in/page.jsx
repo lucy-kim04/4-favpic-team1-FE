@@ -25,6 +25,7 @@ function LoginPage() {
     mutationFn: (data) => usersApi.logIn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
       router.replace('/');
       authLogin();
     },

@@ -1,3 +1,4 @@
+import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
@@ -61,6 +62,9 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
 
   const { mutate: sendNotification } = useMutation({
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
   });
 
   const { mutate: approveExchange } = useMutation({
@@ -196,8 +200,6 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
         </div>
       </div>
     );
-
-  console.log(card);
 
   // 교환일 경우
   return (

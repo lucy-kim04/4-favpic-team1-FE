@@ -1,11 +1,9 @@
-import notificationsApi from '@/api/notifications/notifications.api';
 import IcBack from '@/assets/images/ic-back.png';
-import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-function NotificationPopup({ isOpen, setIsOpen }) {
+function NotificationPopup({ isOpen, setIsOpen, notifications }) {
   const router = useRouter();
 
   const formatDate = (dateString) => {
@@ -34,14 +32,6 @@ function NotificationPopup({ isOpen, setIsOpen }) {
 
     return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
   };
-
-  // TODO: useQuery로 getNotificationsOfMe를 받아서 notifications를 대체하기
-  const { data } = useQuery({
-    queryKey: ['notifications'],
-    queryFn: notificationsApi.getNotificationsOfMe,
-  });
-
-  const notifications = data || [];
 
   const menuRef = useRef(null);
 

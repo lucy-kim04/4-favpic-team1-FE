@@ -28,7 +28,7 @@ function ResultProposeExchange({ isSuccess = 'true' }) {
           isSuccess={isSuccess}
         />
         <ResultContent content={`포토카드 교환 제시에 ${title02}했습니다!`} />
-        <div className="w-[226px] lg:w-[440px]">
+        <div className="w-[226px] md:w-[277px] lg:w-[440px]">
           <Button
             onClick={handleClickButton}
             intent="secondary"

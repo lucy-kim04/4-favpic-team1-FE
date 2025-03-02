@@ -34,7 +34,6 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [setIsOpen]);
-  console.log(user);
   return (
     <>
       {/* 딤드 처리 */}
@@ -67,7 +66,7 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
         transition-opacity sm:transition-transform duration-300 ease-in-out
       `}
       >
-        {isAuthInitialized && isLoggedIn ? (
+        {isAuthInitialized && isLoggedIn && user ? (
           <>
             <div className="px-6 pt-6 sm:mt-5">
               <p className="font-bold text-lg text-white mb-5">

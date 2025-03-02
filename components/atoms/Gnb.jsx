@@ -1,5 +1,6 @@
 'use client';
 
+import notificationsApi from '@/api/notifications/notifications.api';
 import usersApi from '@/api/users/users.api';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
@@ -24,6 +25,16 @@ function Gnb() {
     queryKey: ['me'],
     queryFn: usersApi.getMe,
   });
+
+  // useQuery로 getNotificationsOfMe를 받아서
+  // notifications를 NotificationPopup에 전달 - 조형민
+  const { data } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: notificationsApi.getNotificationsOfMe,
+  });
+
+  const notifications = data || [];
+
   const handleClickLogin = () => {
     router.push('/auth/log-in');
   };
@@ -70,6 +81,7 @@ function Gnb() {
                   <NotificationPopup
                     isOpen={showNotification}
                     setIsOpen={setShowNotification}
+                    notifications={notifications}
                   />
                   {/* 알림팝업 호출 end - 김주영  */}
                 </div>

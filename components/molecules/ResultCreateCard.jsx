@@ -27,7 +27,7 @@ function ResultCreateCard({ grade, name, isSuccess = 'true' }) {
           content={`[${grade} | ${name}] 
            생성에 ${title02}했습니다!`}
         />
-        <div className="w-[226px] lg:w-[440px]">
+        <div className="w-[226px] md:w-[277px] lg:w-[440px]">
           <Button
             onClick={handleClickButton}
             intent="secondary"

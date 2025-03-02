@@ -1,22 +1,22 @@
 'use client';
 
-import Modal from '../organisms/Modal';
-import Title from '../molecules/Title';
-import InputSearch from '../molecules/InputSearch';
-import { useForm } from 'react-hook-form';
-import Dropdown from '../atoms/Dropdown';
-import constants from '@/constant';
 import cardsApi from '@/api/cards/cards.api';
+import constants from '@/constant';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import Dropdown from '../atoms/Dropdown';
+import InputSearch from '../molecules/InputSearch';
+import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
-import CardDetailModalForSale from './CardDetailModalForSale';
+import Modal from '../organisms/Modal';
 import CardDetailModalForExchange from './CardDetailModalForExchange';
+import CardDetailModalForSale from './CardDetailModalForSale';
 
 /**
  *  - intent : sale, exchange
  */
-function CardActionModal({ intent }) {
+function CardActionModal({ intent, sellerId }) {
   const [modalContent, setModalContent] = useState('list');
   const [selectedCard, setSelectedCard] = useState(null);
   const [grade, setGrade] = useState('등급');
@@ -108,7 +108,11 @@ function CardActionModal({ intent }) {
         <CardDetailModalForSale card={selectedCard} onBack={handleBack} />
       ) : (
         // 카드 교환하기 디테일
-        <CardDetailModalForExchange card={selectedCard} onBack={handleBack} />
+        <CardDetailModalForExchange
+          card={selectedCard}
+          onBack={handleBack}
+          sellerId={sellerId}
+        />
       )}
     </Modal>
   );

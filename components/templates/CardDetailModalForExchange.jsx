@@ -1,7 +1,7 @@
 import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useModal } from '@/contexts/ModalContext';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
@@ -9,12 +9,13 @@ import InputTextBox from '../molecules/InputTextBox';
 import Title from '../molecules/Title';
 import Card from '../organisms/Card';
 
-function CardDetailModalForExchange({ card, onBack }) {
+function CardDetailModalForExchange({ card, onBack, sellerId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
   const router = useRouter();
   const pathname = usePathname();
+  const queryClient = useQueryClient();
 
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
@@ -25,7 +26,7 @@ function CardDetailModalForExchange({ card, onBack }) {
   const { mutate: proposeExchange } = useMutation({
     mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
     onSuccess: (data) => {
-      console.log(getValues(), data);
+      // console.log(getValues(), data);
       modal.close();
       router.push(
         `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
@@ -43,11 +44,13 @@ function CardDetailModalForExchange({ card, onBack }) {
 
   const { mutate: sendNotification } = useMutation({
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
   });
 
   const handleExchangeClick = (dto) => {
     const shopId = pathname.replace(/^\/+/, '');
-    console.log(dto.description);
 
     const data = {
       content: dto.description,
