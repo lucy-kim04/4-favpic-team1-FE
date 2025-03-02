@@ -66,7 +66,7 @@ function SignUpPage() {
   return (
     <PageContainer>
       <div className="flex justify-center items-center bg-[#0f0f0f]">
-        <div className="w-[520px]">
+        <div className="w-[520px] md:w-[440px] sm:2-[345px]">
           <div className="mb-20 flex justify-center">
             <Logo intent="auth" />
           </div>
@@ -146,7 +146,11 @@ function SignUpPage() {
             </div>
 
             <div>
-              <Button type="submit" intent="primary">
+              <Button
+                type="submit"
+                intent="primary"
+                className="sm:h-[55px] md:h-[55px]"
+              >
                 회원가입
               </Button>
             </div>
