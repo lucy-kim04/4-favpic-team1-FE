@@ -18,10 +18,15 @@ function Card({ card, intent = 'shop', ...props }) {
     props.onCardClick(card, intent);
   };
   const cursorClassName = `${props.onCardClick ? 'cursor-pointer' : ''}`;
+  const hoverClassName = `${
+    props.onCardClick
+      ? 'hover:brightness-75 hover:shadow-card hover:border-[#6c6b6b] active:brightness-75'
+      : ''
+  }`;
   return (
     <div
       onClick={handleClickCard}
-      className={`border border-card-border p-10 md:p-5 sm:p-[10px] ${cursorClassName}`}
+      className={`border border-card ring-white p-10 md:p-5 sm:p-[10px] ${hoverClassName} ${cursorClassName}`}
     >
       <CardTop card={card} intent={intent} />
       <CardBottom

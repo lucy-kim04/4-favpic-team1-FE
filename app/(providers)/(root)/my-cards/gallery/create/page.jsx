@@ -41,7 +41,7 @@ function CreateCardPage() {
 
   const router = useRouter();
 
-  const { mutate: createCard } = useMutation({
+  const { mutate: createCard, isPending } = useMutation({
     mutationFn: (data) => cardsApi.createCard(data),
     onSuccess: () => {
       const { name, grade } = getValues();
@@ -168,7 +168,14 @@ function CreateCardPage() {
               }}
             />
           </div>
-          <Button intent={'primary'}>생성하기</Button>
+          <Button
+            intent={'primary'}
+            isPending={isPending}
+            size="h55"
+            className="lg:h-[60px] text-lg"
+          >
+            생성하기
+          </Button>
         </form>
       </div>
     </PageContainer>

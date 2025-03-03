@@ -1,5 +1,6 @@
 'use client';
 
+import notificationsApi from '@/api/notifications/notifications.api';
 import usersApi from '@/api/users/users.api';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
@@ -17,13 +18,23 @@ function Gnb() {
   // 포인트,알람 팝업 state 추가 -김주영
   const [showNotification, setShowNotification] = useState(false);
   const [showPointMenu, setShowPointMenu] = useState(false);
-  const { isLoggedIn, logout, userInfo, isAuthInitialized } = useAuth();
+  const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
 
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
   });
+
+  // useQuery로 getNotificationsOfMe를 받아서
+  // notifications를 NotificationPopup에 전달 - 조형민
+  const { data } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: notificationsApi.getNotificationsOfMe,
+  });
+
+  const notifications = data || [];
+
   const handleClickLogin = () => {
     router.push('/auth/log-in');
   };
@@ -33,7 +44,6 @@ function Gnb() {
   const handleClickLogout = () => {
     logout();
     setShowPointMenu(false);
-    window.location.reload(); // 페이지 리프레시
   };
   return (
     <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
@@ -71,6 +81,7 @@ function Gnb() {
                   <NotificationPopup
                     isOpen={showNotification}
                     setIsOpen={setShowNotification}
+                    notifications={notifications}
                   />
                   {/* 알림팝업 호출 end - 김주영  */}
                 </div>

@@ -1,11 +1,13 @@
 'use client';
 
+import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import Button from './Button';
 import Divider from './Divider';
 
 function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
+  const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const handleLinkClick = () => {
     setIsOpen(false);
   };
@@ -32,7 +34,6 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [setIsOpen]);
-
   return (
     <>
       {/* 딤드 처리 */}
@@ -65,33 +66,33 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
         transition-opacity sm:transition-transform duration-300 ease-in-out
       `}
       >
-        {user ? (
+        {isAuthInitialized && isLoggedIn && user ? (
           <>
-            <div className='px-6 pt-6 sm:mt-5'>
-              <p className='font-bold text-lg text-white mb-5'>
+            <div className="px-6 pt-6 sm:mt-5">
+              <p className="font-bold text-lg text-white mb-5">
                 안녕하세요, {user.nickname}님!
               </p>
-              <div className='flex justify-between pb-[10px]'>
-                <p className='text-sm text-[#5a5a5a]'>보유포인트</p>
-                <p className='text-sm text-[#EFFF04]'>{user.point}P</p>
+              <div className="flex justify-between pb-[10px]">
+                <p className="text-sm text-[#5a5a5a]">보유포인트</p>
+                <p className="text-sm text-[#EFFF04]">{user.point}P</p>
               </div>
             </div>
             <Divider />
-            <div className='px-6 pb-6'>
-              <ul className='flex flex-col gap-[10px] pt-[10px]'>
-                <Link href='/my-cards/gallery' onClick={handleLinkClick}>
-                  <li className='text-sm text-white cursor-pointer'>
+            <div className="px-6 pb-6">
+              <ul className="flex flex-col gap-[10px] pt-[10px]">
+                <Link href="/my-cards/gallery" onClick={handleLinkClick}>
+                  <li className="text-sm text-white cursor-pointer">
                     마이갤러리
                   </li>
                 </Link>
-                <Link href='/my-cards/sales' onClick={handleLinkClick}>
-                  <li className='text-sm text-white cursor-pointer'>
+                <Link href="/my-cards/sales" onClick={handleLinkClick}>
+                  <li className="text-sm text-white cursor-pointer">
                     나의 판매 포토카드
                   </li>
                 </Link>
               </ul>
               <p
-                className='absolute bottom-10 text-sm text-[#5a5a5a] cursor-pointer hover:brightness-75 active:brightness-50 md:hidden lg:hidden'
+                className="absolute bottom-10 text-sm text-[#5a5a5a] cursor-pointer hover:brightness-75 active:brightness-50 md:hidden lg:hidden"
                 onClick={onLogout}
               >
                 로그아웃
@@ -99,17 +100,17 @@ function PointPopup({ isOpen, setIsOpen, user, onLogin, onSignUp, onLogout }) {
             </div>
           </>
         ) : (
-          <div className='p-6 md:hidden lg:hidden'>
-            <p className='text-lg text-white mb-5'>로그인이 필요해요</p>
-            <p className='text-sm text-[#a4a4a4] mb-6'>
+          <div className="p-6 md:hidden lg:hidden">
+            <p className="text-lg text-white mb-5">로그인이 필요해요</p>
+            <p className="text-sm text-[#a4a4a4] mb-6">
               포토카드 구매, 판매, 교환 서비스 이용은 로그인 회원만 이용할 수
               있어요.
             </p>
-            <div className='flex flex-col gap-3'>
-              <Button onClick={handleLoginClick} size='h40'>
+            <div className="flex flex-col gap-3">
+              <Button onClick={handleLoginClick} size="h40">
                 로그인
               </Button>
-              <Button onClick={handleSignUpClick} size='h40' intent='secondary'>
+              <Button onClick={handleSignUpClick} size="h40" intent="secondary">
                 회원가입
               </Button>
             </div>

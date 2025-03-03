@@ -29,6 +29,7 @@ function MarketPlace({ initialData }) {
   const { handleSubmit, control } = useForm({ defaultValues: { search: '' } });
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
+
   const { data: shops, isPending } = useQuery({
     queryKey: ['shops', { ...searchOptions }],
     queryFn: () => shopsApi.getShops(searchOptions),
@@ -185,7 +186,9 @@ function MarketPlace({ initialData }) {
                 count: shops.filter((shop) => shop.onSale === sale).length,
               })),
             }}
-            onSelect={(selected) => console.log('선택된 필터:', selected)}
+            onSelect={(selected) => {
+              setSelectedFilter(selected);
+            }}
           />
         )}
       </div>

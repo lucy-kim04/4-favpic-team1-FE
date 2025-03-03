@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Loader from './Loader';
 
 /**
  * Button 컴포넌트 사용 방법
@@ -17,6 +18,7 @@ function Button({
   disabled = false,
   size = 'h60',
   className,
+  isPending = false,
   ...props
 }) {
   const defaultClassName = clsx(
@@ -50,7 +52,11 @@ function Button({
       )}
       {...props}
     >
-      {children}
+      {isPending ? (
+        <Loader color={intent === 'primary' ? '#000000' : '#ffffff'} />
+      ) : (
+        children
+      )}
     </button>
   );
 }

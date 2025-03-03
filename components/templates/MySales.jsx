@@ -14,6 +14,7 @@ import InputSearch from '../molecules/InputSearch';
 import Title from '../molecules/Title';
 import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
+import FilterModal from '../atoms/Filter';
 
 function MySales() {
   const [grade, setGrade] = useState('등급');

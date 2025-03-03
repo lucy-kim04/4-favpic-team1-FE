@@ -4,6 +4,7 @@ import ResultCreateCard from '@/components/molecules/ResultCreateCard';
 import ResultCreateShop from '@/components/molecules/ResultCreateShop';
 import ResultProposeExchange from '@/components/molecules/ResultProposeExchange';
 import ResultPurchase from '@/components/molecules/ResultPurchase';
+import ResultStopSales from '@/components/molecules/ResultStopSales';
 import ResultUpdateShop from '@/components/molecules/ResultUpdateShop';
 import { useSearchParams } from 'next/navigation';
 
@@ -38,6 +39,10 @@ function ResultPage() {
     case 'createCard':
       return (
         <ResultCreateCard isSuccess={isSuccess} name={name} grade={grade} />
+      );
+    case 'stopSales':
+      return (
+        <ResultStopSales isSuccess={isSuccess} name={name} grade={grade} />
       );
     case 'createShop':
       return (

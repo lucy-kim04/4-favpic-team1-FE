@@ -1,3 +1,4 @@
+import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
@@ -35,14 +36,34 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
   const { mutate: cancelProposeExchange } = useMutation({
     mutationFn: () => shopsApi.cancelProposeExchange(id, { editionId }),
     onSuccess: () => {
-      // shop의 내가 제시한 교환 목록 갱신 - 취소 시
+      // shop의 내가 제시한 교환 목록 갱신
       queryClient.invalidateQueries({
         queryKey: ['my-exchanges', { shopId }],
       });
-      // shop의 내가 제안받은 교환 목록 갱신 - 거절 시
+    },
+  });
+
+  const { mutate: refuseProposeExchange } = useMutation({
+    mutationFn: () => shopsApi.refuseExchange(id, { editionId }),
+    onSuccess: () => {
+      // shop의 내가 제안받은 교환 목록 갱신
       queryClient.invalidateQueries({
         queryKey: ['exchanges', { shopId }],
       });
+      // 교환 제시한 상대방에게 알림 전송
+      sendNotification({
+        notificationCase: 'refuseExchange',
+        userId: proposerId,
+        grade,
+        name,
+      });
+    },
+  });
+
+  const { mutate: sendNotification } = useMutation({
+    mutationFn: (dto) => notificationsApi.sendNotification(dto),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
     },
   });
 
@@ -53,6 +74,13 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
       // shop의 내가 제안받은 교환 목록 갱신 - 승인 시
       queryClient.invalidateQueries({
         queryKey: ['exchanges', { shopId }],
+      });
+      // 교환 제시한 상대방에게 알림 전송
+      sendNotification({
+        notificationCase: 'approveExchange',
+        userId: proposerId,
+        grade,
+        name,
       });
     },
   });
@@ -87,6 +115,10 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
     cancelProposeExchange();
   };
 
+  const handleClickModalRefuseExchange = () => {
+    refuseProposeExchange();
+  };
+
   const handleClickExchangeRefuse = () => {
     if (!isLoggedIn)
       return modal.open(
@@ -105,7 +137,7 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
         content={`[${grade} | ${name}]
          카드와의 교환을 거절하시겠습니까?`}
         buttonText="거절하기"
-        onClick={handleClickModalCancelExchange}
+        onClick={handleClickModalRefuseExchange}
       />
     );
   };
@@ -168,8 +200,6 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
         </div>
       </div>
     );
-
-  console.log(card);
 
   // 교환일 경우
   return (

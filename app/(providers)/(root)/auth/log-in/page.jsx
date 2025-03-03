@@ -25,6 +25,7 @@ function LoginPage() {
     mutationFn: (data) => usersApi.logIn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
       router.replace('/');
       authLogin();
     },
@@ -48,7 +49,7 @@ function LoginPage() {
   return (
     <PageContainer>
       <div className="flex justify-center items-center bg-[#0f0f0f]">
-        <div className="w-[520px]">
+        <div className="w-[520px] md:w-[440px] sm:[345px]">
           <div className="flex justify-center mb-20">
             <Logo intent="auth" />
           </div>
@@ -89,7 +90,11 @@ function LoginPage() {
             </div>
 
             <div>
-              <Button type="submit" intent="primary">
+              <Button
+                type="submit"
+                intent="primary"
+                className="sm:h-[55px] md:h-[55px]"
+              >
                 로그인
               </Button>
             </div>

@@ -140,6 +140,19 @@ const approveExchange = async (exchangeId, dto) => {
   }
 };
 
+// 교환 제안 거절하기
+// -> 교환 취소와 완전히 동일하지만, 알림 전송을 위해 요청 API를 구분
+const refuseExchange = async (exchangeId, dto) => {
+  try {
+    const url = `/shops/exchanges/${exchangeId}`;
+    const reponse = await client.put(url, dto);
+
+    return reponse.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const shopsApi = {
   createShop,
   getShops,
@@ -151,6 +164,7 @@ const shopsApi = {
   proposeExchange,
   cancelProposeExchange,
   approveExchange,
+  refuseExchange,
   updateShop,
 };
 

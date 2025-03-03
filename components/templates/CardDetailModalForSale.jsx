@@ -1,16 +1,16 @@
-import Image from 'next/image';
-import CardDetail from '../organisms/CardDetail';
-import InputDropdown from '../molecules/InputDropdown';
-import { useForm } from 'react-hook-form';
-import constants from '@/constant/index';
-import InputTextBox from '../molecules/InputTextBox';
-import Button from '../atoms/Button';
-import { useModal } from '@/contexts/ModalContext';
-import { useRouter } from 'next/navigation';
 import shopsApi from '@/api/shops/shops.api';
+import constants from '@/constant/index';
+import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import Title from '../molecules/Title';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import Button from '../atoms/Button';
+import InputDropdown from '../molecules/InputDropdown';
+import InputTextBox from '../molecules/InputTextBox';
+import Title from '../molecules/Title';
+import CardDetail from '../organisms/CardDetail';
 
 function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -50,7 +50,7 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
     }
   }, [shopData, reset]);
 
-  const { mutate: createShop } = useMutation({
+  const { mutate: createShop, isPending } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
       modal.close();
@@ -172,7 +172,7 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
         <Button intent="secondary" onClick={() => modal.close()}>
           취소하기
         </Button>
-        <Button intent="primary">
+        <Button intent="primary" isPending={isPending}>
           {intent === 'sale' ? '판매하기' : '수정하기'}
         </Button>
       </div>
