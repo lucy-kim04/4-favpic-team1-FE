@@ -63,10 +63,7 @@ function Gnb() {
             (isLoggedIn ? (
               <div className="flex items-center">
                 {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
-                <p
-                  className="text-sm font-bold mr-6 sm:hidden cursor-pointer"
-                  onClick={() => setShowPointMenu(!showPointMenu)}
-                >
+                <p className="text-sm font-bold mr-6 sm:hidden">
                   {user ? user.point : ''}P
                 </p>
                 {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
@@ -85,11 +82,12 @@ function Gnb() {
                   />
                   {/* 알림팝업 호출 end - 김주영  */}
                 </div>
-                <Link href="/my-cards/gallery">
-                  <p className="font-baskin text-lg mr-6 sm:hidden">
-                    {user ? user.nickname : ''}
-                  </p>
-                </Link>
+                <p
+                  className="font-baskin text-lg mr-6 cursor-pointer sm:hidden"
+                  onClick={() => setShowPointMenu(!showPointMenu)}
+                >
+                  {user ? user.nickname : ''}
+                </p>
                 <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>
                 <p
                   className="text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50"

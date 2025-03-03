@@ -1,10 +1,13 @@
+import notificationsApi from '@/api/notifications/notifications.api';
 import IcBack from '@/assets/images/ic-back.png';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 function NotificationPopup({ isOpen, setIsOpen, notifications }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const formatDate = (dateString) => {
     const now = new Date();
@@ -35,9 +38,18 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
 
   const menuRef = useRef(null);
 
-  const handleClickNotification = (link) => {
+  const { mutate: setIsReadToTrue } = useMutation({
+    mutationFn: (notificationId) =>
+      notificationsApi.setToTrueIsReadOfNotification(notificationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
+  });
+
+  const handleClickNotification = (link, id) => {
     router.push(`${link}`);
     setIsOpen(false);
+    setIsReadToTrue(id);
   };
 
   useEffect(() => {
@@ -87,9 +99,13 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
         </div>
         {notifications.map((notification) => (
           <div
-            onClick={() => handleClickNotification(notification.link)}
+            onClick={() =>
+              handleClickNotification(notification.link, notification.id)
+            }
             key={notification.id}
-            className={`font-normal text-sm text-white border-b border-[#333] p-5 
+            className={`font-normal text-sm ${
+              !notification.isRead ? '' : 'text-[#a4a4a4]'
+            } border-b border-[#333] p-5 
               cursor-pointer hover:bg-[#222222] first:sm:rounded-none last:sm:rounded-none last:border-none
               ${!notification.isRead ? 'bg-[#222222]' : ''}`}
           >
