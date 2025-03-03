@@ -41,8 +41,6 @@ function MySales() {
     retry: 0,
   });
 
-  console.log('data', data);
-
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
   };
