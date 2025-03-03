@@ -41,8 +41,20 @@ function MySales() {
     retry: 0,
   });
 
+  console.log('data', data);
+
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
+  };
+
+  const handleClickCard = (card, intent) => {
+    if (card.isWaitingExchange) {
+      // 교환중일때
+      router.push(`/${card.shopId}`);
+    } else {
+      // 판매중일때
+      router.push(`/${card.id}`);
+    }
   };
 
   const cards = data?.cards || [];
@@ -132,7 +144,7 @@ function MySales() {
           />
         )}
       </div>
-      <CardList cards={cards} intent="sales" />
+      <CardList cards={cards} intent="sales" onCardClick={handleClickCard} />
     </div>
   );
 }

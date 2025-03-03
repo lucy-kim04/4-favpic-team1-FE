@@ -31,7 +31,7 @@ function Modal({ children, ...props }) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 flex items-center justify-center z-20"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center z-40"
       onClick={handleClickModalOutside}
     >
       <div

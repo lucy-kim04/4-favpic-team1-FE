@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState } from 'react';
+import ReactDOM from 'react-dom';
 
 const ModalContext = createContext({});
 
@@ -24,15 +25,17 @@ export function ModalProvider({ children }) {
   const value = { modalElements, open, close, closeAll };
 
   return (
-    <ModalContext.Provider value={value}>
-      {children}
-      {modalElements.map((ModalComponent, index) => (
-        //각 모달에는 고유의 key와 높은 z-index를 부여하여 쌓임
-        <div key={index} className={`fixed inset-0 z-[${1000 + index}]`}>
-          {ModalComponent}
-        </div>
-      ))}
-    </ModalContext.Provider>
+    <>
+      <ModalContext.Provider value={value}>
+        {children}
+        {modalElements.map((ModalComponent, index) => (
+          //각 모달에는 고유의 key와 높은 z-index를 부여하여 쌓임
+          <div key={index} className={`fixed inset-0 z-[${1000 + index}]`}>
+            {ModalComponent}
+          </div>
+        ))}
+      </ModalContext.Provider>
+    </>
   );
 }
 
