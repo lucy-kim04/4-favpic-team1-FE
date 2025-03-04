@@ -5,11 +5,13 @@ import usersApi from '@/api/users/users.api';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import PointDrawModal from '../molecules/PointDrawModal';
 import Logo from './Logo';
 import NotificationPopup from './NotificationPopup';
 import PointPopup from './PointPopup';
@@ -20,6 +22,7 @@ function Gnb() {
   const [showPointMenu, setShowPointMenu] = useState(false);
   const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
+  const modal = useModal();
 
   const { data: user } = useQuery({
     queryKey: ['me'],
@@ -45,6 +48,9 @@ function Gnb() {
     logout();
     setShowPointMenu(false);
   };
+  const handleClickPoint = () => {
+    modal.open(<PointDrawModal />);
+  };
 
   const isNotReadCount = notifications.filter(
     (notification) => notification.isRead === false
@@ -68,7 +74,10 @@ function Gnb() {
             (isLoggedIn ? (
               <div className="flex items-center">
                 {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
-                <p className="text-sm font-bold mr-6 sm:hidden">
+                <p
+                  className="text-sm font-bold mr-6 cursor-pointer sm:hidden"
+                  onClick={handleClickPoint}
+                >
                   {user ? user.point : ''}P
                 </p>
                 {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
