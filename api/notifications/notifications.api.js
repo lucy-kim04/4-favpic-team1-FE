@@ -23,9 +23,21 @@ const getNotificationsOfMe = async () => {
   }
 };
 
+const setToTrueIsReadOfNotification = async (notificationId) => {
+  try {
+    const url = `/notifications/${notificationId}`;
+    const response = await client.patch(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const notificationsApi = {
   sendNotification,
   getNotificationsOfMe,
+  setToTrueIsReadOfNotification,
 };
 
 export default notificationsApi;
