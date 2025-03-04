@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
 import InputSearch from '../molecules/InputSearch';
+import Pagination from '../molecules/Pagination';
 import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import Modal from '../organisms/Modal';
@@ -16,12 +17,13 @@ import CardDetailModalForSale from './CardDetailModalForSale';
 /**
  *  - intent : sale, exchange
  */
-function CardActionModal({ intent, sellerId }) {
+function CardActionModal({ intent, sellerId, shopId }) {
   const [modalContent, setModalContent] = useState('list');
   const [selectedCard, setSelectedCard] = useState(null);
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
+  const [page, setPage] = useState(1); // pagination에 필요
   const containerRef = useRef(null);
   const { control, handleSubmit } = useForm({ defaultValues: { search: '' } });
 
@@ -37,7 +39,15 @@ function CardActionModal({ intent, sellerId }) {
       break;
   }
 
-  const searchOptions = { grade, genre, keyword };
+  const limit = 3; // 페이지당 표시 개수
+
+  const searchOptions = {
+    grade,
+    genre,
+    keyword,
+    limit,
+    skip: (page - 1) * limit,
+  };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
@@ -53,6 +63,9 @@ function CardActionModal({ intent, sellerId }) {
 
   const handleSubmitSearch = (e) => {
     setKeyword(e.search);
+    if (e.search) {
+      setPage(1);
+    }
   };
 
   const handleCardClick = (card) => {
@@ -66,6 +79,8 @@ function CardActionModal({ intent, sellerId }) {
   };
 
   const cards = data?.cards || [];
+  const searchCount = data?.searchCount || 0;
+  const maxPage = Math.ceil(searchCount / searchOptions.limit);
   if (isPending) return null;
 
   return (
@@ -102,6 +117,7 @@ function CardActionModal({ intent, sellerId }) {
             intent="gallery"
             onCardClick={handleCardClick}
           />
+          <Pagination currentPage={page} maxPage={maxPage} onClick={setPage} />
         </>
       ) : intent === 'sale' ? (
         // 카드 판매하기 디테일
@@ -112,6 +128,7 @@ function CardActionModal({ intent, sellerId }) {
           card={selectedCard}
           onBack={handleBack}
           sellerId={sellerId}
+          shopId={shopId}
         />
       )}
     </Modal>
