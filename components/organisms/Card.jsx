@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import CardBottom from '../molecules/CardBottom';
 import CardTop from '../molecules/CardTop';
 
@@ -11,7 +12,7 @@ import CardTop from '../molecules/CardTop';
  *   - exchange: 판매포토 카드 상세(판매자) 페이지의 하단 '교환 제시 목록'
  */
 
-function Card({ card, intent = 'shop', ...props }) {
+function Card({ card, intent = 'shop', targetRef, ...props }, ref) {
   const handleClickCard = () => {
     const isPossibleClick = !!props.onCardClick;
     if (!isPossibleClick) return;
@@ -27,6 +28,7 @@ function Card({ card, intent = 'shop', ...props }) {
     <div
       onClick={handleClickCard}
       className={`border border-card ring-white p-10 md:p-5 sm:p-[10px] ${hoverClassName} ${cursorClassName}`}
+      ref={ref}
     >
       <CardTop card={card} intent={intent} />
       <CardBottom
@@ -38,4 +40,4 @@ function Card({ card, intent = 'shop', ...props }) {
   );
 }
 
-export default Card;
+export default forwardRef(Card);

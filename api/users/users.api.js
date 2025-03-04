@@ -83,12 +83,38 @@ const getMe = async () => {
   }
 };
 
+// 포인트 추가
+const addPoint = async (point) => {
+  try {
+    const url = '/users/me/point';
+    const response = await client.put(url, { point });
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
+// 마지막 랜덤 박스 추첨 시각 기록
+const recordLastDrawingTime = async () => {
+  try {
+    const url = '/users/me/record-time';
+    const response = await client.put(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const usersApi = {
   singUp,
   logIn,
   refreshToken,
   checkIsAvailableNickname,
   getMe,
+  addPoint,
+  recordLastDrawingTime,
 };
 
 export default usersApi;
