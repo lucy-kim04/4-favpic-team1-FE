@@ -6,31 +6,30 @@ import { useEffect, useRef } from 'react';
 function NotificationPopup({ isOpen, setIsOpen, notifications }) {
   const router = useRouter();
 
+  const TIME_SETTING = {
+    MINUTE: 60 * 1000,
+    HOUR: 60 * 60 * 1000,
+    DAY: 24 * 60 * 60 * 1000,
+    WEEK: 7 * 24 * 60 * 60 * 1000,
+    MONTH: 30 * 24 * 60 * 60 * 1000,
+    YEAR: 365 * 24 * 60 * 60 * 1000,
+  };
+
   const formatDate = (dateString) => {
     const now = new Date();
-    const notificationDate = new Date(dateString);
-    const diffMs = now - notificationDate;
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diff = now - new Date(dateString);
 
-    if (diffHours < 24) {
-      if (diffHours === 0) {
-        const diffMinutes = Math.floor(diffMs / (1000 * 60));
-        return `${diffMinutes}분 전`;
-      }
-      return `${diffHours}시간 전`;
-    }
-
-    const year = notificationDate.getFullYear();
-    const month = notificationDate.getMonth() + 1;
-    const day = notificationDate.getDate();
-    const hours = String(notificationDate.getHours()).padStart(2, '0');
-    const minutes = String(notificationDate.getMinutes()).padStart(2, '0');
-
-    if (now.getFullYear() === year) {
-      return `${month}월 ${day}일 ${hours}:${minutes}`;
-    }
-
-    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+    if (diff < TIME_SETTING.HOUR)
+      return `${Math.floor(diff / TIME_SETTING.MINUTE)}분 전`;
+    if (diff < TIME_SETTING.DAY)
+      return `${Math.floor(diff / TIME_SETTING.HOUR)}시간 전`;
+    if (diff < TIME_SETTING.WEEK)
+      return `${Math.floor(diff / TIME_SETTING.DAY)}일 전`;
+    if (diff < TIME_SETTING.MONTH)
+      return `${Math.floor(diff / TIME_SETTING.WEEK)}주일 전`;
+    if (diff < TIME_SETTING.YEAR)
+      return `${Math.floor(diff / TIME_SETTING.MONTH)}개월 전`;
+    return `${Math.floor(diff / TIME_SETTING.YEAR)}년 전`;
   };
 
   const menuRef = useRef(null);
@@ -67,38 +66,40 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
     `}
     >
       <div
-        className="min-h-[108px] sm:min-h-screen max-h-[540px] sm:max-h-screen overflow-y-auto 
+        className='min-h-[108px] sm:min-h-screen max-h-[540px] sm:max-h-screen overflow-y-auto 
         [&::-webkit-scrollbar]:w-2 
         [&::-webkit-scrollbar-track]:bg-[#161616]
         [&::-webkit-scrollbar-thumb]:bg-[#333]
         [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:hover:bg-[#efff04]"
+        [&::-webkit-scrollbar-thumb]:hover:bg-[#efff04]'
       >
-        <div className="hidden sm:flex items-center relative p-4 border-b border-[#333]">
+        <div className='hidden sm:flex items-center relative p-4 border-b border-[#333]'>
           <Image
             src={IcBack}
-            alt="돌아가기 아이콘"
-            className=" text-white absolute left-4 w-4 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer "
+            alt='돌아가기 아이콘'
+            className=' text-white absolute left-4 w-4 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer '
             onClick={() => setIsOpen(false)}
           />
-          <h2 className="text-white text-lg font-bold flex-1 text-center">
+          <h2 className='text-white text-lg font-bold flex-1 text-center'>
             알림
           </h2>
         </div>
-        {notifications.map((notification) => (
-          <div
-            onClick={() => handleClickNotification(notification.link)}
-            key={notification.id}
-            className={`font-normal text-sm text-white border-b border-[#333] p-5 
-              cursor-pointer hover:bg-[#222222] first:sm:rounded-none last:sm:rounded-none last:border-none
-              ${!notification.isRead ? 'bg-[#222222]' : ''}`}
-          >
-            <p className="mb-[10px]">{notification.message}</p>
-            <p className="font-light text-xs text-[#a4a4a4]">
-              {formatDate(notification.createdAt)}
-            </p>
-          </div>
-        ))}
+        {notifications
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .map((notification) => (
+            <div
+              onClick={() => handleClickNotification(notification.link)}
+              key={notification.id}
+              className={`font-normal text-sm text-white border-b border-[#333] p-5 
+        cursor-pointer hover:bg-[#222222] first:sm:rounded-none last:sm:rounded-none last:border-none
+        ${!notification.isRead ? 'bg-[#222222]' : ''}`}
+            >
+              <p className='mb-[10px]'>{notification.message}</p>
+              <p className='font-light text-xs text-[#a4a4a4]'>
+                {formatDate(notification.createdAt)}
+              </p>
+            </div>
+          ))}
       </div>
     </div>
   );
