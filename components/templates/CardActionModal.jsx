@@ -16,7 +16,7 @@ import CardDetailModalForSale from './CardDetailModalForSale';
 /**
  *  - intent : sale, exchange
  */
-function CardActionModal({ intent, sellerId }) {
+function CardActionModal({ intent, sellerId, shopId }) {
   const [modalContent, setModalContent] = useState('list');
   const [selectedCard, setSelectedCard] = useState(null);
   const [grade, setGrade] = useState('등급');
@@ -112,6 +112,7 @@ function CardActionModal({ intent, sellerId }) {
           card={selectedCard}
           onBack={handleBack}
           sellerId={sellerId}
+          shopId={shopId}
         />
       )}
     </Modal>

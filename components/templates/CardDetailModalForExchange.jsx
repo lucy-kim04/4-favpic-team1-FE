@@ -9,7 +9,7 @@ import InputTextBox from '../molecules/InputTextBox';
 import Title from '../molecules/Title';
 import Card from '../organisms/Card';
 
-function CardDetailModalForExchange({ card, onBack, sellerId }) {
+function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
     card;
   const modal = useModal();
@@ -23,6 +23,8 @@ function CardDetailModalForExchange({ card, onBack, sellerId }) {
     },
   });
 
+  console.log(card);
+
   const { mutate: proposeExchange } = useMutation({
     mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
     onSuccess: (data) => {
@@ -35,7 +37,7 @@ function CardDetailModalForExchange({ card, onBack, sellerId }) {
       sendNotification({
         notificationCase: 'arriveProposal',
         userId: sellerId,
-        shopId: id,
+        shopId,
         grade,
         name,
       });
@@ -46,6 +48,8 @@ function CardDetailModalForExchange({ card, onBack, sellerId }) {
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      queryClient.invalidateQueries({ queryKey: ['exchanges'] });
+      queryClient.invalidateQueries({ queryKey: ['my-exchanges'] });
     },
   });
 

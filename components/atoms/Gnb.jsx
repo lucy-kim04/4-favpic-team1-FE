@@ -45,6 +45,13 @@ function Gnb() {
     logout();
     setShowPointMenu(false);
   };
+
+  const isNotReadCount = notifications.filter(
+    (notification) => notification.isRead === false
+  ).length;
+
+  // console.log(isNotReadCount);
+  console.log(notifications);
   return (
     <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
       <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4">
@@ -69,12 +76,19 @@ function Gnb() {
                 {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
                 <div className="relative">
                   {/* 알림팝업 호출 start - 주영  */}
-                  <Image
-                    src={icNotification}
-                    alt="알림아이콘"
-                    className="w-6 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer"
-                    onClick={() => setShowNotification(!showNotification)}
-                  />
+                  <div className="relative w-6 h-6 mr-6 flex justify-center items-center">
+                    <Image
+                      src={icNotification}
+                      alt="알림아이콘"
+                      className="w-[19px] sm:mr-0 cursor-pointer"
+                      onClick={() => setShowNotification(!showNotification)}
+                    />
+                    {isNotReadCount !== 0 && (
+                      <div className="w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center">
+                        {isNotReadCount}
+                      </div>
+                    )}
+                  </div>
                   <NotificationPopup
                     isOpen={showNotification}
                     setIsOpen={setShowNotification}
