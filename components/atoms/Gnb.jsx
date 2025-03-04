@@ -50,8 +50,6 @@ function Gnb() {
     (notification) => notification.isRead === false
   ).length;
 
-  // console.log(isNotReadCount);
-  console.log(notifications);
   return (
     <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
       <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4">

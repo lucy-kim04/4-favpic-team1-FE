@@ -10,16 +10,18 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
+import FilterModal from '../atoms/Filter';
 import InputSearch from '../molecules/InputSearch';
+import Pagination from '../molecules/Pagination';
 import Title from '../molecules/Title';
 import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
-import FilterModal from '../atoms/Filter';
 
 function MySales() {
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [onSale, setOnSale] = useState('매진 여부');
+  const [page, setPage] = useState(1); // pagination에 필요
   const [howToSale, setHowToSale] = useState('판매 방법');
   const [keyword, setKeyword] = useState('');
   const router = useRouter();
@@ -32,7 +34,17 @@ function MySales() {
     queryFn: usersApi.getMe,
   });
 
-  const searchOptions = { grade, genre, onSale, howToSale, keyword };
+  const limit = 2; // 페이지당 표시 개수
+
+  const searchOptions = {
+    grade,
+    genre,
+    onSale,
+    howToSale,
+    keyword,
+    limit,
+    skip: (page - 1) * limit,
+  };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfSales(searchOptions),
@@ -43,6 +55,9 @@ function MySales() {
 
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
+    if (dto.search) {
+      setPage(1);
+    }
   };
 
   const handleClickCard = (card, intent) => {
@@ -56,6 +71,8 @@ function MySales() {
   };
 
   const cards = data?.cards || [];
+  const searchCount = data?.searchCount || 0;
+  const maxPage = Math.ceil(searchCount / searchOptions.limit);
 
   if (isPending) return null;
   return (
@@ -143,6 +160,7 @@ function MySales() {
         )}
       </div>
       <CardList cards={cards} intent="sales" onCardClick={handleClickCard} />
+      <Pagination currentPage={page} maxPage={maxPage} onClick={setPage} />
     </div>
   );
 }
