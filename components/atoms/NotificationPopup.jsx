@@ -3,9 +3,8 @@ import IcBack from '@/assets/images/ic-back.png';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef } from 'react';
 
-function NotificationPopup({ isOpen, setIsOpen }) {
+function NotificationPopup({ isOpen, setIsOpen, notiPopupRef }) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -43,8 +42,6 @@ function NotificationPopup({ isOpen, setIsOpen }) {
     return `${Math.floor(diff / TIME_SETTING.YEAR)}년 전`;
   };
 
-  const menuRef = useRef(null);
-
   const { mutate: setIsReadToTrue } = useMutation({
     mutationFn: (notificationId) =>
       notificationsApi.setToTrueIsReadOfNotification(notificationId),
@@ -59,20 +56,9 @@ function NotificationPopup({ isOpen, setIsOpen }) {
     setIsReadToTrue(id);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [setIsOpen]);
-
   return (
     <div
-      ref={menuRef}
+      ref={notiPopupRef}
       className={`
       absolute sm:fixed top-16 sm:top-0 right-0 
       w-[300px] sm:w-full sm:h-full 

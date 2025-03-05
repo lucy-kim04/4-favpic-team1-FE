@@ -34,8 +34,6 @@ function MarketPlace({ initialData }) {
 
   const limit = 9; // 서버 컴포넌트(MarketPlacePage)에서 initialData로 넘겨주는 개수와 같아야 함
 
-  console.log(searchOptions);
-
   const { data, isPending, fetchNextPage } = useInfiniteQuery({
     queryKey: ['shops', { ...searchOptions }],
     queryFn: ({ pageParam }) => {
