@@ -6,6 +6,7 @@ import Logo from '@/components/atoms/Logo';
 import PageContainer from '@/components/atoms/PageContainer';
 import InputPassword from '@/components/molecules/InputPassword';
 import InputText from '@/components/molecules/InputText';
+import PointDrawModal from '@/components/molecules/PointDrawModal';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -37,7 +38,7 @@ function SignUpPage() {
       // 회원가입 성공 시 자동으로 로그인 시키기
       login({ email, password });
       // 랜덤 포인트 추첨 팝업 띄우기
-      setTimeout(() => modal.open(<PointDrawModal />), 3000);
+      setTimeout(() => modal.open(<PointDrawModal />), 2000);
     },
     onError: (error) => {
       const errorMessage = error.response.data;
