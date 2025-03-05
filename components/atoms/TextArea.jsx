@@ -20,7 +20,7 @@ function TextArea({ id, placeholder, size = 'lg', error = false, ...props }) {
       className={clsx(
         sizeClassNames,
         errorBorderClassNames,
-        'border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]'
+        'border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px] md:w-full sm:w-full'
       )}
       id={id}
       placeholder={placeholder}

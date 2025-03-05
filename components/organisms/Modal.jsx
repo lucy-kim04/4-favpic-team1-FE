@@ -73,7 +73,10 @@ function Modal({ children, ...props }) {
         >
           <button className="bg-[#5a5a5a] w-12 h-2 rounded-lg"></button>
         </div>
-        <div className="hidden sm:block absolute py-1" onClick={modals.close}>
+        <div
+          className="hidden sm:block absolute py-1 cursor-pointer"
+          onClick={modals.close}
+        >
           <Image src={iconLess} width={14} height={22} alt={'less'} />
         </div>
         {children}
