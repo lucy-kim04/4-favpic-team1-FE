@@ -34,8 +34,6 @@ function MarketPlace({ initialData }) {
 
   const limit = 9; // 서버 컴포넌트(MarketPlacePage)에서 initialData로 넘겨주는 개수와 같아야 함
 
-  console.log(searchOptions);
-
   const { data, isPending, fetchNextPage } = useInfiniteQuery({
     queryKey: ['shops', { ...searchOptions }],
     queryFn: ({ pageParam }) => {
@@ -53,10 +51,6 @@ function MarketPlace({ initialData }) {
       return allPages.length;
     },
   });
-
-  const handleClickMore = () => {
-    fetchNextPage();
-  };
 
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
@@ -164,7 +158,6 @@ function MarketPlace({ initialData }) {
             className='lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded'
             onClick={() => setIsFilterOpen(true)}
           ></button>
-
           <div className="shrink-0 z-10">
             <Dropdown
               label={orderBy}
@@ -209,6 +202,7 @@ function MarketPlace({ initialData }) {
         onCardClick={handleClickCard}
         ref={targetRef}
       />
+      {/* 무한스크롤 interceptor observer 감지용 */}
       <div ref={targetRef}></div>
       <div>
         {isFilterOpen && (

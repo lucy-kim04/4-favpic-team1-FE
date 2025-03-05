@@ -37,6 +37,7 @@ function MyGallery() {
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
 
   const limit = 6; // 페이지당 표시 개수

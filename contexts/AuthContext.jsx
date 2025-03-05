@@ -34,6 +34,16 @@ export function AuthProvider({ children }) {
     }
   }, [isLoggedIn, pathName]);
 
+  // 로그아웃된 상태에서 로그인/회원가입/마켓플레이스 외의 페이지에 있을 경우 마켓플레이스 페이지로 이동
+  useEffect(() => {
+    if (
+      !isLoggedIn &&
+      !(pathName === '/auth/sign-up' || pathName === '/auth/log-in')
+    ) {
+      router.replace('/');
+    }
+  }, [isLoggedIn, pathName]);
+
   useEffect(() => {
     async function initAuthStatus() {
       try {

@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PointDrawModal from '../molecules/PointDrawModal';
 import Logo from './Logo';
 import NotificationPopup from './NotificationPopup';
@@ -25,9 +25,15 @@ function Gnb() {
   const router = useRouter();
   const modal = useModal();
 
+  const notiButtonRef = useRef(null);
+  const notiPopupRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const menuPopupRef = useRef(null);
+
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
 
   // useQuery로 getNotificationsOfMe를 받아서
@@ -72,52 +78,77 @@ function Gnb() {
     if (pathname === '/result') return '';
     return '';
   };
+  // 알림 레이어가 열렸을 때 빈 화면을 클릭하면 닫히도록 하기 위함
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notiPopupRef.current &&
+        !notiPopupRef.current.contains(event.target) &&
+        notiButtonRef.current &&
+        !notiButtonRef.current.contains(event.target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target) &&
+        menuPopupRef.current &&
+        !menuPopupRef.current.contains(event.target)
+      ) {
+        setShowNotification(false);
+        setShowPointMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <header className='bg-[#0f0f0f] sticky z-20 top-0 flex justify-center'>
+    <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
       {isMainPage ? (
         <>
-          <div className='w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4'>
+          <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:mx-4">
             <button
-              className='hidden sm:block'
+              className="hidden sm:block"
               onClick={() => setShowPointMenu(!showPointMenu)}
             >
-              <Image src={icMenu} alt='메뉴' className='w-[22px]' />
+              <Image src={icMenu} alt="메뉴" className="w-[22px]" />
             </button>
             <Link href={'/'}>
               <Logo />
             </Link>
             {/* 포인트 팝업 위치 조정을 위한 div 열기 -김주영 */}
-            <div className='relative'>
+            <div className="relative">
               {isAuthInitialized &&
                 (isLoggedIn ? (
-                  <div className='flex items-center'>
+                  <div className="flex items-center">
                     {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
                     <p
-                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      className="text-sm font-bold mr-6 cursor-pointer sm:hidden"
                       onClick={handleClickPoint}
                     >
                       {user ? user.point : ''}P
                     </p>
                     {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
-                    <div className='relative'>
+                    <div className="relative">
                       {/* 알림팝업 호출 start - 주영  */}
-                      <div className='relative w-6 h-6 mr-6 flex justify-center items-center'>
+                      <div
+                        className="relative w-6 h-6 mr-6 flex justify-center items-center"
+                        ref={notiButtonRef}
+                      >
                         <Image
                           src={icNotification}
-                          alt='알림아이콘'
+                          alt="알림아이콘"
                           className={`w-[19px] sm:mr-0 ${
                             notifications.length > 0
                               ? 'cursor-pointer brightness-100'
                               : 'cursor-not-allowed brightness-50'
                           }`}
-                          onClick={() =>
+                          onClick={() => {
                             notifications.length > 0 &&
-                            setShowNotification(!showNotification)
-                          }
+                              setShowNotification(!showNotification);
+                            setShowPointMenu(false);
+                          }}
                         />
                         {isNotReadCount !== 0 && (
-                          <div className='w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center'>
+                          <div className="w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center">
                             {isNotReadCount}
                           </div>
                         )}
@@ -125,34 +156,38 @@ function Gnb() {
                       <NotificationPopup
                         isOpen={showNotification}
                         setIsOpen={setShowNotification}
-                        notifications={notifications}
+                        notiPopupRef={notiPopupRef}
                       />
                       {/* 알림팝업 호출 end - 김주영  */}
                     </div>
                     <p
-                      className='font-baskin text-lg mr-6 cursor-pointer sm:hidden'
-                      onClick={() => setShowPointMenu(!showPointMenu)}
+                      className="font-baskin text-lg mr-6 cursor-pointer sm:hidden"
+                      onClick={() => {
+                        setShowPointMenu(!showPointMenu);
+                        setShowNotification(false);
+                      }}
+                      ref={menuButtonRef}
                     >
                       {user ? user.nickname : ''}
                     </p>
-                    <div className='w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden'></div>
+                    <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>
                     <p
-                      className='text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50'
+                      className="text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50"
                       onClick={handleClickLogout}
                     >
                       로그아웃
                     </p>
                   </div>
                 ) : (
-                  <div className='flex items-center sm:w-[22px]'>
+                  <div className="flex items-center sm:w-[22px]">
                     <p
-                      className='text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                      className="text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                       onClick={handleClickLogin}
                     >
                       로그인
                     </p>
                     <p
-                      className='text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                      className="text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                       onClick={handleClickSignUp}
                     >
                       회원가입
@@ -168,6 +203,7 @@ function Gnb() {
                 onSignUp={handleClickSignUp}
                 onLogout={handleClickLogout}
                 onPointModal={handleClickPoint}
+                menuPopupRef={menuPopupRef}
               />
               {/* 포인트 팝업 위치 조정을 위한 div 닫기 -김주영 */}
             </div>
@@ -175,43 +211,43 @@ function Gnb() {
         </>
       ) : (
         <>
-          <div className='hidden h-[60px] p-5 sm:flex items-center justify-between w-full'>
+          <div className="hidden h-[60px] p-5 sm:flex items-center justify-between w-full">
             <button onClick={() => router.back()}>
               <Image
                 src={arrowLeftWhite}
-                alt='뒤로가기'
+                alt="뒤로가기"
                 width={24}
                 height={24}
               />
             </button>
-            <h1 className='text-lg font-bold absolute left-1/2 transform -translate-x-1/2'>
+            <h1 className="text-lg font-bold absolute left-1/2 transform -translate-x-1/2">
               {getMobilePageTitle(pathname)}
             </h1>
           </div>
-          <div className='w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:hidden'>
+          <div className="w-full h-20 md:h-[70px] sm:h-[60px] max-w-[1480px] flex justify-between items-center mx-16 md:mx-5 sm:hidden">
             <Link href={'/'}>
               <Logo />
             </Link>
-            <div className='relative'>
+            <div className="relative">
               {isAuthInitialized &&
                 (isLoggedIn ? (
-                  <div className='flex items-center'>
+                  <div className="flex items-center">
                     <p
-                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      className="text-sm font-bold mr-6 cursor-pointer sm:hidden"
                       onClick={handleClickPoint}
                     >
                       {user ? user.point : ''}P
                     </p>
-                    <div className='relative'>
-                      <div className='relative w-6 h-6 mr-6 flex justify-center items-center'>
+                    <div className="relative">
+                      <div className="relative w-6 h-6 mr-6 flex justify-center items-center">
                         <Image
                           src={icNotification}
-                          alt='알림아이콘'
-                          className='w-[19px] sm:mr-0 cursor-pointer'
+                          alt="알림아이콘"
+                          className="w-[19px] sm:mr-0 cursor-pointer"
                           onClick={() => setShowNotification(!showNotification)}
                         />
                         {isNotReadCount !== 0 && (
-                          <div className='w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center'>
+                          <div className="w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center">
                             {isNotReadCount}
                           </div>
                         )}
@@ -223,29 +259,29 @@ function Gnb() {
                       />
                     </div>
                     <p
-                      className='font-baskin text-lg mr-6 cursor-pointer sm:hidden'
+                      className="font-baskin text-lg mr-6 cursor-pointer sm:hidden"
                       onClick={() => setShowPointMenu(!showPointMenu)}
                     >
                       {user ? user.nickname : ''}
                     </p>
-                    <div className='w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden'></div>
+                    <div className="w-[1px] h-5 bg-[#5a5a5a] mr-6 sm:hidden"></div>
                     <p
-                      className='text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50'
+                      className="text-sm text-[#5a5a5a] cursor-pointer sm:hidden hover:brightness-75 active:brightness-50"
                       onClick={handleClickLogout}
                     >
                       로그아웃
                     </p>
                   </div>
                 ) : (
-                  <div className='flex items-center sm:w-[22px]'>
+                  <div className="flex items-center sm:w-[22px]">
                     <p
-                      className='text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                      className="text-sm mr-6 sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                       onClick={handleClickLogin}
                     >
                       로그인
                     </p>
                     <p
-                      className='text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50'
+                      className="text-sm sm:hidden cursor-pointer hover:brightness-75 active:brightness-50"
                       onClick={handleClickSignUp}
                     >
                       회원가입

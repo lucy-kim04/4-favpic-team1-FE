@@ -32,7 +32,7 @@ function CardTop({ card, intent }) {
       )}
 
       {imgUrl ? (
-        <div className="aspect-[360/270] relative mb-6 sm:mb-[10px]">
+        <div className="aspect-[4/3] relative mb-6 sm:mb-[10px]">
           <Image
             src={imgUrl}
             alt="카드 이미지"
