@@ -107,6 +107,32 @@ const recordLastDrawingTime = async () => {
   }
 };
 
+// 마이갤러리 상단의 summary count 조회
+const getMyGallerySummary = async () => {
+  console.log('do gallery');
+  try {
+    const url = '/users/me/gallery-summary';
+    const response = await client.get(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
+// 나의 판매 포토카드 상단의 summary count 조회
+const getMySalesSummary = async () => {
+  console.log('do sales');
+  try {
+    const url = '/users/me/sales-summary';
+    const response = await client.get(url);
+
+    return response.data;
+  } catch (error) {
+    errorHandler(error);
+  }
+};
+
 const usersApi = {
   singUp,
   logIn,
@@ -115,6 +141,8 @@ const usersApi = {
   getMe,
   addPoint,
   recordLastDrawingTime,
+  getMyGallerySummary,
+  getMySalesSummary,
 };
 
 export default usersApi;

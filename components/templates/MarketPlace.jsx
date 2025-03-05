@@ -32,16 +32,9 @@ function MarketPlace({ initialData }) {
 
   const targetRef = useRef(null);
 
-  // const { data: shops, isPending } = useQuery({
-  //   queryKey: ['shops', { ...searchOptions }],
-  //   queryFn: () => shopsApi.getShops(searchOptions),
-  //   initialData,
-  //   staleTime: 0,
-  //   placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
-  //   retry: 0,
-  // });
-  // console.log(initialData);
-  const limit = 9;
+  const limit = 9; // 서버 컴포넌트(MarketPlacePage)에서 initialData로 넘겨주는 개수와 같아야 함
+
+  console.log(searchOptions);
 
   const { data, isPending, fetchNextPage } = useInfiniteQuery({
     queryKey: ['shops', { ...searchOptions }],
@@ -53,6 +46,7 @@ function MarketPlace({ initialData }) {
       });
     },
     initialPageParam: 0,
+    staleTime: 0,
     initialData: { pages: [initialData], pageParams: [] },
     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
       if (lastPage.length < limit) return undefined;

@@ -1,4 +1,5 @@
 import shopsApi from '@/api/shops/shops.api';
+import imgLess from '@/assets/images/ic-less.png';
 import constants from '@/constant/index';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -11,7 +12,6 @@ import InputDropdown from '../molecules/InputDropdown';
 import InputTextBox from '../molecules/InputTextBox';
 import Title from '../molecules/Title';
 import CardDetail from '../organisms/CardDetail';
-import imgLess from '@/assets/images/ic-less.png';
 
 function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -54,11 +54,13 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { mutate: createShop, isPending } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
-      modal.close();
       queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
+      setTimeout(() => {
+        modal.close();
+      }, 1000);
     },
   });
 
@@ -66,10 +68,12 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
     mutationFn: (data) => shopsApi.updateShop(shopId, data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(['shop']);
-      modal.close();
       router.push(
         `/result?intent=updateShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
+      setTimeout(() => {
+        modal.close();
+      }, 1000);
     },
   });
 

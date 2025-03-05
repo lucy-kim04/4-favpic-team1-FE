@@ -75,6 +75,9 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
       queryClient.invalidateQueries({
         queryKey: ['exchanges', { shopId }],
       });
+      // shop의 상세 정보 갱신(재고) - 승인 시
+      queryClient.invalidateQueries({ queryKey: ['shop'] });
+      // queryClient.invalidateQueries({ queryKey: ['shop', { shopId }] });
       // 교환 제시한 상대방에게 알림 전송
       sendNotification({
         notificationCase: 'approveExchange',

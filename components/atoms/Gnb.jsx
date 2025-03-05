@@ -34,6 +34,7 @@ function Gnb() {
   const { data } = useQuery({
     queryKey: ['notifications'],
     queryFn: notificationsApi.getNotificationsOfMe,
+    enabled: !!user,
   });
 
   const notifications = data || [];
@@ -99,7 +100,7 @@ function Gnb() {
                   <NotificationPopup
                     isOpen={showNotification}
                     setIsOpen={setShowNotification}
-                    notifications={notifications}
+                    // notifications={notifications}
                   />
                   {/* 알림팝업 호출 end - 김주영  */}
                 </div>

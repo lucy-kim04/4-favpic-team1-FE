@@ -39,7 +39,7 @@ function MyGallery() {
     queryFn: usersApi.getMe,
   });
 
-  const limit = 3; // 페이지당 표시 개수
+  const limit = 6; // 페이지당 표시 개수
 
   // ✅ 필터가 바뀌면 useQuery가 다시 실행되도록 설정
   const searchOptions = {
@@ -112,11 +112,7 @@ function MyGallery() {
         >
           마이갤러리
         </Title>
-        <UserCardsSummary
-          nickname={user?.nickname}
-          userSummary={data?.userSummary}
-          intent="inPossesion"
-        />
+        <UserCardsSummary nickname={user?.nickname} intent="inPossesion" />
         <div className="flex justify-between items-center mt-5 sm:hidden">
           <form onSubmit={handleSubmit(handleSubmitSearch)}>
             <InputSearch

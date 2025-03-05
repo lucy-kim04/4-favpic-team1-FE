@@ -13,8 +13,8 @@ import ConfirmModal from './ConfirmModal';
 
 function PointDrawModal() {
   const modal = useModal();
-  const [second, setSecond] = useState(10);
-  const [minute, setMinute] = useState(0);
+  const [second, setSecond] = useState(59);
+  const [minute, setMinute] = useState(59);
   const [isPossibleDraw, setIsPossibleDraw] = useState(false);
   const interval = useRef();
   const queryClient = useQueryClient();
@@ -23,9 +23,6 @@ function PointDrawModal() {
     queryKey: ['me'],
     queryFn: usersApi.getMe,
   });
-
-  // console.log('분', minDiff);
-  // console.log('초', secDiff);
 
   const { mutate: addPoint } = useMutation({
     mutationFn: (point) => usersApi.addPoint(point),
@@ -36,6 +33,9 @@ function PointDrawModal() {
 
   const { mutate: recordLastDrawingTime } = useMutation({
     mutationFn: usersApi.recordLastDrawingTime,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+    },
   });
 
   const handleClickCloseButton = () => {
@@ -47,7 +47,7 @@ function PointDrawModal() {
     recordLastDrawingTime();
     setTimeout(() => {
       return modal.open(<PointDrawModal />);
-    }, 5000);
+    }, 3600000);
     modal.close();
     const pointList = [10, 10, 10, 10, 30, 30, 30, 50, 50, 100];
     const randomPoint = pointList[Math.floor(Math.random() * 10)];
@@ -61,7 +61,10 @@ function PointDrawModal() {
     );
   };
   useEffect(() => {
-    if (!user?.lastDrawingTime) return; // 추첨을 한 번도 한 적이 없으면 그냥 타이머 시작
+    if (!user?.lastDrawingTime) {
+      setIsPossibleDraw(true);
+      return;
+    } // 추첨을 한 번도 한 적이 없으면 추첨 가능 화면
 
     const lastTime = user?.lastDrawingTime || 0;
     const now = new Date();
