@@ -106,7 +106,7 @@ function MarketPlace({ initialData }) {
             />
           </form>
 
-          <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-0">
+          <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-10">
             <Dropdown
               label="등급"
               options={constants.CARD_GRADES}
@@ -129,7 +129,7 @@ function MarketPlace({ initialData }) {
             onClick={() => setIsFilterOpen(true)}
           ></button>
 
-          <div className="shrink-0 z-0">
+          <div className="shrink-0 z-10">
             <Dropdown
               label={orderBy}
               options={constants.SORT_OPTIONS}
@@ -141,7 +141,7 @@ function MarketPlace({ initialData }) {
         <div className="flex flex-col items-center mt-5 lg:hidden md:hidden w-full">
           <form
             onSubmit={handleSubmit(handleSubmitSearch)}
-            className="w-[345px]"
+            className="w-[345px] sm:w-full"
           >
             <InputSearch
               control={control}

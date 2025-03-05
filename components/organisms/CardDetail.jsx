@@ -24,6 +24,8 @@ import CardDetailTop from '../molecules/CardDetailTop';
  *   - black(기본값)
  *   - none
  *
+ *
+ * - givenClassNames : 값을 넘겨주면 기존 CSS 값이 없어지고 내려준 값으로 적용
  */
 function CardDetail({
   cardDetail,
@@ -31,11 +33,17 @@ function CardDetail({
   bottomIntent,
   dataId,
   bgColor = 'black',
+  givenClassNames = '',
   ...props
 }) {
   const bgColorClassNames = clsx({
     'bg-[#0f0f0f]': bgColor === 'black',
     '': bgColor === 'none',
+  });
+
+  const defaultClassNames = clsx({
+    'w-[440px] md:w-[342px] sm:w-[342px] px-0 py-0': !givenClassNames,
+    '': !!givenClassNames,
   });
 
   return (
@@ -45,7 +53,7 @@ function CardDetail({
         'flex justify-center items-center gap-4'
       )}
     >
-      <div className="w-[440px] md:w-[342px] sm:w-[342px] px-0 py-0">
+      <div className={clsx(defaultClassNames, givenClassNames)}>
         <CardDetailTop cardDetail={cardDetail} topIntent={topIntent} />
         <CardDetailBottom
           cardDetail={cardDetail}

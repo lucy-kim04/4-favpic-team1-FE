@@ -28,7 +28,7 @@ function InputDropdown({
   const { field, fieldState } = useController({ name, control, rules });
 
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px] md:w-full sm:w-full">
       <Label htmlFor={inputId}>{label}</Label>
       <SelectForm
         id={inputId}
