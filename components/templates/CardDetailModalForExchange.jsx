@@ -8,6 +8,8 @@ import Button from '../atoms/Button';
 import InputTextBox from '../molecules/InputTextBox';
 import Title from '../molecules/Title';
 import Card from '../organisms/Card';
+import Image from 'next/image';
+import imgLess from '@/assets/images/ic-less.png';
 
 function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -66,17 +68,27 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
 
   return (
     <form onSubmit={handleSubmit(handleExchangeClick)}>
-      <h3 onClick={onBack} className="font-baskin text-[#A4A4A4] text-[24px]">
-        {'< '} 포토카드 교환하기
+      <h3
+        onClick={onBack}
+        className="font-baskin text-[#A4A4A4] text-[24px] sm:text-white sm:text-center sm:text-xl"
+      >
+        <Image
+          src={imgLess}
+          width={12}
+          height={22}
+          alt={'less'}
+          className="sm:hidden inline-block py-1 mr-3 cursor-pointer"
+        />
+        포토카드 교환하기
       </h3>
       <Title intent="md" className={'mt-10 mb-12'}>
         {name}
       </Title>
-      <div className="flex gap-10 mb-20">
-        <div className="w-[440px]">
+      <div className="flex gap-10 mb-20 md:justify-center sm:flex-col sm:justify-center sm:items-center">
+        <div className="w-[440px] sm:w-[345px]">
           <Card card={card} intent={'gallery'} />
         </div>
-        <div>
+        <div className="md:w-[400px] sm:w-[345px]">
           <InputTextBox
             control={control}
             name={'description'}
