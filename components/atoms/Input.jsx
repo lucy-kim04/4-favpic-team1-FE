@@ -24,12 +24,22 @@ function Input({
     'border-gray-200': error === false,
   });
 
+  const mdSizeClassNames = clsx({
+    'md:w-full md:h-[55px]': true,
+  });
+
+  const smSizeClassNames = clsx({
+    'sm:w-full': true,
+  });
+
   return (
     <input
       className={clsx(
         sizeClassNames,
         errorBorderClassNames,
-        'border rounded-sm bg-black placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]'
+        'border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]',
+        mdSizeClassNames,
+        smSizeClassNames
       )}
       id={id}
       type={type}

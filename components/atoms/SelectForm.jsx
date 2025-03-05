@@ -34,6 +34,10 @@ function SelectForm({
     'border-gray-200': error === false,
   });
 
+  const defaultClassNames = clsx({
+    'md:w-full sm:w-full relative': true,
+  });
+
   const [isOpen, setIsOpen] = useState(false);
 
   const handleBlur = (e) => {
@@ -50,7 +54,11 @@ function SelectForm({
   };
 
   return (
-    <div tabIndex={0} onBlur={handleBlur}>
+    <div
+      tabIndex={0}
+      onBlur={handleBlur}
+      className={clsx(widthClassNames, hieghtClassNames, defaultClassNames)}
+    >
       {/* hidden select는 폼 제출 및 접근성을 위한 역할 */}
       <select
         id={id}
@@ -71,8 +79,6 @@ function SelectForm({
       {/* 커스텀 UI */}
       <div
         className={clsx(
-          widthClassNames,
-          hieghtClassNames,
           errorBorderClassNames,
           'flex items-center py-[20px] px-[18px] border'
         )}
@@ -96,8 +102,7 @@ function SelectForm({
       {isOpen && (
         <div
           className={clsx(
-            widthClassNames,
-            'absolute bg-black flex flex-col gap-5 border mt-1 py-[20px] px-[18px] z-10'
+            'absolute bg-black flex flex-col gap-5 border mt-1 py-[20px] px-[18px] z-10 w-full'
           )}
         >
           {options.map((option, index) => (
