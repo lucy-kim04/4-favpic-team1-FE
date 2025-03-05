@@ -12,18 +12,20 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
+import FilterModal from '../atoms/Filter';
 import ConfirmModal from '../molecules/ConfirmModal';
 import InputSearch from '../molecules/InputSearch';
+import Pagination from '../molecules/Pagination';
 import Title from '../molecules/Title';
 import UserCardsSummary from '../molecules/UserCardsSummary';
 import CardList from '../organisms/CardList';
-import FilterModal from '../atoms/Filter';
 
 function MyGallery() {
   const [orderBy, setOrderBy] = useState('최신 순');
   const [grade, setGrade] = useState('등급');
   const [genre, setGenre] = useState('장르');
   const [keyword, setKeyword] = useState('');
+  const [page, setPage] = useState(1); // pagination에 필요
 
   const router = useRouter();
   const modal = useModal();
@@ -37,8 +39,17 @@ function MyGallery() {
     queryFn: usersApi.getMe,
   });
 
+  const limit = 3; // 페이지당 표시 개수
+
   // ✅ 필터가 바뀌면 useQuery가 다시 실행되도록 설정
-  const searchOptions = { orderBy, grade, genre, keyword };
+  const searchOptions = {
+    orderBy,
+    grade,
+    genre,
+    keyword,
+    limit,
+    skip: (page - 1) * limit,
+  };
   const { data, isPending } = useQuery({
     queryKey: ['cards', { ...searchOptions }],
     queryFn: () => cardsApi.getMyCardsOfGallery(searchOptions),
@@ -74,9 +85,18 @@ function MyGallery() {
   };
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
+    /**
+     * 키워드 검색을 했을 때 페이지를 1로 변경하기
+     * - (문제 케이스) 4페이지에서 검색을 했는데 검색 결과의 페이지 수가 이보다 적을 경우 보이지 않음
+     */
+    if (dto.search) {
+      setPage(1);
+    }
   };
 
   const cards = data?.cards || [];
+  const searchCount = data?.searchCount || 0;
+  const maxPage = Math.ceil(searchCount / searchOptions.limit);
 
   if (isPending) return null;
 
@@ -163,6 +183,7 @@ function MyGallery() {
       )}
 
       <CardList cards={cards} intent="gallery" onCardClick={handleClickCard} />
+      <Pagination currentPage={page} maxPage={maxPage} onClick={setPage} />
     </div>
   );
 }

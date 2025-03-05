@@ -29,11 +29,14 @@ const getMyCardsOfGallery = async ({
   grade = '등급',
   genre = '장르',
   keyword = '',
+  limit,
+  skip,
 }) => {
   try {
+    console.log(limit, skip);
     const url = '/cards/me/gallery';
     const response = await client.get(url, {
-      params: { orderBy, grade, genre, keyword },
+      params: { orderBy, grade, genre, keyword, limit, skip },
     });
 
     return response.data;
@@ -60,11 +63,13 @@ const getMyCardsOfSales = async ({
   onSale = '매진 여부',
   howToSale = '판매 방법',
   keyword = '',
+  limit,
+  skip,
 }) => {
   try {
     const url = '/cards/me/sales';
     const response = await client.get(url, {
-      params: { grade, genre, onSale, howToSale, keyword },
+      params: { grade, genre, onSale, howToSale, keyword, limit, skip },
     });
 
     return response.data;

@@ -187,7 +187,9 @@ function CardDetailBottom({
   // '포토카드 교환하기' 버튼 클릭시
   const handleClickExchange = () => {
     if (remainingCount === 0) return;
-    modal.open(<CardActionModal intent={'exchange'} sellerId={sellerId} />);
+    modal.open(
+      <CardActionModal intent={'exchange'} sellerId={sellerId} shopId={id} />
+    );
   };
 
   const handleClickModalStopSale = () => {

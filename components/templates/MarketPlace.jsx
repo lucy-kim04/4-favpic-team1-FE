@@ -5,9 +5,9 @@ import icDropdown from '@/assets/images/ic-dropdown.png';
 import constants from '@/constant';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
 import FilterModal from '../atoms/Filter';
@@ -30,14 +30,39 @@ function MarketPlace({ initialData }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const searchOptions = { orderBy, grade, genre, onSale, keyword };
 
-  const { data: shops, isPending } = useQuery({
+  const targetRef = useRef(null);
+
+  // const { data: shops, isPending } = useQuery({
+  //   queryKey: ['shops', { ...searchOptions }],
+  //   queryFn: () => shopsApi.getShops(searchOptions),
+  //   initialData,
+  //   staleTime: 0,
+  //   placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
+  //   retry: 0,
+  // });
+  // console.log(initialData);
+  const limit = 9;
+
+  const { data, isPending, fetchNextPage } = useInfiniteQuery({
     queryKey: ['shops', { ...searchOptions }],
-    queryFn: () => shopsApi.getShops(searchOptions),
-    initialData,
-    staleTime: 0,
-    placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
-    retry: 0,
+    queryFn: ({ pageParam }) => {
+      return shopsApi.getShops({
+        ...searchOptions,
+        limit,
+        skip: pageParam * limit,
+      });
+    },
+    initialPageParam: 0,
+    initialData: { pages: [initialData], pageParams: [] },
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
+      if (lastPage.length < limit) return undefined;
+      return allPages.length;
+    },
   });
+
+  const handleClickMore = () => {
+    fetchNextPage();
+  };
 
   const handleSubmitSearch = (dto) => {
     setKeyword(dto.search);
@@ -83,7 +108,24 @@ function MarketPlace({ initialData }) {
     modal.open(<CardActionModal intent="sale" />);
   };
 
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      console.log(entry);
+      if (entry.isIntersecting) {
+        fetchNextPage();
+      }
+    });
+    console.log(targetRef.current);
+    if (targetRef.current) observer.observe(targetRef.current);
+
+    return () => {
+      if (targetRef.current) observer.unobserve(targetRef.current);
+    };
+  }, [data]);
+
   if (isPending) return null;
+  const shops = data?.pages.flatMap((page) => page) || [];
 
   return (
     <div>
@@ -167,7 +209,13 @@ function MarketPlace({ initialData }) {
           </div>
         </div>
       </div>
-      <CardList cards={shops} intent="shop" onCardClick={handleClickCard} />
+      <CardList
+        cards={shops}
+        intent="shop"
+        onCardClick={handleClickCard}
+        ref={targetRef}
+      />
+      <div ref={targetRef}></div>
       <div>
         {isFilterOpen && (
           <FilterModal

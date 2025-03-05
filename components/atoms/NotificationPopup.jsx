@@ -1,43 +1,55 @@
+import notificationsApi from '@/api/notifications/notifications.api';
 import IcBack from '@/assets/images/ic-back.png';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 function NotificationPopup({ isOpen, setIsOpen, notifications }) {
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const TIME_SETTING = {
+    MINUTE: 60 * 1000,
+    HOUR: 60 * 60 * 1000,
+    DAY: 24 * 60 * 60 * 1000,
+    WEEK: 7 * 24 * 60 * 60 * 1000,
+    MONTH: 30 * 24 * 60 * 60 * 1000,
+    YEAR: 365 * 24 * 60 * 60 * 1000,
+  };
 
   const formatDate = (dateString) => {
     const now = new Date();
-    const notificationDate = new Date(dateString);
-    const diffMs = now - notificationDate;
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diff = now - new Date(dateString);
 
-    if (diffHours < 24) {
-      if (diffHours === 0) {
-        const diffMinutes = Math.floor(diffMs / (1000 * 60));
-        return `${diffMinutes}분 전`;
-      }
-      return `${diffHours}시간 전`;
-    }
-
-    const year = notificationDate.getFullYear();
-    const month = notificationDate.getMonth() + 1;
-    const day = notificationDate.getDate();
-    const hours = String(notificationDate.getHours()).padStart(2, '0');
-    const minutes = String(notificationDate.getMinutes()).padStart(2, '0');
-
-    if (now.getFullYear() === year) {
-      return `${month}월 ${day}일 ${hours}:${minutes}`;
-    }
-
-    return `${year}년 ${month}월 ${day}일 ${hours}:${minutes}`;
+    if (diff < TIME_SETTING.MINUTE) return `조금 전`;
+    if (diff < TIME_SETTING.HOUR)
+      return `${Math.floor(diff / TIME_SETTING.MINUTE)}분 전`;
+    if (diff < TIME_SETTING.DAY)
+      return `${Math.floor(diff / TIME_SETTING.HOUR)}시간 전`;
+    if (diff < TIME_SETTING.WEEK)
+      return `${Math.floor(diff / TIME_SETTING.DAY)}일 전`;
+    if (diff < TIME_SETTING.MONTH)
+      return `${Math.floor(diff / TIME_SETTING.WEEK)}주일 전`;
+    if (diff < TIME_SETTING.YEAR)
+      return `${Math.floor(diff / TIME_SETTING.MONTH)}개월 전`;
+    return `${Math.floor(diff / TIME_SETTING.YEAR)}년 전`;
   };
 
   const menuRef = useRef(null);
 
-  const handleClickNotification = (link) => {
+  const { mutate: setIsReadToTrue } = useMutation({
+    mutationFn: (notificationId) =>
+      notificationsApi.setToTrueIsReadOfNotification(notificationId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    },
+  });
+
+  const handleClickNotification = (link, id) => {
     router.push(`${link}`);
     setIsOpen(false);
+    setIsReadToTrue(id);
   };
 
   useEffect(() => {
@@ -85,11 +97,16 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
             알림
           </h2>
         </div>
+
         {notifications.map((notification) => (
           <div
-            onClick={() => handleClickNotification(notification.link)}
+            onClick={() =>
+              handleClickNotification(notification.link, notification.id)
+            }
             key={notification.id}
-            className={`font-normal text-sm text-white border-b border-[#333] p-5 
+            className={`font-normal text-sm ${
+              !notification.isRead ? '' : 'text-[#a4a4a4]'
+            } border-b border-[#333] p-5 
               cursor-pointer hover:bg-[#222222] first:sm:rounded-none last:sm:rounded-none last:border-none
               ${!notification.isRead ? 'bg-[#222222]' : ''}`}
           >

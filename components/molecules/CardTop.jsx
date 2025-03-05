@@ -33,13 +33,6 @@ function CardTop({ card, intent }) {
 
       {imgUrl ? (
         <div className="aspect-[360/270] relative mb-6 sm:mb-[10px]">
-          {!isOnSale && !isGallery && (
-            <Image
-              src={soldOut}
-              alt="매진"
-              className="z-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
-            />
-          )}
           <Image
             src={imgUrl}
             alt="카드 이미지"
@@ -49,6 +42,13 @@ function CardTop({ card, intent }) {
               !isOnSale && !isGallery ? ' opacity-30' : ''
             }`}
           />
+          {!isOnSale && !isGallery && (
+            <Image
+              src={soldOut}
+              alt="매진"
+              className="z-2 absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] transform w-[230px] md:w-[200px] sm:w-[112px]"
+            />
+          )}
         </div>
       ) : (
         <div></div>

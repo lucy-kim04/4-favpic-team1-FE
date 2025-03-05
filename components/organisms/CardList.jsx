@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { forwardRef } from 'react';
 import Card from './Card';
 
 /**
@@ -13,22 +14,29 @@ import Card from './Card';
  *  '나의 포토카드 판매하기' 모달에서 디자인 적용을 위해 옵션을 추가했습니다.
  */
 
-function CardList({ cards, intent, colNum = 3, ...props }) {
+function CardList({ cards, intent, colNum = 3, targetRef, ...props }, ref) {
   const colNumClassNames = clsx({
     'gap-20 md:gap-5 sm:gap-4 grid-cols-3 md:grid-cols-2 sm:grid-cols-2':
       colNum === 3,
     'gap-10 grid-cols-2': colNum === 2,
   });
+  console.log(cards.length, ref);
 
   return (
     <div className="flex justify-center">
       <div className={clsx(colNumClassNames, 'w-full grid')}>
-        {cards.map((card) => (
-          <Card key={card.id} intent={intent} card={card} {...props} />
+        {cards.map((card, index) => (
+          <Card
+            key={card.id + Math.random()}
+            intent={intent}
+            card={card}
+            // ref={index === cards.length - 2 ? ref : undefined}
+            {...props}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-export default CardList;
+export default forwardRef(CardList);
