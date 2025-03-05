@@ -93,7 +93,10 @@ function Gnb() {
                 (isLoggedIn ? (
                   <div className='flex items-center'>
                     {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
-                    <p className='text-sm font-bold mr-6 sm:hidden'>
+                    <p
+                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      onClick={handleClickPoint}
+                    >
                       {user ? user.point : ''}P
                     </p>
                     {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
@@ -192,7 +195,10 @@ function Gnb() {
               {isAuthInitialized &&
                 (isLoggedIn ? (
                   <div className='flex items-center'>
-                    <p className='text-sm font-bold mr-6 sm:hidden'>
+                    <p
+                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      onClick={handleClickPoint}
+                    >
                       {user ? user.point : ''}P
                     </p>
                     <div className='relative'>
