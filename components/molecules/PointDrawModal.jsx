@@ -47,7 +47,7 @@ function PointDrawModal() {
     recordLastDrawingTime();
     setTimeout(() => {
       return modal.open(<PointDrawModal />);
-    }, 5000);
+    }, 3600000);
     modal.close();
     const pointList = [10, 10, 10, 10, 30, 30, 30, 50, 50, 100];
     const randomPoint = pointList[Math.floor(Math.random() * 10)];
@@ -97,7 +97,7 @@ function PointDrawModal() {
       // 1분이 지나면
       setMinute((prev) => prev - 1); // 분 타이머 1만큼 감소
       setSecond(59); // 초 타이머 초기화
-    } else if (second === 0 && minute === 0) {
+    } else if (second === 20 && minute === 59) {
       setIsPossibleDraw(true);
       clearInterval(interval.current);
     }

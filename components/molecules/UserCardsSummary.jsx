@@ -1,9 +1,40 @@
+'use client';
+
+import usersApi from '@/api/users/users.api';
+import { useQuery } from '@tanstack/react-query';
 import GradeMyCardCount from '../atoms/GradeMyCardCount';
 
-function UserCardsSummary({ nickname, userSummary, intent = 'notPossesion' }) {
+function UserCardsSummary({ nickname, intent = 'notPossesion' }) {
   const label =
     intent === 'inPossesion' ? '보유한 포토카드' : '판매중인 포토카드';
-  const totalCount = Object.values(userSummary).reduce((a, b) => a + b);
+
+  const isMyGallery = intent === 'inPossesion';
+  const isSales = intent === 'notPossesion';
+
+  console.log(isMyGallery, isSales);
+
+  const { data: galleryData } = useQuery({
+    queryKey: ['myGallerySummary'],
+    queryFn: usersApi.getMyGallerySummary,
+    enabled: isMyGallery,
+    staleTime: 0,
+  });
+
+  const { data: salesData } = useQuery({
+    queryKey: ['mySalesSummary'],
+    queryFn: usersApi.getMySalesSummary,
+    enabled: isSales,
+    staleTime: 0,
+  });
+
+  const totalCount = isMyGallery
+    ? galleryData?.totalCount || 0
+    : salesData?.totalCount || 0;
+  const userSummary = isMyGallery
+    ? galleryData?.userSummary || {}
+    : salesData?.userSummary || {};
+
+  if (!galleryData && !salesData) return null;
   return (
     <div className="mt-10 sm:mt-5">
       <div className="flex items-center">

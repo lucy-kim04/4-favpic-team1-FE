@@ -1,13 +1,20 @@
 import notificationsApi from '@/api/notifications/notifications.api';
 import IcBack from '@/assets/images/ic-back.png';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-function NotificationPopup({ isOpen, setIsOpen, notifications }) {
+function NotificationPopup({ isOpen, setIsOpen }) {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { data } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: notificationsApi.getNotificationsOfMe,
+  });
+
+  const notifications = data || [];
 
   const TIME_SETTING = {
     MINUTE: 60 * 1000,
