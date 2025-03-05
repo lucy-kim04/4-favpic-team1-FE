@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PointDrawModal from '../molecules/PointDrawModal';
 import Logo from './Logo';
 import NotificationPopup from './NotificationPopup';
@@ -24,6 +24,9 @@ function Gnb() {
   const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
   const modal = useModal();
+
+  const notiButtonRef = useRef(null);
+  const notiPopupRef = useRef(null);
 
   const { data: user } = useQuery({
     queryKey: ['me'],
@@ -73,6 +76,23 @@ function Gnb() {
     return '';
   };
 
+  // 알림 레이어가 열렸을 때 빈 화면을 클릭하면 닫히도록 하기 위함
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        notiPopupRef.current &&
+        !notiPopupRef.current.contains(event.target) &&
+        notiButtonRef.current &&
+        !notiButtonRef.current.contains(event.target)
+      ) {
+        setShowNotification(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <header className="bg-[#0f0f0f] sticky z-20 top-0 flex justify-center">
       {isMainPage ? (
@@ -102,7 +122,10 @@ function Gnb() {
                     {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
                     <div className="relative">
                       {/* 알림팝업 호출 start - 주영  */}
-                      <div className="relative w-6 h-6 mr-6 flex justify-center items-center">
+                      <div
+                        className="relative w-6 h-6 mr-6 flex justify-center items-center"
+                        ref={notiButtonRef}
+                      >
                         <Image
                           src={icNotification}
                           alt="알림아이콘"
@@ -125,7 +148,7 @@ function Gnb() {
                       <NotificationPopup
                         isOpen={showNotification}
                         setIsOpen={setShowNotification}
-                        notifications={notifications}
+                        notiPopupRef={notiPopupRef}
                       />
                       {/* 알림팝업 호출 end - 김주영  */}
                     </div>
