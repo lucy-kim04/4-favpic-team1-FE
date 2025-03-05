@@ -62,7 +62,7 @@ function Gnb() {
   const pathname = usePathname();
   const isMainPage = pathname === '/' || pathname.match(/^\/[0-9a-f-]+$/);
 
-  //모바일 사이즈용 페이지 타이틀 맵핑하기 include는 하위까지 적용되서 with로 처리
+  //모바일 사이즈용 페이지타이틀 맵핑하기 include는 하위까지 적용되서 with로 처리
   const getMobilePageTitle = (pathname) => {
     if (pathname === '/my-cards/gallery/create') return '포토카드 생성하기';
     if (pathname.startsWith('/my-cards/gallery')) return '마이갤러리';
@@ -93,7 +93,10 @@ function Gnb() {
                 (isLoggedIn ? (
                   <div className='flex items-center'>
                     {/* 포인트 텍스트 컨테이너 시작 - 김주영*/}
-                    <p className='text-sm font-bold mr-6 sm:hidden'>
+                    <p
+                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      onClick={handleClickPoint}
+                    >
                       {user ? user.point : ''}P
                     </p>
                     {/* 포인트 텍스트 컨테이너 끝 - 김주영*/}
@@ -164,6 +167,7 @@ function Gnb() {
                 onLogin={handleClickLogin}
                 onSignUp={handleClickSignUp}
                 onLogout={handleClickLogout}
+                onPointModal={handleClickPoint}
               />
               {/* 포인트 팝업 위치 조정을 위한 div 닫기 -김주영 */}
             </div>
@@ -192,7 +196,10 @@ function Gnb() {
               {isAuthInitialized &&
                 (isLoggedIn ? (
                   <div className='flex items-center'>
-                    <p className='text-sm font-bold mr-6 sm:hidden'>
+                    <p
+                      className='text-sm font-bold mr-6 cursor-pointer sm:hidden'
+                      onClick={handleClickPoint}
+                    >
                       {user ? user.point : ''}P
                     </p>
                     <div className='relative'>
@@ -252,6 +259,7 @@ function Gnb() {
                 onLogin={handleClickLogin}
                 onSignUp={handleClickSignUp}
                 onLogout={handleClickLogout}
+                onPointModal={handleClickPoint}
               />
             </div>
           </div>
