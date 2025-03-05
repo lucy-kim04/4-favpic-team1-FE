@@ -35,7 +35,6 @@ const getShops = async ({
   skip,
 }) => {
   try {
-    console.log('do getShop');
     const url = '/shops';
     const response = await client.get(url, {
       params: { orderBy, grade, genre, onSale, keyword, limit, skip },

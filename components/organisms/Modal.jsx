@@ -1,12 +1,12 @@
 'use client';
 
-import { useModal } from '@/contexts/ModalContext';
-import iconX from '@/assets/images/ic-x.png';
 import iconLess from '@/assets/images/ic-less.png';
+import iconX from '@/assets/images/ic-x.png';
+import { useModal } from '@/contexts/ModalContext';
+import clsx from 'clsx';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import ConfirmModal from '../molecules/ConfirmModal';
-import clsx from 'clsx';
 
 function Modal({ children, ...props }) {
   const modals = useModal();

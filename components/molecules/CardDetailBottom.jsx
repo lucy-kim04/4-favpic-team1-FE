@@ -137,7 +137,8 @@ function CardDetailBottom({
   const { mutate: deleteShop } = useMutation({
     mutationFn: () => shopsApi.deleteShop(dataId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['shop']);
+      queryClient.invalidateQueries({ queryKey: ['shops'] });
+      // queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=stopSales&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${count}`
       );

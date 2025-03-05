@@ -7,7 +7,7 @@ import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import ModalBackGround from '../atoms/ModalBackGround';
+import BackDrop from '../atoms/BackDrop';
 import ResultTitle from '../atoms/ResultTitle';
 import ConfirmModal from './ConfirmModal';
 
@@ -22,6 +22,7 @@ function PointDrawModal() {
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
 
   const { mutate: addPoint } = useMutation({
@@ -107,7 +108,7 @@ function PointDrawModal() {
   }, [second]);
 
   return (
-    <ModalBackGround>
+    <BackDrop>
       <div className="relative flex flex-col justify-center items-center bg-[#161616] w-[1034px] h-[646px]">
         <Image
           src={icX}
@@ -143,7 +144,7 @@ function PointDrawModal() {
           onClick={handleClickRandomBoxes}
         />
       </div>
-    </ModalBackGround>
+    </BackDrop>
   );
 }
 

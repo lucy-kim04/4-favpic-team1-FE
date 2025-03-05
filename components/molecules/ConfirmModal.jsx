@@ -1,11 +1,11 @@
 'use client';
 
+import lineBreakText from '@/ utils/lineBreakText';
 import icX from '@/assets/images/ic-x.png';
 import { useModal } from '@/contexts/ModalContext';
-import lineBreakText from '@/libs/lineBreakText';
 import Image from 'next/image';
+import BackDrop from '../atoms/BackDrop';
 import Button from '../atoms/Button';
-import ModalBackGround from '../atoms/ModalBackGround';
 
 /**
  * 컨펌 모달창 사용 방법
@@ -31,7 +31,7 @@ function ConfirmModal({ title, content, buttonText = '확인', onClick }) {
     modal.close();
   };
   return (
-    <ModalBackGround>
+    <BackDrop>
       <div className="relative flex justify-center items-center bg-[#161616] w-[560px] sm:w-full h-[375px] sm:mx-[15px]">
         <Image
           src={icX}
@@ -57,7 +57,7 @@ function ConfirmModal({ title, content, buttonText = '확인', onClick }) {
           </div>
         </div>
       </div>
-    </ModalBackGround>
+    </BackDrop>
   );
 }
 
