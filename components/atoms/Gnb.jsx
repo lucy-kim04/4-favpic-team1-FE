@@ -33,6 +33,7 @@ function Gnb() {
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
 
   // useQuery로 getNotificationsOfMe를 받아서

@@ -20,6 +20,7 @@ function Detail({ dataId, intent = 'gallery' }) {
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
   const currentUser = user?.nickname || '';
   const { data } = useQuery({

@@ -22,6 +22,7 @@ function PointDrawModal() {
   const { data: user } = useQuery({
     queryKey: ['me'],
     queryFn: usersApi.getMe,
+    staleTime: 0,
   });
 
   const { mutate: addPoint } = useMutation({
