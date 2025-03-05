@@ -27,6 +27,8 @@ function Gnb() {
 
   const notiButtonRef = useRef(null);
   const notiPopupRef = useRef(null);
+  const menuButtonRef = useRef(null);
+  const menuPopupRef = useRef(null);
 
   const { data: user } = useQuery({
     queryKey: ['me'],
@@ -75,7 +77,6 @@ function Gnb() {
     if (pathname === '/result') return '';
     return '';
   };
-
   // 알림 레이어가 열렸을 때 빈 화면을 클릭하면 닫히도록 하기 위함
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -83,9 +84,14 @@ function Gnb() {
         notiPopupRef.current &&
         !notiPopupRef.current.contains(event.target) &&
         notiButtonRef.current &&
-        !notiButtonRef.current.contains(event.target)
+        !notiButtonRef.current.contains(event.target) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target) &&
+        menuPopupRef.current &&
+        !menuPopupRef.current.contains(event.target)
       ) {
         setShowNotification(false);
+        setShowPointMenu(false);
       }
     };
 
@@ -134,10 +140,11 @@ function Gnb() {
                               ? 'cursor-pointer brightness-100'
                               : 'cursor-not-allowed brightness-50'
                           }`}
-                          onClick={() =>
+                          onClick={() => {
                             notifications.length > 0 &&
-                            setShowNotification(!showNotification)
-                          }
+                              setShowNotification(!showNotification);
+                            setShowPointMenu(false);
+                          }}
                         />
                         {isNotReadCount !== 0 && (
                           <div className="w-2 h-2 bg-[#ff483d] absolute right-[2px] top-[2px] rounded-full z-20 text-[6px] font-bold flex justify-center items-center">
@@ -154,7 +161,11 @@ function Gnb() {
                     </div>
                     <p
                       className="font-baskin text-lg mr-6 cursor-pointer sm:hidden"
-                      onClick={() => setShowPointMenu(!showPointMenu)}
+                      onClick={() => {
+                        setShowPointMenu(!showPointMenu);
+                        setShowNotification(false);
+                      }}
+                      ref={menuButtonRef}
                     >
                       {user ? user.nickname : ''}
                     </p>
@@ -191,6 +202,7 @@ function Gnb() {
                 onSignUp={handleClickSignUp}
                 onLogout={handleClickLogout}
                 onPointModal={handleClickPoint}
+                menuPopupRef={menuPopupRef}
               />
               {/* 포인트 팝업 위치 조정을 위한 div 닫기 -김주영 */}
             </div>
