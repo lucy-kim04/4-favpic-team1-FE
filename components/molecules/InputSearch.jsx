@@ -57,7 +57,7 @@ function InputSearch({
       <div
         className={clsx(iconPositionClassNames, 'absolute pointer-events-none')}
       >
-        <Image src={icSearch} height={24} width={24} alt="search Icon" />
+        <Image src={icSearch} height={24} width={24} alt='search Icon' />
       </div>
     </div>
   );

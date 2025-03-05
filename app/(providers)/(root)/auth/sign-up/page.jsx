@@ -70,20 +70,20 @@ function SignUpPage() {
 
   return (
     <PageContainer>
-      <div className="flex justify-center items-center bg-[#0f0f0f]">
-        <div className="w-[520px] md:w-[440px] sm:2-[345px]">
-          <div className="mb-20 flex justify-center">
-            <Logo intent="auth" />
+      <div className='flex justify-center items-center bg-[#0f0f0f]'>
+        <div className='w-[345px] md:w-[440px] lg:w-[520px]'>
+          <div className='mb-20 flex justify-center'>
+            <Logo intent='auth' />
           </div>
-          <form className="w-full" onSubmit={handleSubmit(handleClickLogin)}>
-            <div className="inline-flex flex-col w-full">
-              <div className="mb-[30px]">
+          <form className='w-full' onSubmit={handleSubmit(handleClickLogin)}>
+            <div className='inline-flex flex-col w-full'>
+              <div className='mb-[30px]'>
                 <InputText
                   control={control}
-                  type="email"
-                  name="email"
-                  label="이메일"
-                  placeholder="이메일을 입력해 주세요"
+                  type='email'
+                  name='email'
+                  label='이메일'
+                  placeholder='이메일을 입력해 주세요'
                   rules={{
                     required: '이메일을 입력해 주세요',
                     pattern: {
@@ -94,13 +94,13 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className="mb-[30px]">
+              <div className='mb-[30px]'>
                 <InputText
                   control={control}
-                  type="text"
-                  name="nickname"
-                  label="닉네임"
-                  placeholder="닉네임을 입력해 주세요"
+                  type='text'
+                  name='nickname'
+                  label='닉네임'
+                  placeholder='닉네임을 입력해 주세요'
                   rules={{
                     required: '닉네임을 입력해 주세요',
                     minLength: {
@@ -110,7 +110,7 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className="mb-10">
+              <div className='mb-10'>
                 <InputPassword
                   control={control}
                   name={'password'}
@@ -125,7 +125,7 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className="mb-10">
+              <div className='mb-10'>
                 <InputPassword
                   control={control}
                   name={'passwordConfirm'}
@@ -152,9 +152,9 @@ function SignUpPage() {
 
             <div>
               <Button
-                type="submit"
-                intent="primary"
-                className="sm:h-[55px] md:h-[55px]"
+                type='submit'
+                intent='primary'
+                className='sm:h-[55px] md:h-[55px]'
               >
                 회원가입
               </Button>

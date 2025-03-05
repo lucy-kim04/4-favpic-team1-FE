@@ -13,11 +13,10 @@ function Input({
   error = false,
   ...props
 }) {
-  const sizeClassNames = clsx({
-    'w-[345px] h-[55px]': size === 'sm',
-    'w-[440px] h-[55px]': size === 'md',
-    'w-[520px] h-[60px]': size === 'lg',
-  });
+  const sizeClassNames = clsx(
+    'w-[345px] lg:w-[520px] md:w-[440px]',
+    'h-[60px] lg:h-[60px] md:h-[55px] sm:h-[55px]'
+  );
 
   const errorBorderClassNames = clsx({
     'border-[#ff483d]': error === true,
