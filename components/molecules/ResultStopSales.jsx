@@ -8,7 +8,7 @@ import ResultTitle from '../atoms/ResultTitle';
 function ResultStopSales({ grade, name, isSuccess = 'true' }) {
   const router = useRouter();
 
-  const title02 = isSuccess ? '성공' : '실패';
+  const title02 = isSuccess ? '실패' : '성공';
   const buttonText = isSuccess
     ? '마켓플레이스에서 확인하기'
     : '마켓플레이스로 돌아가기';
@@ -16,8 +16,8 @@ function ResultStopSales({ grade, name, isSuccess = 'true' }) {
     router.push('/');
   };
   return (
-    <div className="h-[100vh] flex justify-center items-center pb-20">
-      <div className="flex flex-col items-center gap-10">
+    <div className='h-[100vh] flex justify-center items-center pb-20'>
+      <div className='flex flex-col items-center gap-10'>
         <ResultTitle
           title01={'판매 내리기'}
           title02={` ${title02}`}
@@ -27,11 +27,11 @@ function ResultStopSales({ grade, name, isSuccess = 'true' }) {
           content={`[${grade} | ${name}] 
            판매 내리기에 ${title02}했습니다!`}
         />
-        <div className="w-[226px] md:w-[277px] lg:w-[440px]">
+        <div className='w-[226px] md:w-[277px] lg:w-[440px]'>
           <Button
             onClick={handleClickButton}
-            intent="secondary"
-            className="md:h-[55px] sm:h-[55px]"
+            intent='secondary'
+            className='md:h-[55px] sm:h-[55px]'
           >
             {buttonText}
           </Button>

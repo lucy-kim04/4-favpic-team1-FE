@@ -18,20 +18,34 @@ function Title({ children, intent = 'xl', onClick, className }) {
       : children === '마이갤러리'
       ? '포토카드 생성하기'
       : '포토카드 교환하기';
+  const isFixedButton =
+    buttonName === '내 포토카드 판매하기' || buttonName === '포토카드 생성하기';
   return (
-    <div className={className}>
-      <div className="border-b-2 border-[#eeeeee]] pb-4">
-        <div className="flex items-center justify-between ">
-          <TitleText intent={intent}>{children}</TitleText>
-          {onClick && (
-            <div className="w-[440px] md:w-[342px]">
-              <Button onClick={onClick}>{buttonName}</Button>
-            </div>
-          )}
+    <>
+      <div className={className}>
+        <div className='border-b-2 border-[#eeeeee] pb-4'>
+          <div className='flex items-center justify-between'>
+            <TitleText intent={intent}>{children}</TitleText>
+            {onClick &&
+              (isFixedButton ? (
+                <div className='w-[440px] md:w-[342px] sm:hidden'>
+                  <Button onClick={onClick}>{buttonName}</Button>
+                </div>
+              ) : (
+                <div className='w-[440px] md:w-[342px]'>
+                  <Button onClick={onClick}>{buttonName}</Button>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
-      <div></div>
-    </div>
+
+      {onClick && isFixedButton && (
+        <div className='hidden sm:block sm:fixed sm:bottom-0 sm:left-0 sm:right-0 sm:p-4 z-1'>
+          <Button onClick={onClick}>{buttonName}</Button>
+        </div>
+      )}
+    </>
   );
 }
 

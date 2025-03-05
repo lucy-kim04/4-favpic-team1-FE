@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Dropdown({
-  label = "선택",
+  label = '선택',
   options = [],
   onSelect = () => {},
-  buttonClass = "",
-  dropdownClass = "",
+  buttonClass = '',
+  dropdownClass = '',
   isBox = false,
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,35 +31,38 @@ export default function Dropdown({
         setIsOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
     <div
       className={clsx(
-        "relative inline-block z-10",
-        isBox && "border border-gray-200 px-[20px] w-[180px] box-border"
+        'relative inline-block z-[999]',
+        isBox &&
+          'border border-gray-200 w-[135px] md:w-[140px] lg:w-[180px] box-border py-[7.5px] md:py-[11.5px] lg:py-[13px] px-[15px] md:px-[15px] lg:px-5'
       )}
       ref={dropdownRef}
     >
       <button
         className={clsx(
-          "text-gray-200 text-[16px] md:text-[14px] py-[13px] font-bold cursor-pointer flex items-center",
-          isBox ? "gap-[38px]" : "gap-[15px]",
+          'text-gray-200 text-xs md:text-sm lg:text-base font-bold cursor-pointer flex justify-between items-center w-full',
+          isBox ? '' : 'gap-[10px]',
 
           buttonClass
         )}
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}
-        <span className="text-[8.4px]">{isOpen ? "▲" : "▼"}</span>
+        <span className='w-6 h-6 text-[8.4px] flex items-center justify-center'>
+          {isOpen ? '▲' : '▼'}
+        </span>
       </button>
       {isOpen && (
         <ul
           className={clsx(
-            "bg-[#0f0f0f] absolute left-0 px-[20px] py-[15px] text-white border border-gray-200 whitespace-nowrap gap-[15px] flex flex-col",
-            isBox && "w-[180px] box-border",
+            'bg-[#0f0f0f] absolute left-0 px-[20px] py-[15px] text-white border border-gray-200 whitespace-nowrap gap-[15px] flex flex-col',
+            isBox && 'w-[135px] md:w-[140px] lg:w-[180px] box-border top-14',
             dropdownClass
           )}
         >
@@ -67,9 +70,9 @@ export default function Dropdown({
             <li
               key={index}
               className={clsx(
-                "cursor-pointer text-base hover:bg-gray-400",
+                'cursor-pointer text-xs md:text-sm lg:text-base hover:bg-gray-400',
 
-                selectedOption === option && "bg-gray-600 w-full"
+                selectedOption === option && 'bg-gray-600 w-full'
               )}
               onClick={() => handleClick(option)}
             >

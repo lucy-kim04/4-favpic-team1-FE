@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import icSearch from "@/assets/images/ic-search.png";
-import clsx from "clsx";
-import Image from "next/image";
-import { useId } from "react";
-import { useController } from "react-hook-form";
-import Input from "../atoms/Input";
+import icSearch from '@/assets/images/ic-search.png';
+import clsx from 'clsx';
+import Image from 'next/image';
+import { useId } from 'react';
+import { useController } from 'react-hook-form';
+import Input from '../atoms/Input';
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
@@ -18,46 +18,51 @@ import Input from "../atoms/Input";
 function InputSearch({
   control,
   name,
-  size = "lg",
-  placeholder = "검색",
+  size = 'lg',
+  placeholder = '검색',
   rules = {},
   ...props
 }) {
   const inputId = useId();
   const { field, fieldState } = useController({ name, control, rules });
 
-  const sizeClassNames = clsx({
-    "max-w-[345px] h-[45px] mb-1": size === "lg",
-    "max-w-[320px] h-[50px] mb-1": size === "md",
-    "max-w-[200px] h-[45px] mb-1": size === "sm",
-  });
+  // const sizeClassNames = clsx({
+  //   'max-w-[345px] h-[45px] mb-1': size === 'lg',
+  //   'max-w-[320px] h-[50px] mb-1': size === 'md',
+  //   'max-w-[200px] h-[45px] mb-1': size === 'sm',
+  // });
+
+  const sizeClassNames = clsx(
+    'w-full lg:w-[320px] md:w-[200px]',
+    'h-[45px] lg:h-[50px]'
+  );
 
   // size 옵션에 따라 검색 아이콘 위치 조정
   const iconPositionClassNames = clsx({
-    "right-4": size === "lg",
-    "right-3": size === "md",
-    "right-0": size === "sm",
+    'right-4': size === 'lg',
+    'right-3': size === 'md',
+    'right-0': size === 'sm',
   });
 
   return (
     <div
       className={clsx(
         sizeClassNames,
-        "relative flex items-center w-full mt-3 mb-2"
+        'relative flex items-center w-full mt-3 mb-2'
       )}
     >
       <Input
         id={inputId}
-        type={"text"}
+        type={'text'}
         placeholder={placeholder}
         size={size}
         {...field}
         {...props}
       />
       <div
-        className={clsx(iconPositionClassNames, "absolute pointer-events-none")}
+        className={clsx(iconPositionClassNames, 'absolute pointer-events-none')}
       >
-        <Image src={icSearch} height={24} width={24} alt="search Icon" />
+        <Image src={icSearch} height={24} width={24} alt='search Icon' />
       </div>
     </div>
   );

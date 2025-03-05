@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useId, useState } from 'react';
-import { useController } from 'react-hook-form';
-import Label from '../atoms/Label';
-import Input from '../atoms/Input';
-import icEye from '../../assets/images/ic-eye.png';
-import icEyeOff from '../../assets/images/ic-eye-off.png';
-import Image from 'next/image';
 import clsx from 'clsx';
+import Image from 'next/image';
+import { useId, useState } from 'react';
+import { useController } from 'react-hook-form';
+import icEyeOff from '../../assets/images/ic-eye-off.png';
+import icEye from '../../assets/images/ic-eye.png';
+import Input from '../atoms/Input';
+import Label from '../atoms/Label';
 
 /**
  * control : useFrom에서 꺼낸 컨트롤러
@@ -30,18 +30,17 @@ function InputPassword({
   const { field, fieldState } = useController({ name, control, rules });
   const inputId = useId();
 
-  const sizeClassNames = clsx({
-    'max-w-[520px]': size === 'lg',
-    'max-w-[440px]': size === 'md',
-    'max-w-[345px]': size === 'sm',
-  });
+  const sizeClassNames = clsx(
+    'w-[345px] lg:w-[520px] md:w-[440px]',
+    'h-[60px] lg:h-[60px] md:h-[55px] sm:h-[55px]'
+  );
 
   const handleTogglePassword = () => {
     setShowPassword((prev) => !prev);
   };
 
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className='flex flex-col gap-[10px]'>
       <Label htmlFor={inputId}>{label}</Label>
       <div
         className={clsx(sizeClassNames, 'relative flex items-center w-full')}
@@ -53,7 +52,7 @@ function InputPassword({
           error={!!fieldState.error}
           {...field}
         />
-        <div className="absolute right-3">
+        <div className='absolute right-3'>
           <Image
             src={showPassword ? icEye : icEyeOff}
             height={24}
@@ -63,7 +62,7 @@ function InputPassword({
           />
         </div>
       </div>
-      {<small className="text-[#ff483d]">{fieldState.error?.message}</small>}
+      {<small className='text-[#ff483d]'>{fieldState.error?.message}</small>}
     </div>
   );
 }
