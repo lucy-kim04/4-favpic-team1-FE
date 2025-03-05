@@ -33,6 +33,9 @@ function PointDrawModal() {
 
   const { mutate: recordLastDrawingTime } = useMutation({
     mutationFn: usersApi.recordLastDrawingTime,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+    },
   });
 
   const handleClickCloseButton = () => {
