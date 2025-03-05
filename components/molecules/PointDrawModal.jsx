@@ -13,8 +13,8 @@ import ConfirmModal from './ConfirmModal';
 
 function PointDrawModal() {
   const modal = useModal();
-  const [second, setSecond] = useState(10);
-  const [minute, setMinute] = useState(0);
+  const [second, setSecond] = useState(59);
+  const [minute, setMinute] = useState(59);
   const [isPossibleDraw, setIsPossibleDraw] = useState(false);
   const interval = useRef();
   const queryClient = useQueryClient();
@@ -23,9 +23,6 @@ function PointDrawModal() {
     queryKey: ['me'],
     queryFn: usersApi.getMe,
   });
-
-  // console.log('분', minDiff);
-  // console.log('초', secDiff);
 
   const { mutate: addPoint } = useMutation({
     mutationFn: (point) => usersApi.addPoint(point),
@@ -61,7 +58,10 @@ function PointDrawModal() {
     );
   };
   useEffect(() => {
-    if (!user?.lastDrawingTime) return; // 추첨을 한 번도 한 적이 없으면 그냥 타이머 시작
+    if (!user?.lastDrawingTime) {
+      setIsPossibleDraw(true);
+      return;
+    } // 추첨을 한 번도 한 적이 없으면 추첨 가능 화면
 
     const lastTime = user?.lastDrawingTime || 0;
     const now = new Date();
@@ -97,7 +97,7 @@ function PointDrawModal() {
       // 1분이 지나면
       setMinute((prev) => prev - 1); // 분 타이머 1만큼 감소
       setSecond(59); // 초 타이머 초기화
-    } else if (second === 20 && minute === 59) {
+    } else if (second === 0 && minute === 0) {
       setIsPossibleDraw(true);
       clearInterval(interval.current);
     }

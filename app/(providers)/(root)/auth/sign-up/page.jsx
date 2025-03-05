@@ -7,6 +7,7 @@ import PageContainer from '@/components/atoms/PageContainer';
 import InputPassword from '@/components/molecules/InputPassword';
 import InputText from '@/components/molecules/InputText';
 import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -19,6 +20,7 @@ function SignUpPage() {
   const queryClient = useQueryClient();
 
   const router = useRouter();
+  const modal = useModal();
   const { handleSubmit, control, getValues, setError } = useForm({
     mode: 'onBlur',
     defaultValues: {
@@ -34,6 +36,8 @@ function SignUpPage() {
     onSuccess: () => {
       // 회원가입 성공 시 자동으로 로그인 시키기
       login({ email, password });
+      // 랜덤 포인트 추첨 팝업 띄우기
+      setTimeout(() => modal.open(<PointDrawModal />), 3000);
     },
     onError: (error) => {
       const errorMessage = error.response.data;
