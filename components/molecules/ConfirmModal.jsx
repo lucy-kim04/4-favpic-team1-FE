@@ -1,8 +1,8 @@
 'use client';
 
+import lineBreakText from '@/ utils/lineBreakText';
 import icX from '@/assets/images/ic-x.png';
 import { useModal } from '@/contexts/ModalContext';
-import lineBreakText from '@/libs/lineBreakText';
 import Image from 'next/image';
 import Button from '../atoms/Button';
 import ModalBackGround from '../atoms/ModalBackGround';

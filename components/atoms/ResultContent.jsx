@@ -1,4 +1,4 @@
-import lineBreakText from '@/libs/lineBreakText';
+import lineBreakText from '@/ utils/lineBreakText';
 
 function ResultContent({ content }) {
   return (
