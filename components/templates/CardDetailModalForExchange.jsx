@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
+import Loader from '../atoms/Loader';
 import InputTextBox from '../molecules/InputTextBox';
 import Title from '../molecules/Title';
 import Card from '../organisms/Card';
@@ -27,24 +28,28 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
 
   console.log(card);
 
-  const { mutate: proposeExchange } = useMutation({
-    mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
-    onSuccess: (data) => {
-      // console.log(getValues(), data);
-      modal.close();
-      router.push(
-        `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
-      );
-      // 상점의 판매자에게 알림 전송
-      sendNotification({
-        notificationCase: 'arriveProposal',
-        userId: sellerId,
-        shopId,
-        grade,
-        name,
-      });
-    },
-  });
+  const { mutate: proposeExchange, isPending: isExchangePending } = useMutation(
+    {
+      mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
+      onSuccess: (data) => {
+        // console.log(getValues(), data);
+        // 상점의 판매자에게 알림 전송
+        router.push(
+          `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
+        );
+        sendNotification({
+          notificationCase: 'arriveProposal',
+          userId: sellerId,
+          shopId,
+          grade,
+          name,
+        });
+        setTimeout(() => {
+          modal.close();
+        }, 1000);
+      },
+    }
+  );
 
   const { mutate: sendNotification } = useMutation({
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
@@ -101,7 +106,9 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
             <Button intent="secondary" onClick={() => modal.close()}>
               취소하기
             </Button>
-            <Button intent="primary">교환하기</Button>
+            <Button intent="primary">
+              {isExchangePending ? <Loader /> : '교환하기'}
+            </Button>
           </div>
         </div>
       </div>

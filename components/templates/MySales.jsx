@@ -34,7 +34,7 @@ function MySales() {
     queryFn: usersApi.getMe,
   });
 
-  const limit = 2; // 페이지당 표시 개수
+  const limit = 6; // 페이지당 표시 개수
 
   const searchOptions = {
     grade,

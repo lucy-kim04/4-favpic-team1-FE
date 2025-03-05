@@ -32,16 +32,9 @@ function MarketPlace({ initialData }) {
 
   const targetRef = useRef(null);
 
-  // const { data: shops, isPending } = useQuery({
-  //   queryKey: ['shops', { ...searchOptions }],
-  //   queryFn: () => shopsApi.getShops(searchOptions),
-  //   initialData,
-  //   staleTime: 0,
-  //   placeholderData: (prevData) => prevData, // 깜박임을 없애기 위해 넣었는데..잘 안 됨(2025.02.19)
-  //   retry: 0,
-  // });
-  // console.log(initialData);
-  const limit = 9;
+  const limit = 9; // 서버 컴포넌트(MarketPlacePage)에서 initialData로 넘겨주는 개수와 같아야 함
+
+  console.log(searchOptions);
 
   const { data, isPending, fetchNextPage } = useInfiniteQuery({
     queryKey: ['shops', { ...searchOptions }],
@@ -53,6 +46,7 @@ function MarketPlace({ initialData }) {
       });
     },
     initialPageParam: 0,
+    staleTime: 0,
     initialData: { pages: [initialData], pageParams: [] },
     getNextPageParam: (lastPage, allPages, lastPageParam, allPageParams) => {
       if (lastPage.length < limit) return undefined;
@@ -79,7 +73,7 @@ function MarketPlace({ initialData }) {
           title={'로그인이 필요합니다.'}
           content={`로그인이 필요한 서비스입니다.
             로그인 하시겠습니까?`}
-          buttonText="로그인하기"
+          buttonText='로그인하기'
           onClick={handleClickModalButton}
         />
       );
@@ -101,11 +95,11 @@ function MarketPlace({ initialData }) {
           title={'로그인이 필요합니다.'}
           content={`로그인이 필요한 서비스입니다.
             로그인 하시겠습니까?`}
-          buttonText="로그인하기"
+          buttonText='로그인하기'
           onClick={handleClickModalButton}
         />
       );
-    modal.open(<CardActionModal intent="sale" />);
+    modal.open(<CardActionModal intent='sale' />);
   };
 
   useEffect(() => {
@@ -130,44 +124,44 @@ function MarketPlace({ initialData }) {
   return (
     <div>
       {/* <MarketPlaceHeader /> */}
-      <div className="mb-[60px] md:mb-10 sm:mb-5">
+      <div className='mb-[60px] md:mb-10 sm:mb-5'>
         <Title
-          intent="xl"
+          intent='xl'
           onClick={handleTitleButtonClick}
-          className="sm:hidden"
+          className='sm:hidden'
         >
           마켓플레이스
         </Title>
-        <div className="flex justify-between items-center mt-5 sm:hidden">
-          <form onSubmit={handleSubmit(handleSubmitSearch)}>
+        <div className='flex justify-between items-center mt-5 sm:hidden'>
+          <form onSubmit={handleSubmit(handleSubmitSearch)} className='w-full'>
             <InputSearch
               control={control}
               name={'search'}
               placeholder={'검색'}
-              size="md"
+              size='md'
             />
           </form>
 
           <div className="flex shrink-0 sm:hidden ml-[60px] md:ml-[30px] gap-[45px] md:gap-[25px] z-10">
             <Dropdown
-              label="등급"
+              label='등급'
               options={constants.CARD_GRADES}
               onSelect={setGrade}
             />
             <Dropdown
-              label="장르"
+              label='장르'
               options={constants.CARD_GENRES}
               onSelect={setGenre}
             />
             <Dropdown
-              label="매진 여부"
+              label='매진 여부'
               options={constants.CARD_ON_SALE}
               onSelect={setOnSale}
             />
           </div>
-          <div className="w-full grow-1"></div>
+          <div className='w-full grow-1'></div>
           <button
-            className="lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded"
+            className='lg:hidden md:hidden w-10 h-10 flex items-center justify-center border border-white rounded'
             onClick={() => setIsFilterOpen(true)}
           ></button>
 
@@ -180,7 +174,7 @@ function MarketPlace({ initialData }) {
             />
           </div>
         </div>
-        <div className="flex flex-col items-center mt-5 lg:hidden md:hidden w-full">
+        <div className='flex flex-col items-center mt-5 lg:hidden md:hidden w-full'>
           <form
             onSubmit={handleSubmit(handleSubmitSearch)}
             className="w-[345px] sm:w-full"
@@ -189,15 +183,15 @@ function MarketPlace({ initialData }) {
               control={control}
               name={'search'}
               placeholder={'검색'}
-              size="md"
+              size='md'
             />
           </form>
-          <div className="w-full border-t border-[#5A5a5a] mt-3"></div>
-          <div className="flex justify-between items-center w-full mt-4 cursor-pointer">
+          <div className='w-full border-t border-[#5A5a5a] mt-3'></div>
+          <div className='flex justify-between items-center w-full mt-4 cursor-pointer'>
             <img
               src={icDropdown.src}
-              alt="드롭다운"
-              className="w-[45px] h-[45px] cursor-pointer"
+              alt='드롭다운'
+              className='w-[45px] h-[45px] cursor-pointer'
               onClick={() => setIsFilterOpen(true)}
             />
             <Dropdown

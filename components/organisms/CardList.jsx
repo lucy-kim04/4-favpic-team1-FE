@@ -20,7 +20,6 @@ function CardList({ cards, intent, colNum = 3, targetRef, ...props }, ref) {
       colNum === 3,
     'gap-10 grid-cols-2': colNum === 2,
   });
-  console.log(cards.length, ref);
 
   return (
     <div className="flex justify-center">
