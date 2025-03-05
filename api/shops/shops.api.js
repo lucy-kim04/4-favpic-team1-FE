@@ -31,11 +31,14 @@ const getShops = async ({
   genre = '장르',
   onSale = '판매 여부',
   keyword = '',
+  limit,
+  skip,
 }) => {
   try {
+    console.log('do getShop');
     const url = '/shops';
     const response = await client.get(url, {
-      params: { orderBy, grade, genre, onSale, keyword },
+      params: { orderBy, grade, genre, onSale, keyword, limit, skip },
     });
 
     return response.data;

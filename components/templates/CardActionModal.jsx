@@ -1,14 +1,16 @@
 'use client';
 
 import cardsApi from '@/api/cards/cards.api';
+import imgFilter from '@/assets/images/ic-filter.png';
 import constants from '@/constant';
 import { useQuery } from '@tanstack/react-query';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Dropdown from '../atoms/Dropdown';
+import TitleText from '../atoms/TitleText';
 import InputSearch from '../molecules/InputSearch';
 import Pagination from '../molecules/Pagination';
-import Title from '../molecules/Title';
 import CardList from '../organisms/CardList';
 import Modal from '../organisms/Modal';
 import CardDetailModalForExchange from './CardDetailModalForExchange';
@@ -39,7 +41,7 @@ function CardActionModal({ intent, sellerId, shopId }) {
       break;
   }
 
-  const limit = 3; // 페이지당 표시 개수
+  const limit = 4; // 페이지당 표시 개수
 
   const searchOptions = {
     grade,
@@ -87,12 +89,26 @@ function CardActionModal({ intent, sellerId, shopId }) {
     <Modal ref={containerRef}>
       {modalContent === 'list' ? (
         <>
-          <h3 className="font-baskin text-[#A4A4A4] text-[24px]">{subTitle}</h3>
-          <Title intent="lg" className={'mt-10 mb-5'}>
-            {title}
-          </Title>
-          <div className="flex items-center gap-16 mb-10">
-            <form onSubmit={handleSubmit(handleSubmitSearch)}>
+          <h3 className="font-baskin text-[#A4A4A4] text-[24px] sm:text-white sm:text-center sm:text-xl">
+            {subTitle}
+          </h3>
+          <div className="mt-10 sm:mt-4 mb-[30px]">
+            <TitleText intent={'lg'}>{title}</TitleText>
+            <div className="sm:hidden h-[2px] bg-white my-5 sm:my-[10px]" />
+          </div>
+          <div className="flex items-center gap-8 mb-10 sm:mb-5 sm:gap-3 sm:justify-between">
+            <div className="hidden sm:flex items-center justify-center border w-[55px] h-[55px] px-3 py-1">
+              <Image
+                src={imgFilter}
+                width={20}
+                height={20}
+                alt="dropdown button"
+              />
+            </div>
+            <form
+              onSubmit={handleSubmit(handleSubmitSearch)}
+              className="sm:flex-1"
+            >
               <InputSearch
                 control={control}
                 name={'search'}
@@ -100,16 +116,18 @@ function CardActionModal({ intent, sellerId, shopId }) {
                 size={'md'}
               />
             </form>
-            <Dropdown
-              label="등급"
-              options={constants.CARD_GRADES}
-              onSelect={setGrade}
-            />
-            <Dropdown
-              label="장르"
-              options={constants.CARD_GENRES}
-              onSelect={setGenre}
-            />
+            <div className="flex gap-10 sm:hidden">
+              <Dropdown
+                label="등급"
+                options={constants.CARD_GRADES}
+                onSelect={setGrade}
+              />
+              <Dropdown
+                label="장르"
+                options={constants.CARD_GENRES}
+                onSelect={setGenre}
+              />
+            </div>
           </div>
           <CardList
             cards={cards}

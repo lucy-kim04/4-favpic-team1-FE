@@ -2,12 +2,15 @@
 
 import { useModal } from '@/contexts/ModalContext';
 import iconX from '@/assets/images/ic-x.png';
+import iconLess from '@/assets/images/ic-less.png';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ConfirmModal from '../molecules/ConfirmModal';
+import clsx from 'clsx';
 
 function Modal({ children, ...props }) {
   const modals = useModal();
+  const [closing, setClosing] = useState(false);
 
   // 모달이 열릴 때 body 스크롤 잠금
   useEffect(() => {
@@ -29,23 +32,49 @@ function Modal({ children, ...props }) {
     );
   };
 
+  const defaultClassNames = clsx({
+    'w-[1160px] h-[1000px] px-[120px] py-[60px] lg:max-h-[90vh] top-10': true,
+  });
+
+  const mdClassNames = clsx({
+    'md:w-full md:h-full md:px-5 md:pt-2 md:top-9 md:max-h-[96vh] ': true,
+  });
+
+  const smClassNames = clsx({
+    'sm:w-full sm:h-full sm:px-5 sm:pt-4 sm:top-0 sm:max-h-[100vh] ': true,
+  });
+
   return (
     <div
-      className="fixed inset-0 bg-black/80 flex items-center justify-center z-40"
+      className="fixed inset-0 bg-black/80 flex items-center justify-center"
       onClick={handleClickModalOutside}
     >
       <div
         ref={props.ref}
         onClick={(e) => e.stopPropagation()}
-        className="fixed top-10 bg-[#161616] w-[1160px] h-[1000px] px-[120px] py-[60px] max-h-[90vh] overflow-y-auto"
+        className={clsx(
+          defaultClassNames,
+          mdClassNames,
+          smClassNames,
+          'fixed bg-[#161616] overflow-y-auto'
+        )}
       >
-        <div className="relative">
+        <div className="relative md:hidden">
           <button
             className="absolute -right-20 -top-6 z-30"
             onClick={modals.close}
           >
             <Image alt="모달창 닫기" src={iconX} width={32} height={32} />
           </button>
+        </div>
+        <div
+          className="hidden md:block sm:hidden text-center pt-0 pb-5 cursor-pointer"
+          onClick={modals.close}
+        >
+          <button className="bg-[#5a5a5a] w-12 h-2 rounded-lg"></button>
+        </div>
+        <div className="hidden sm:block absolute py-1" onClick={modals.close}>
+          <Image src={iconLess} width={14} height={22} alt={'less'} />
         </div>
         {children}
       </div>

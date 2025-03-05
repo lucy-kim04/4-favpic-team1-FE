@@ -28,7 +28,11 @@ export function ModalProvider({ children }) {
       {children}
       {modalElements.map((ModalComponent, index) => (
         //각 모달에는 고유의 key와 높은 z-index를 부여하여 쌓임
-        <div key={index} className={`fixed inset-0 z-[${1000 + index}]`}>
+        <div
+          key={index}
+          className={`fixed inset-0`}
+          style={{ zIndex: 1000 + index }}
+        >
           {ModalComponent}
         </div>
       ))}

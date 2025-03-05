@@ -1,4 +1,5 @@
 import shopsApi from '@/api/shops/shops.api';
+import imgLess from '@/assets/images/ic-less.png';
 import constants from '@/constant/index';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -53,11 +54,13 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { mutate: createShop, isPending } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
-      modal.close();
       queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
+      setTimeout(() => {
+        modal.close();
+      }, 1000);
     },
   });
 
@@ -65,10 +68,12 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
     mutationFn: (data) => shopsApi.updateShop(shopId, data),
     onSuccess: (data) => {
       queryClient.invalidateQueries(['shop']);
-      modal.close();
       router.push(
         `/result?intent=updateShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
+      setTimeout(() => {
+        modal.close();
+      }, 1000);
     },
   });
 
@@ -103,21 +108,35 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="md:mx-10">
       <h3
         onClick={onBack}
-        className={`font-baskin text-[#A4A4A4] text-[24px] ${
+        className={`font-baskin text-[#A4A4A4] text-[24px] sm:text-white sm:text-center sm:text-xl ${
           intent === 'sale' ? 'cursor-pointer' : ''
         }`}
       >
-        {intent === 'sale' ? '< 소유중인 카드 목록' : '수정하기'}
+        <Image
+          src={imgLess}
+          width={12}
+          height={22}
+          alt={'less'}
+          className="sm:hidden inline-block py-1 mr-3"
+        />
+        {intent === 'sale' ? '소유중인 카드 목록' : '수정하기'}
       </h3>
       <Title intent="md" className={'mt-10 mb-12'}>
         {name}
       </Title>
-      <div className="flex gap-10 mb-20">
-        <Image src={imgUrl} width={440} height={330} alt={'카드 이미지'} />
-        <div>
+      <div className="flex gap-10 md:gap-6 mb-20 md:justify-center sm:flex-col">
+        <div className="relative aspect-[4/3] flex-1">
+          <Image
+            src={imgUrl}
+            fill
+            style={{ objectFit: 'cover' }}
+            alt={'카드 이미지'}
+          />
+        </div>
+        <div className="flex-1">
           <CardDetail
             cardDetail={card}
             topIntent={'myCardDetail'}
@@ -127,14 +146,15 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
             control={control}
             nameForQuantity={'quantity'}
             nameForPrice={'price'}
+            givenClassNames={'w-[440px] md:w-full md:max-w-[550px] sm:w-full'}
           />
-          <p className="font-thin text-sm text-right">{`${
+          <p className="font-thin text-sm text-right md:max-w-[550px]">{`${
             intent === 'sale' ? '출시가' : '현재가'
           } : ${price}p`}</p>
         </div>
       </div>
       <Title intent="sm">교환 희망 정보</Title>
-      <div className="flex justify-between mt-12 mb-5">
+      <div className="flex justify-between mt-12 mb-5 md:gap-8 sm:flex-col sm:gap-4">
         <InputDropdown
           control={control}
           name={'rank'}

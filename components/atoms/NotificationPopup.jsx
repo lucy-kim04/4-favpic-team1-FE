@@ -1,13 +1,20 @@
 import notificationsApi from '@/api/notifications/notifications.api';
 import IcBack from '@/assets/images/ic-back.png';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
-function NotificationPopup({ isOpen, setIsOpen, notifications }) {
+function NotificationPopup({ isOpen, setIsOpen }) {
   const router = useRouter();
   const queryClient = useQueryClient();
+
+  const { data } = useQuery({
+    queryKey: ['notifications'],
+    queryFn: notificationsApi.getNotificationsOfMe,
+  });
+
+  const notifications = data || [];
 
   const TIME_SETTING = {
     MINUTE: 60 * 1000,
@@ -22,6 +29,7 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
     const now = new Date();
     const diff = now - new Date(dateString);
 
+    if (diff < TIME_SETTING.MINUTE) return `조금 전`;
     if (diff < TIME_SETTING.HOUR)
       return `${Math.floor(diff / TIME_SETTING.MINUTE)}분 전`;
     if (diff < TIME_SETTING.DAY)
@@ -78,21 +86,21 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
     `}
     >
       <div
-        className='min-h-[108px] sm:min-h-screen max-h-[540px] sm:max-h-screen overflow-y-auto 
+        className="min-h-[108px] sm:min-h-screen max-h-[540px] sm:max-h-screen overflow-y-auto 
         [&::-webkit-scrollbar]:w-2 
         [&::-webkit-scrollbar-track]:bg-[#161616]
         [&::-webkit-scrollbar-thumb]:bg-[#333]
         [&::-webkit-scrollbar-thumb]:rounded-full
-        [&::-webkit-scrollbar-thumb]:hover:bg-[#efff04]'
+        [&::-webkit-scrollbar-thumb]:hover:bg-[#efff04]"
       >
-        <div className='hidden sm:flex items-center relative p-4 border-b border-[#333]'>
+        <div className="hidden sm:flex items-center relative p-4 border-b border-[#333]">
           <Image
             src={IcBack}
-            alt='돌아가기 아이콘'
-            className=' text-white absolute left-4 w-4 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer '
+            alt="돌아가기 아이콘"
+            className=" text-white absolute left-4 w-4 sm:w-[22px] mr-6 sm:mr-0 cursor-pointer "
             onClick={() => setIsOpen(false)}
           />
-          <h2 className='text-white text-lg font-bold flex-1 text-center'>
+          <h2 className="text-white text-lg font-bold flex-1 text-center">
             알림
           </h2>
         </div>
@@ -115,7 +123,6 @@ function NotificationPopup({ isOpen, setIsOpen, notifications }) {
             </p>
           </div>
         ))}
-
       </div>
     </div>
   );

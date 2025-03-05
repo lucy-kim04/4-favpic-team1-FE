@@ -33,6 +33,7 @@ const getMyCardsOfGallery = async ({
   skip,
 }) => {
   try {
+    console.log(limit, skip);
     const url = '/cards/me/gallery';
     const response = await client.get(url, {
       params: { orderBy, grade, genre, keyword, limit, skip },

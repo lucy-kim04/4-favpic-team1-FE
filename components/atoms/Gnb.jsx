@@ -6,11 +6,13 @@ import arrowLeftWhite from '@/assets/images/arrow-left-white.png';
 import icMenu from '@/assets/images/ic-menu.png';
 import icNotification from '@/assets/images/ic-notification.png';
 import { useAuth } from '@/contexts/AuthContext';
+import { useModal } from '@/contexts/ModalContext';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
+import PointDrawModal from '../molecules/PointDrawModal';
 import Logo from './Logo';
 import NotificationPopup from './NotificationPopup';
 import PointPopup from './PointPopup';
@@ -21,6 +23,7 @@ function Gnb() {
   const [showPointMenu, setShowPointMenu] = useState(false);
   const { isLoggedIn, logout, isAuthInitialized } = useAuth();
   const router = useRouter();
+  const modal = useModal();
 
   const { data: user } = useQuery({
     queryKey: ['me'],
@@ -32,6 +35,7 @@ function Gnb() {
   const { data } = useQuery({
     queryKey: ['notifications'],
     queryFn: notificationsApi.getNotificationsOfMe,
+    enabled: !!user,
   });
 
   const notifications = data || [];
@@ -45,6 +49,9 @@ function Gnb() {
   const handleClickLogout = () => {
     logout();
     setShowPointMenu(false);
+  };
+  const handleClickPoint = () => {
+    modal.open(<PointDrawModal />);
   };
 
   const isNotReadCount = notifications.filter(

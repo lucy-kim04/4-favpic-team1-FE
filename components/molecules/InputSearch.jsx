@@ -26,16 +26,11 @@ function InputSearch({
   const inputId = useId();
   const { field, fieldState } = useController({ name, control, rules });
 
-  // const sizeClassNames = clsx({
-  //   'max-w-[345px] h-[45px] mb-1': size === 'lg',
-  //   'max-w-[320px] h-[50px] mb-1': size === 'md',
-  //   'max-w-[200px] h-[45px] mb-1': size === 'sm',
-  // });
-
-  const sizeClassNames = clsx(
-    'w-full lg:w-[320px] md:w-[200px]',
-    'h-[45px] lg:h-[50px]'
-  );
+  const sizeClassNames = clsx({
+    'w-[345px] h-[45px] mb-1': size === 'lg',
+    'w-[320px] h-[50px] mb-1': size === 'md',
+    'w-[200px] h-[45px] mb-1': size === 'sm',
+  });
 
   // size 옵션에 따라 검색 아이콘 위치 조정
   const iconPositionClassNames = clsx({
@@ -48,7 +43,7 @@ function InputSearch({
     <div
       className={clsx(
         sizeClassNames,
-        'relative flex items-center w-full mt-3 mb-2'
+        'relative flex items-center mt-3 mb-2 md:w-[200px] md:h-[45px] sm:my-0 sm:w-full'
       )}
     >
       <Input
