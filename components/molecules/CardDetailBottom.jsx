@@ -312,7 +312,7 @@ function CardDetailBottom({
               <p className="font-normal text-lg lg:text-xl w-[104px]">
                 총 판매 수량
               </p>
-              <div className="flex justify-between md:justify-end gap-4 items-center w-[245px] sm:justify-end">
+              <div className="flex justify-between md:justify-end gap-4 items-center w-[250px] sm:justify-end">
                 <NumberStepper
                   value={count}
                   onChange={(count) => {
@@ -338,12 +338,12 @@ function CardDetailBottom({
               </div>
             </div>
             <div className="py-2 flex justify-between items-center">
-              <p className="font-normal text-lg lg:text-xl w-[104px]">
+              <p className="font-normal text-lg lg:text-xl w-[109px]">
                 장당 가격
               </p>
               <div className="relative">
                 <input
-                  className="lg:w-[245px] lg:h-[50px] h-[45px] w-[203px] border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
+                  className="lg:w-[250px] lg:h-[50px] h-[45px] w-[210px] border rounded-sm bg-transparent placeholder-gray-200 placeholder:font-thin text-white px-5 py-[18px]"
                   {...fieldForPrice}
                   placeholder="숫자만 입력"
                 />

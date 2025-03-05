@@ -14,7 +14,7 @@ function ResultProposeExchange({ isSuccess = 'true' }) {
     : '마켓플레이스로 돌아가기';
   const handleClickButton = () => {
     if (isSuccess) {
-      router.push('/my-cards/gallery');
+      router.push('/my-cards/sales');
     } else {
       router.push('/');
     }

@@ -35,7 +35,7 @@ function SelectForm({
   });
 
   const defaultClassNames = clsx({
-    'md:w-full sm:w-full relative': true,
+    'md:w-full sm:w-full relative cursor-pointer': true,
   });
 
   const [isOpen, setIsOpen] = useState(false);
