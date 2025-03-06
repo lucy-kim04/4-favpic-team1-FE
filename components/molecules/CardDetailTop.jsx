@@ -1,4 +1,4 @@
-import lineBreakText from '@/ utils/lineBreakText';
+import lineBreakText from '@/utils/lineBreakText';
 import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 

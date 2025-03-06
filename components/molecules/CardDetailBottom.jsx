@@ -1,11 +1,11 @@
 'use client';
 
-import lineBreakText from '@/ utils/lineBreakText';
 import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
+import lineBreakText from '@/utils/lineBreakText';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';

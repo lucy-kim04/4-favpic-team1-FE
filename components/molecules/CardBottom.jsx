@@ -1,8 +1,8 @@
-import lineBreakText from '@/ utils/lineBreakText';
 import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useAuth } from '@/contexts/AuthContext';
 import { useModal } from '@/contexts/ModalContext';
+import lineBreakText from '@/utils/lineBreakText';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import Button from '../atoms/Button';
