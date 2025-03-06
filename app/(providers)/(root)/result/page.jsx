@@ -7,6 +7,7 @@ import ResultPurchase from '@/components/molecules/ResultPurchase';
 import ResultStopSales from '@/components/molecules/ResultStopSales';
 import ResultUpdateShop from '@/components/molecules/ResultUpdateShop';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 /**
  * 성공/실패 결과 페이지 사용 방법
@@ -67,4 +68,12 @@ function ResultPage() {
   }
 }
 
-export default ResultPage;
+function SuspensedResultPage() {
+  return (
+    <Suspense>
+      <ResultPage />
+    </Suspense>
+  );
+}
+
+export default SuspensedResultPage;

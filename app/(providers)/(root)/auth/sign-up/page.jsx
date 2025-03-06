@@ -2,6 +2,7 @@
 
 import usersApi from '@/api/users/users.api';
 import Button from '@/components/atoms/Button';
+import Loader from '@/components/atoms/Loader';
 import Logo from '@/components/atoms/Logo';
 import PageContainer from '@/components/atoms/PageContainer';
 import InputPassword from '@/components/molecules/InputPassword';
@@ -32,7 +33,7 @@ function SignUpPage() {
     },
   });
 
-  const { mutate: signUp } = useMutation({
+  const { mutate: signUp, isPending: isPendingSignUp } = useMutation({
     mutationFn: (data) => usersApi.singUp(data),
     onSuccess: () => {
       // 회원가입 성공 시 자동으로 로그인 시키기
@@ -53,7 +54,7 @@ function SignUpPage() {
     },
   });
 
-  const { mutate: login } = useMutation({
+  const { mutate: login, isPending: isPendingLogIn } = useMutation({
     mutationFn: (data) => usersApi.logIn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me'] });
@@ -70,20 +71,20 @@ function SignUpPage() {
 
   return (
     <PageContainer>
-      <div className='flex justify-center items-center bg-[#0f0f0f]'>
-        <div className='w-[345px] md:w-[440px] lg:w-[520px]'>
-          <div className='mb-20 flex justify-center'>
-            <Logo intent='auth' />
+      <div className="flex justify-center items-center bg-[#0f0f0f]">
+        <div className="w-[345px] md:w-[440px] lg:w-[520px]">
+          <div className="mb-20 flex justify-center">
+            <Logo intent="auth" />
           </div>
-          <form className='w-full' onSubmit={handleSubmit(handleClickLogin)}>
-            <div className='inline-flex flex-col w-full'>
-              <div className='mb-[30px]'>
+          <form className="w-full" onSubmit={handleSubmit(handleClickLogin)}>
+            <div className="inline-flex flex-col w-full">
+              <div className="mb-[30px]">
                 <InputText
                   control={control}
-                  type='email'
-                  name='email'
-                  label='이메일'
-                  placeholder='이메일을 입력해 주세요'
+                  type="email"
+                  name="email"
+                  label="이메일"
+                  placeholder="이메일을 입력해 주세요"
                   rules={{
                     required: '이메일을 입력해 주세요',
                     pattern: {
@@ -94,13 +95,13 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className='mb-[30px]'>
+              <div className="mb-[30px]">
                 <InputText
                   control={control}
-                  type='text'
-                  name='nickname'
-                  label='닉네임'
-                  placeholder='닉네임을 입력해 주세요'
+                  type="text"
+                  name="nickname"
+                  label="닉네임"
+                  placeholder="닉네임을 입력해 주세요"
                   rules={{
                     required: '닉네임을 입력해 주세요',
                     minLength: {
@@ -110,7 +111,7 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className='mb-10'>
+              <div className="mb-10">
                 <InputPassword
                   control={control}
                   name={'password'}
@@ -125,7 +126,7 @@ function SignUpPage() {
                   }}
                 />
               </div>
-              <div className='mb-10'>
+              <div className="mb-10">
                 <InputPassword
                   control={control}
                   name={'passwordConfirm'}
@@ -152,11 +153,11 @@ function SignUpPage() {
 
             <div>
               <Button
-                type='submit'
-                intent='primary'
-                className='sm:h-[55px] md:h-[55px]'
+                type="submit"
+                intent="primary"
+                className="sm:h-[55px] md:h-[55px]"
               >
-                회원가입
+                {isPendingSignUp || isPendingLogIn ? <Loader /> : '회원가입'}
               </Button>
             </div>
           </form>

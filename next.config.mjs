@@ -10,6 +10,13 @@ const nextConfig = {
         pathname: '/static/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'four-favpic-team1-be.onrender.com',
+        port: '',
+        pathname: '/static/**',
+        search: '',
+      },
     ],
   },
 };

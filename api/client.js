@@ -1,8 +1,8 @@
 import axios from 'axios';
 import usersApi from './users/users.api';
 
-const baseURL = 'http://localhost:5050';
-// const baseURL = 'https://four-favpic-team1-be.onrender.com/';
+// const baseURL = 'http://localhost:5050';
+const baseURL = 'https://four-favpic-team1-be.onrender.com/';
 
 export const client = axios.create({
   baseURL,
