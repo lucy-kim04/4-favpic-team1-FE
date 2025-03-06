@@ -1,3 +1,4 @@
+import lineBreakText from '@/ utils/lineBreakText';
 import Divider from '../atoms/Divider';
 import GradeCardBadge from '../atoms/GradeCardBadge';
 
@@ -30,7 +31,9 @@ function CardDetailTop({ cardDetail, topIntent = 'detailAll' }) {
       <Divider />
       {topIntent !== 'myCardDetail' && (
         <>
-          <p className="font-normal text-base lg:text-lg">{description}</p>
+          <p className="font-normal text-base lg:text-lg">
+            {lineBreakText(description)}
+          </p>
           <Divider />
           <div className="text-xl lg:text-2xl flex flex-col gap-[10px]">
             <div className="flex justify-between">
