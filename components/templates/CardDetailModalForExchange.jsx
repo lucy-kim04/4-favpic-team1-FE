@@ -11,6 +11,7 @@ import Title from '../molecules/Title';
 import Card from '../organisms/Card';
 import Image from 'next/image';
 import imgLess from '@/assets/images/ic-less.png';
+import { useEffect, useState } from 'react';
 
 function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
   const { id, imgUrl, name, grade, genre, nickname, reserveCount, price } =
@@ -19,6 +20,7 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
   const router = useRouter();
   const pathname = usePathname();
   const queryClient = useQueryClient();
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const { handleSubmit, control, getValues } = useForm({
     defaultValues: {
@@ -32,11 +34,8 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
     {
       mutationFn: ({ id, data }) => shopsApi.proposeExchange(id, data),
       onSuccess: (data) => {
-        // console.log(getValues(), data);
+        setIsTransitioning(true);
         // 상점의 판매자에게 알림 전송
-        router.push(
-          `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
-        );
         sendNotification({
           notificationCase: 'arriveProposal',
           userId: sellerId,
@@ -44,9 +43,9 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
           grade,
           name,
         });
-        setTimeout(() => {
-          modal.close();
-        }, 1000);
+        router.push(
+          `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
+        );
       },
     }
   );
@@ -70,6 +69,21 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
 
     proposeExchange({ id: shopId, data });
   };
+
+  useEffect(() => {
+    if (isTransitioning && pathname === '/result') {
+      modal.close();
+      setIsTransitioning(false);
+    }
+  }, [isTransitioning, pathname]);
+
+  if (isTransitioning) {
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#EFFF04]"></div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(handleExchangeClick)}>
