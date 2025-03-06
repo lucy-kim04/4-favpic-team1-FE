@@ -1,3 +1,4 @@
+import lineBreakText from '@/ utils/lineBreakText';
 import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import { useAuth } from '@/contexts/AuthContext';
@@ -207,7 +208,9 @@ function CardBottom({ card, intent, isProposedByMe = false }) {
   // 교환일 경우
   return (
     <div>
-      <p className="font-normal sm:text-[10px] line-clamp-2">{content}</p>
+      <p className="font-normal sm:text-[10px] line-clamp-2">
+        {lineBreakText(content)}
+      </p>
       {isProposedByMe ? (
         <div className="mt-10 md:mt-6">
           <Button
