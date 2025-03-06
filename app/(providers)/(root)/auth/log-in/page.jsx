@@ -2,6 +2,7 @@
 
 import usersApi from '@/api/users/users.api';
 import Button from '@/components/atoms/Button';
+import Loader from '@/components/atoms/Loader';
 import Logo from '@/components/atoms/Logo';
 import PageContainer from '@/components/atoms/PageContainer';
 import InputPassword from '@/components/molecules/InputPassword';
@@ -21,7 +22,7 @@ function LoginPage() {
 
   const queryClient = useQueryClient();
 
-  const { mutate: login } = useMutation({
+  const { mutate: login, isPending: isPendingLogIn } = useMutation({
     mutationFn: (data) => usersApi.logIn(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['me'] });
@@ -48,20 +49,20 @@ function LoginPage() {
 
   return (
     <PageContainer>
-      <div className='flex justify-center items-center bg-[#0f0f0f]'>
-        <div className='w-[345px] md:w-[440px] lg:w-[520px]'>
-          <div className='flex justify-center mb-20'>
-            <Logo intent='auth' />
+      <div className="flex justify-center items-center bg-[#0f0f0f]">
+        <div className="w-[345px] md:w-[440px] lg:w-[520px]">
+          <div className="flex justify-center mb-20">
+            <Logo intent="auth" />
           </div>
-          <form className='w-full' onSubmit={handleSubmit(handleClickLogin)}>
-            <div className='inline-flex flex-col w-full'>
-              <div className='mb-[30px]'>
+          <form className="w-full" onSubmit={handleSubmit(handleClickLogin)}>
+            <div className="inline-flex flex-col w-full">
+              <div className="mb-[30px]">
                 <InputText
                   control={control}
-                  type='email'
-                  name='email'
-                  label='이메일'
-                  placeholder='이메일을 입력해 주세요'
+                  type="email"
+                  name="email"
+                  label="이메일"
+                  placeholder="이메일을 입력해 주세요"
                   rules={{
                     required: '이메일을 입력해 주세요',
                     pattern: {
@@ -72,7 +73,7 @@ function LoginPage() {
                   }}
                 />
               </div>
-              <div className='mb-10'>
+              <div className="mb-10">
                 <InputPassword
                   control={control}
                   name={'password'}
@@ -91,11 +92,11 @@ function LoginPage() {
 
             <div>
               <Button
-                type='submit'
-                intent='primary'
-                className='sm:h-[55px] md:h-[55px]'
+                type="submit"
+                intent="primary"
+                className="sm:h-[55px] md:h-[55px]"
               >
-                로그인
+                {isPendingLogIn ? <Loader /> : '로그인'}
               </Button>
             </div>
           </form>
