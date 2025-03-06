@@ -49,7 +49,7 @@
 
 | Frontend                                                   | Backend                                                        | Database                       | 협업툴                                    |
 | ---------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------ | ----------------------------------------- |
-| - JavaScript</br>- Next.js</br>- Tanstack Query</br>- Tailwind CSS</br>- React Hook Form</br>- clsx</br>- Axios</br>- Atomic 디자인 패턴 적용</br>- Vercel(배포) | - Express.js</br>- </br>- cors, bcrypt, dotenv, morgan, validator, jsonwebtoken, multer<br>- Render(배포) | - postgreSQL</br>- prisma(ORM) | - 협업툴<br>  - Git & Github</br>  - Discord</br>  - Notion<br>- 유저 인증 구현<br>  - 토큰/헤더 방식<br>  - JWT 사용 |
+| - JavaScript</br>- Next.js</br>- Tanstack Query</br>- Tailwind CSS</br>- React Hook Form</br>- clsx</br>- Axios</br>- Atomic 디자인 패턴 적용</br>- Vercel(배포) | - Express.js</br>- cors, bcrypt, dotenv, morgan, validator, jsonwebtoken, multer<br>- Render(배포) | - postgreSQL</br>- prisma(ORM) | - 협업툴<br>  - Git & Github</br>  - Discord</br>  - Notion<br>- 유저 인증 구현<br>  - 토큰/헤더 방식<br>  - JWT 사용 |
 
 ## 아키텍처 다이어그램
 
