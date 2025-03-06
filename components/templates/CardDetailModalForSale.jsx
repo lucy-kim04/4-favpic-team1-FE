@@ -2,6 +2,7 @@ import shopsApi from '@/api/shops/shops.api';
 import imgLess from '@/assets/images/ic-less.png';
 import constants from '@/constant/index';
 import { useModal } from '@/contexts/ModalContext';
+<<<<<<< Updated upstream
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -10,6 +11,10 @@ import { useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
 import InputDropdown from '../molecules/InputDropdown';
 import InputTextBox from '../molecules/InputTextBox';
+=======
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+>>>>>>> Stashed changes
 import Title from '../molecules/Title';
 import CardDetail from '../organisms/CardDetail';
 
@@ -53,7 +58,11 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
     }
   }, [shopData, reset]);
 
+<<<<<<< Updated upstream
   const { mutate: createShop, isPending } = useMutation({
+=======
+  const { mutate: createShop } = useMutation({
+>>>>>>> Stashed changes
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
       setIsTransitioning(true);
@@ -203,7 +212,11 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
         <Button intent="secondary" onClick={() => modal.close()}>
           취소하기
         </Button>
+<<<<<<< Updated upstream
         <Button intent="primary" isPending={isPending}>
+=======
+        <Button intent="primary">
+>>>>>>> Stashed changes
           {intent === 'sale' ? '판매하기' : '수정하기'}
         </Button>
       </div>
