@@ -23,16 +23,16 @@ function Title({ children, intent = 'xl', onClick, className }) {
   return (
     <>
       <div className={className}>
-        <div className='border-b-2 border-[#eeeeee] pb-4'>
-          <div className='flex items-center justify-between'>
+        <div className="border-b-2 border-[#eeeeee] pb-4">
+          <div className="flex items-center justify-between">
             <TitleText intent={intent}>{children}</TitleText>
             {onClick &&
               (isFixedButton ? (
-                <div className='w-[440px] md:w-[342px] sm:hidden'>
+                <div className="w-[440px] md:w-[342px] sm:hidden">
                   <Button onClick={onClick}>{buttonName}</Button>
                 </div>
               ) : (
-                <div className='w-[440px] md:w-[342px]'>
+                <div className="w-[440px] md:w-[342px]">
                   <Button onClick={onClick}>{buttonName}</Button>
                 </div>
               ))}
@@ -41,7 +41,7 @@ function Title({ children, intent = 'xl', onClick, className }) {
       </div>
 
       {onClick && isFixedButton && (
-        <div className='hidden sm:block sm:fixed sm:bottom-0 sm:left-0 sm:right-0 sm:p-4 z-1'>
+        <div className="hidden sm:block sm:fixed sm:bottom-0 sm:left-0 sm:right-0 sm:p-4 z-1 z-10">
           <Button onClick={onClick}>{buttonName}</Button>
         </div>
       )}
