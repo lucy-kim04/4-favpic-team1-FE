@@ -1,5 +1,6 @@
 'use client';
 
+import lineBreakText from '@/ utils/lineBreakText';
 import notificationsApi from '@/api/notifications/notifications.api';
 import shopsApi from '@/api/shops/shops.api';
 import exchangeIcon from '@/assets/images/ic-exchange.png';
@@ -276,7 +277,9 @@ function CardDetailBottom({
                 </p>
               </div>
               <Divider />
-              <p className="font-normal text-base lg:text-lg">{exchangeDesc}</p>
+              <p className="font-normal text-base lg:text-lg">
+                {lineBreakText(exchangeDesc)}
+              </p>
               <div className="flex flex-col gap-4 mt-20">
                 <Button
                   onClick={() =>
