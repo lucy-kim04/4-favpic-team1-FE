@@ -4,8 +4,8 @@ import constants from '@/constant/index';
 import { useModal } from '@/contexts/ModalContext';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from '../atoms/Button';
 import InputDropdown from '../molecules/InputDropdown';
@@ -19,6 +19,8 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const modal = useModal();
   const router = useRouter();
   const queryClient = useQueryClient();
+  const pathname = usePathname();
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const { handleSubmit, control, reset } = useForm({
     defaultValues: {
@@ -54,26 +56,22 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   const { mutate: createShop, isPending } = useMutation({
     mutationFn: (data) => shopsApi.createShop(data),
     onSuccess: (data) => {
+      setIsTransitioning(true);
       queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=createShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
-      setTimeout(() => {
-        modal.close();
-      }, 1000);
     },
   });
 
   const { mutate: updateShop } = useMutation({
     mutationFn: (data) => shopsApi.updateShop(shopId, data),
     onSuccess: (data) => {
+      setIsTransitioning(true);
       queryClient.invalidateQueries(['shop']);
       router.push(
         `/result?intent=updateShop&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
       );
-      setTimeout(() => {
-        modal.close();
-      }, 1000);
     },
   });
 
@@ -105,7 +103,20 @@ function CardDetailModalForSale({ card, onBack, intent = 'sale', shopId }) {
   };
   const onSubmit = intent === 'sale' ? handleCreateClick : handleEditClick;
 
-  if (isLoading) return <div>Loading...</div>;
+  useEffect(() => {
+    if (isTransitioning && pathname === '/result') {
+      modal.close();
+      setIsTransitioning(false);
+    }
+  }, [isTransitioning, pathname]);
+
+  if (isTransitioning) {
+    return (
+      <div className="flex justify-center items-center w-full h-full">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#EFFF04]"></div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="md:mx-10">

@@ -33,7 +33,7 @@ function Modal({ children, ...props }) {
   };
 
   const defaultClassNames = clsx({
-    'w-[1160px] h-[1000px] px-[120px] py-[60px] lg:max-h-[90vh] top-10': true,
+    'w-[1160px] h-[90vh] px-[120px] py-[60px]': true,
   });
 
   const mdClassNames = clsx({

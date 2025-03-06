@@ -46,19 +46,9 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
         router.push(
           `/result?intent=proposeExchange&&isSuccess=true&&grade=${grade}&&name=${name}&&count=${data.salesCount}`
         );
-        // setTimeout(() => {
-        //   modal.close();
-        // }, 800);
       },
     }
   );
-
-  useEffect(() => {
-    if (isTransitioning && pathname === '/result') {
-      modal.close();
-      setIsTransitioning(false);
-    }
-  }, [isTransitioning, pathname, modal]);
 
   const { mutate: sendNotification } = useMutation({
     mutationFn: (dto) => notificationsApi.sendNotification(dto),
@@ -79,6 +69,13 @@ function CardDetailModalForExchange({ card, onBack, sellerId, shopId }) {
 
     proposeExchange({ id: shopId, data });
   };
+
+  useEffect(() => {
+    if (isTransitioning && pathname === '/result') {
+      modal.close();
+      setIsTransitioning(false);
+    }
+  }, [isTransitioning, pathname]);
 
   if (isTransitioning) {
     return (
